@@ -1,0 +1,2 @@
+configurations.create("default")
+artifacts.add("default", file('commons-lang3-3.4.jar'))

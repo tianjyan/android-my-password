@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MyPassword.iml" filepath="$PROJECT_DIR$/MyPassword.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/commons-lang3-3.4/commons-lang3-3.4.iml" filepath="$PROJECT_DIR$/commons-lang3-3.4/commons-lang3-3.4.iml" />
     </modules>
   </component>
 </project>
