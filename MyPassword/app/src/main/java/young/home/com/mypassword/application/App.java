@@ -3,6 +3,7 @@ package young.home.com.mypassword.application;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Looper;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import young.home.com.mypassword.model.SettingKey;
 /**
  * Created by YOUNG on 2016/3/30.
  */
-public class App extends Application implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class App extends Application implements OnSharedPreferenceChangeListener {
     private SharedPreferences sharedPreferences;
     private Map<SettingKey, List<OnSettingChangeListener>> onSettingChangeListenerMap = new HashMap<SettingKey,List<OnSettingChangeListener>>();
     @Override

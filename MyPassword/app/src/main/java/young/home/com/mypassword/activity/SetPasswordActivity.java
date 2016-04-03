@@ -13,34 +13,32 @@ import young.home.com.mypassword.application.BaseActivity;
 import young.home.com.mypassword.application.MD5;
 import young.home.com.mypassword.model.SettingKey;
 
-public class StartActivity extends BaseActivity {
+public class SetPasswordActivity extends BaseActivity {
 
-    EditText inputPwd;
-    String pwd;
+    private EditText pwdEt;
+    private EditText rePwdEt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start);
+        setContentView(R.layout.activity_set_password);
 
-       pwd =  super.getSetting(SettingKey.LOCK_PWD, "");
-        if(pwd.isEmpty()){
-            Intent intent = new Intent(this, SetPasswordActivity.class);
-            startActivity(intent);
-            finish();
-        }
-
-        inputPwd = (EditText)findViewById(R.id.InputPwd);
+        pwdEt = (EditText)findViewById(R.id.PwdEt);
+        rePwdEt = (EditText)findViewById(R.id.RePwdEt);
     }
 
     public void EnterClick(View v) {
-        if(pwd.equals(MD5.getMD5(inputPwd.getText().toString()))) {
+        if(pwdEt.getText().toString().equals(rePwdEt.getText().toString())){
+            String pwd = pwdEt.getText().toString();
+            super.putSetting(SettingKey.LOCK_PWD, MD5.getMD5(pwd));
+
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         }
-        else {
-            Toast.makeText(this, "密码不正确", Toast.LENGTH_SHORT).show();
+        else{
+            Toast.makeText(this, "两次密码不同", Toast.LENGTH_SHORT).show();
         }
     }
+
 }

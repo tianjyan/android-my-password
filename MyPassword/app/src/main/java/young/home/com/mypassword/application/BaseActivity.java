@@ -16,7 +16,7 @@ public class BaseActivity extends Activity {
         getApp().putSetting(key, value);
     }
 
-    public void getSetting(SettingKey key, String defaultValue){
-        getApp().putSetting(key,defaultValue);
+    public String getSetting(SettingKey key, String defaultValue){
+        return getApp().getSetting(key,defaultValue);
     }
 }
