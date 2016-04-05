@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">MyPassword</string>
     <string name="Yes">确认</string>
+    <string name="title">标题：</string>
+    <string name="add_password_title_hint">输入标题(必须)</string>
+    <string name="password_group">分组：</string>
 </resources>
