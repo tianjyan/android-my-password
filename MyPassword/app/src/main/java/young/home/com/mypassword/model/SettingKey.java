@@ -5,5 +5,6 @@ package young.home.com.mypassword.model;
  */
 public enum SettingKey {
     LOCK_PWD,
-    LAST_SHOW_PASSWORDGROUP_NAME
+    LAST_SHOW_PASSWORDGROUP_NAME,
+    KEY,
 }
