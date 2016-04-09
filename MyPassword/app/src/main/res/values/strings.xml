@@ -27,4 +27,9 @@
     <string name="action_add_password">添加</string>
     <string name="open">打开</string>
     <string name="close">关闭</string>
+    <string name="add_password_group_hint">输入分组名</string>
+    <string name="add_password_group_cancle">取消</string>
+    <string name="add_password_group_sure">确定</string>
+    <string name="password_group_update_group_name">修改分组名</string>
+    <string name="update_password_group_name_hint">新的分组名</string>
 </resources>

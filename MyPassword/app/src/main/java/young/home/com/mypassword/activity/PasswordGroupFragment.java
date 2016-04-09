@@ -13,6 +13,14 @@ import young.home.com.mypassword.R;
  */
 public class PasswordGroupFragment  extends Fragment {
 
+    private View.OnClickListener onAddClickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            AddPasswordGroupDialog dialog = new AddPasswordGroupDialog(getActivity(),null);
+            dialog.show();
+        }
+    };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +28,9 @@ public class PasswordGroupFragment  extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_password_group, container, false);
+        View addView = rootView.findViewById(R.id.fragment_password_group_add);
+        addView.setOnClickListener(onAddClickListener);
+
         return rootView;
     }
 }

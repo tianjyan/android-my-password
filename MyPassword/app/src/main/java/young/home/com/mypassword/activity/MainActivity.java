@@ -111,6 +111,14 @@ public class MainActivity extends BaseActivity {
             return true;
         }
 
+        int id = item.getItemId();
+        switch (id){
+            case R.id.action_add_password:
+                Intent intent = new Intent(this, EditPasswordActivity.class);
+                startActivity(intent);
+                break;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 }
