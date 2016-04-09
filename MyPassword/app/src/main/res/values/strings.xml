@@ -12,4 +12,13 @@
     <string name="copy">复制</string>
     <string name="delete">删除</string>
     <string name="edit">修改</string>
+    <string name="different_pwd">两次密码不同</string>
+    <string name="set_lock_pattern_first_message">为了安全，请设置密码</string>
+    <string name="set_lock_pattern_first_sure">确定</string>
+    <string name="set_password">输入密码：</string>
+    <string name="reset_password">再输一次：</string>
+    <string name="please_input_password">请输入密码</string>
+    <string name="input_password_again">请再次输入密码</string>
+    <string name="next">下一步</string>
+    <string name="wrong_password">密码不正确</string>
 </resources>
