@@ -21,4 +21,10 @@
     <string name="input_password_again">请再次输入密码</string>
     <string name="next">下一步</string>
     <string name="wrong_password">密码不正确</string>
+    <string name="no_password_tips">没有密码，添加几个试试</string>
+    <string name="password_group_title" >密码分组</string>
+    <string name="password_group_add">添加分组</string>
+    <string name="action_add_password">添加</string>
+    <string name="open">打开</string>
+    <string name="close">关闭</string>
 </resources>

@@ -10,14 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
-
-import org.w3c.dom.Text;
-
-import java.security.NoSuchAlgorithmException;
-
 import young.home.com.mypassword.R;
 import young.home.com.mypassword.application.BaseActivity;
 import young.home.com.mypassword.application.MD5;

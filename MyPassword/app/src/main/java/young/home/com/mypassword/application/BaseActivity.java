@@ -1,6 +1,7 @@
 package young.home.com.mypassword.application;
 
 import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import young.home.com.mypassword.model.SettingKey;
@@ -8,7 +9,7 @@ import young.home.com.mypassword.model.SettingKey;
 /**
  * Created by YOUNG on 2016/3/31.
  */
-public class BaseActivity extends Activity {
+public class BaseActivity extends AppCompatActivity {
     public App getApp(){
         return (App)getApplication();
     }
@@ -27,5 +28,9 @@ public class BaseActivity extends Activity {
 
     public void showToast(int id, int duration) {
         Toast.makeText(this, id, duration).show();
+    }
+
+    public BaseActivity getActivity() {
+        return this;
     }
 }

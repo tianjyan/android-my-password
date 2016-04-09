@@ -7,4 +7,5 @@ public enum SettingKey {
     LOCK_PWD,
     LAST_SHOW_PASSWORDGROUP_NAME,
     KEY,
+    IS_SHOWED_DRAWER,
 }
