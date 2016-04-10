@@ -2,27 +2,24 @@ package young.home.com.mypassword.activity;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.os.Binder;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import young.home.com.mypassword.R;
-import young.home.com.mypassword.model.PasswordGroup;
 import young.home.com.mypassword.service.MainBinder;
 
 /**
  * Created by YOUNG on 2016/4/9.
  */
-public class AddPasswordGroupDialog extends Dialog {
-
+public class UpdatePasswordGroupNameDialog extends Dialog {
     private EditText editText;
+    private MainBinder mainBinder;
+    private String oldGroupName;
     private View cancelBtn;
     private View sureBtn;
     private View container;
-    private MainBinder mainBinder;
 
     private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
         @Override
@@ -36,36 +33,37 @@ public class AddPasswordGroupDialog extends Dialog {
         public void onClick(View v) {
             String name = editText.getText().toString().trim();
             if(name.length() > 0){
-                PasswordGroup passwordGroup = new PasswordGroup();
-                passwordGroup.setGroupName(name);
-                mainBinder.insertPasswordGroup(passwordGroup);
+                if(!name.equals(oldGroupName)){
+                    mainBinder.updatePasswdGroupName(oldGroupName, name);
+                }
                 dismiss();
             }
         }
     };
 
-    public AddPasswordGroupDialog(Context context, MainBinder mainBinder){
-        super(context, android.R.style.Theme_Translucent_NoTitleBar);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+    public UpdatePasswordGroupNameDialog(Context context, String oldGroupName, MainBinder mainBinder){
+        super(context,android.R.style.Theme_Translucent_NoTitleBar);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE  | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         this.mainBinder = mainBinder;
+        this.oldGroupName = oldGroupName;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dialog_create_password_group);
+        setContentView(R.layout.dialog_update_password_group_name);
 
-        cancelBtn = findViewById(R.id.add_password_group_cancle_btn);
-        sureBtn = findViewById(R.id.add_password_group_sure_btn);
-        editText = (EditText)findViewById(R.id.add_passwrdGroup_editview);
+        cancelBtn = findViewById(R.id.edit_passwordGroup_cancelBtn);
+        sureBtn = findViewById(R.id.edit_passwordGroup_sureBtn);
+        editText = (EditText) findViewById(R.id.edit_passwordGroup_editView);
         container = findViewById(R.id.container);
 
         cancelBtn.setOnClickListener(onCancelClickListener);
-        sureBtn.setOnClickListener(onSureClickListener);
         container.setOnClickListener(onCancelClickListener);
+        sureBtn.setOnClickListener(onSureClickListener);
+
+        editText.setText(oldGroupName);
 
         editText.requestFocus();
     }
-
-
 }

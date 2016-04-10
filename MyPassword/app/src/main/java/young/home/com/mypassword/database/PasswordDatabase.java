@@ -221,7 +221,7 @@ public class PasswordDatabase extends SQLiteOpenHelper {
     }
 
     private void createPasswordTable(SQLiteDatabase db){
-        String sql = "create table password(id text primary key autoincrement, publish integer, title text, "
+        String sql = "create table password(id integer primary key autoincrement, publish integer, title text, "
                 + "user_name text, password text, url text, note text, group_name text default '"
                 + getDefaultGroupName() + "')";
         db.execSQL(sql);

@@ -22,8 +22,6 @@
     <string name="next">下一步</string>
     <string name="wrong_password">密码不正确</string>
     <string name="no_password_tips">没有密码，添加几个试试</string>
-    <string name="password_group_title" >密码分组</string>
-    <string name="password_group_add">添加分组</string>
     <string name="action_add_password">添加</string>
     <string name="open">打开</string>
     <string name="close">关闭</string>
@@ -32,4 +30,16 @@
     <string name="add_password_group_sure">确定</string>
     <string name="password_group_update_group_name">修改分组名</string>
     <string name="update_password_group_name_hint">新的分组名</string>
+    <string name="password_group_default_name">默认</string>
+    <string name="delete_password_group_title">删除密码分组</string>
+    <string name="delete_password_group_message">将删除\"%s\"分组下的所有密码，不可恢复，你确定删除吗？</string>
+    <string name="delete_password_add">添加分组</string>
+    <string name="delete_password_sure">确 定</string>
+    <string name="delete_password_cancle">取 消</string>
+    <string name="password_group_title">密码分组</string>
+    <string name="password_group_add">添加分组</string>
+    <string name="password_group_delete_group">删除分组</string>
+    <string name="password_group_merge">合并分组到</string>
+    <string name="password_group_merge_error">没有分组可合并</string>
+    <string name="password_group_merge_loading">读取数据中，请稍候&#8230;</string>
 </resources>

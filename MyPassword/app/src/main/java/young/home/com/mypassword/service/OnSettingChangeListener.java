@@ -1,4 +1,4 @@
-package young.home.com.mypassword.application;
+package young.home.com.mypassword.service;
 
 import young.home.com.mypassword.model.SettingKey;
 

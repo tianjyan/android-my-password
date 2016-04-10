@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import young.home.com.mypassword.model.SettingKey;
+import young.home.com.mypassword.service.OnSettingChangeListener;
 
 /**
  * Created by YOUNG on 2016/3/30.

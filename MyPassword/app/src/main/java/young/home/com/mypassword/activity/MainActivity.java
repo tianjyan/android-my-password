@@ -2,8 +2,13 @@ package young.home.com.mypassword.activity;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -15,15 +20,41 @@ import android.view.View;
 import young.home.com.mypassword.R;
 import young.home.com.mypassword.application.BaseActivity;
 import young.home.com.mypassword.model.SettingKey;
+import young.home.com.mypassword.service.MainBinder;
+import young.home.com.mypassword.service.MainService;
+import young.home.com.mypassword.service.OnPasswordGroupSelected;
 
 public class MainActivity extends BaseActivity {
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private View drawerView;
+    private MainBinder mainBinder;
 
     private PasswordListFragment passwordListFragment;
     private PasswordGroupFragment passwordGroupFragment;
+
+    private OnPasswordGroupSelected onPasswordGroupSelected = new OnPasswordGroupSelected() {
+        @Override
+        public void onPasswordGroupSelected(String passwordGroupName) {
+            drawerLayout.closeDrawer(drawerView);
+            if (passwordListFragment != null){}
+                //passwordListFragment.showPasswordGroup(passwordGroupName);
+        }
+    };
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mainBinder = null;
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mainBinder = (MainBinder) service;
+            initFragment();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +64,10 @@ public class MainActivity extends BaseActivity {
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         drawerView = (View)findViewById(R.id.navigation_drawer);
 
-        initDrawer();
+        Intent intent = new Intent(this, MainService.class);
+        this.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
 
-        intiFragment();
+        initDrawer();
     }
 
     @Override
@@ -88,7 +120,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void intiFragment(){
+    private void initFragment(){
         FragmentManager fragmentManager = getFragmentManager();
 
         passwordListFragment = (PasswordListFragment) fragmentManager.findFragmentByTag("PasswordListFragment");
@@ -98,6 +130,8 @@ public class MainActivity extends BaseActivity {
         passwordGroupFragment = (PasswordGroupFragment) fragmentManager.findFragmentByTag("PasswordGroupFragment");
         if (passwordGroupFragment == null)
             passwordGroupFragment = new PasswordGroupFragment();
+        passwordGroupFragment.setDataSource(mainBinder, onPasswordGroupSelected);
+
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.navigation_drawer, passwordGroupFragment, "PasswordGroupFragment");
@@ -120,5 +154,17 @@ public class MainActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(serviceConnection);
     }
 }
