@@ -122,6 +122,29 @@ public class PasswordDatabase extends SQLiteOpenHelper {
         return result;
     }
 
+    public Password getPassword(int id) {
+        Password password = null;
+
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        Cursor cursor = null;
+        try {
+            cursor = sqLiteDatabase.query("password", null, "id = ?", new String[]{String.valueOf(id)}, null, null,
+                    null);
+
+            if (cursor.moveToNext()) {
+                password = mapPassword(cursor);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return password;
+    }
+
     public int updatePassword(Password password) {
         int result = 0;
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();

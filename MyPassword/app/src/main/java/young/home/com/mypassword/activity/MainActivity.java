@@ -39,7 +39,7 @@ public class MainActivity extends BaseActivity {
         public void onPasswordGroupSelected(String passwordGroupName) {
             drawerLayout.closeDrawer(drawerView);
             if (passwordListFragment != null){}
-                //passwordListFragment.showPasswordGroup(passwordGroupName);
+                passwordListFragment.showPasswordGroup(passwordGroupName);
         }
     };
 
@@ -126,6 +126,7 @@ public class MainActivity extends BaseActivity {
         passwordListFragment = (PasswordListFragment) fragmentManager.findFragmentByTag("PasswordListFragment");
         if (passwordListFragment == null)
             passwordListFragment = new PasswordListFragment();
+        passwordListFragment.setDataSource(mainBinder);
 
         passwordGroupFragment = (PasswordGroupFragment) fragmentManager.findFragmentByTag("PasswordGroupFragment");
         if (passwordGroupFragment == null)
@@ -148,7 +149,11 @@ public class MainActivity extends BaseActivity {
         int id = item.getItemId();
         switch (id){
             case R.id.action_add_password:
+                if (mainBinder == null)
+                    break;
                 Intent intent = new Intent(this, EditPasswordActivity.class);
+                if (passwordListFragment != null)
+                    intent.putExtra(EditPasswordActivity.PASSWORD_GROUP, passwordListFragment.getPasswordGroupName());
                 startActivity(intent);
                 break;
         }

@@ -141,6 +141,22 @@ public class MainBinder extends Binder {
         }.execute();
     }
 
+    public void getPassword(final int id, final OnGetPasswordCallback onGetPasswordCallback) {
+        new AsyncSingleTask<Password>() {
+            @Override
+            protected AsyncResult<Password> doInBackground(AsyncResult<Password> asyncResult) {
+                Password password = passwordDatabase.getPassword(id);
+                asyncResult.setData(password);
+                return asyncResult;
+            }
+
+            @Override
+            protected void runOnUIThread(AsyncResult<Password> asyncResult) {
+                onGetPasswordCallback.onGetPassword(asyncResult.getData());
+            }
+        }.execute();
+    }
+
     public void updatePassword(final Password password) {
         new AsyncSingleTask<Void>() {
             @Override

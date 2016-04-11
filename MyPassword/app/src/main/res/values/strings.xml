@@ -42,4 +42,20 @@
     <string name="password_group_merge">合并分组到</string>
     <string name="password_group_merge_error">没有分组可合并</string>
     <string name="password_group_merge_loading">读取数据中，请稍候&#8230;</string>
+    <string name="just">刚刚</string>
+    <string name="minute_ago">%d分钟前</string>
+    <string name="hour_ago">%d小时前</string>
+    <string name="copy_name">复制账号到剪贴板</string>
+    <string name="copy_name_toast">已复制账号到剪贴板</string>
+    <string name="copy_password">复制密码到剪贴板</string>
+    <string name="copy_password_toast">已复制密码到剪贴板</string>
+    <string name="alert_delete_message">删除后不可恢复，您确定吗？</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="title_activity_add_password">添 加</string>
+    <string name="title_activity_modify_password">修 改</string>
+    <string name="title_activity_feedback">意见反馈</string>
+    <string name="add_password_save_no_data">标题不可为空</string>
+    <string name="toast_password_has_deleted">该条密码已经被删除</string>
+    <string name="action_save">保存</string>
 </resources>

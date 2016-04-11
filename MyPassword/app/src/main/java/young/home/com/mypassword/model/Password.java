@@ -6,7 +6,7 @@ import java.util.UUID;
  * Created by YOUNG on 2016/4/4.
  */
 public class Password {
-    private long id;
+    private int id;
     private long publish;
     private String title;
     private String userName;
@@ -14,11 +14,11 @@ public class Password {
     private String note;
     private String groupName;
 
-    public long getId(){
+    public int getId(){
         return id;
     }
 
-    public void setId(long id){
+    public void setId(int id){
         this.id = id;
     }
 
