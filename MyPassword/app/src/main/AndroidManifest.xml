@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.SetPasswordActivity" android:theme="@style/AppNoActionBarTheme"/>
-        <activity android:name=".activity.MainActivity"/>
+        <activity android:name=".activity.MainActivity" android:launchMode="singleTask"/>
         <activity android:name=".activity.EditPasswordActivity"/>
         <service
             android:name="young.home.com.mypassword.service.MainService"

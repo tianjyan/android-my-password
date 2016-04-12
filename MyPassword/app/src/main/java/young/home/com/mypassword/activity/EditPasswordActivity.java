@@ -152,7 +152,11 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
                 deletePassword();
             }
             return true;
+        } else if(id == android.R.id.home){
+            finish();
+            return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
