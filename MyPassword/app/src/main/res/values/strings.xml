@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyPassword</string>
+    <string name="app_name">密码</string>
     <string name="Yes">确认</string>
     <string name="title">标题：</string>
     <string name="add_password_title_hint">输入标题(必须)</string>
@@ -13,7 +13,7 @@
     <string name="delete">删除</string>
     <string name="edit">修改</string>
     <string name="different_pwd">两次密码不同</string>
-    <string name="set_lock_pattern_first_message">为了安全，请设置密码</string>
+    <string name="set_lock_pattern_first_message">为了安全，请设置密码.</string>
     <string name="set_lock_pattern_first_sure">确定</string>
     <string name="set_password">输入密码：</string>
     <string name="reset_password">再输一次：</string>
@@ -58,4 +58,5 @@
     <string name="add_password_save_no_data">标题不可为空</string>
     <string name="toast_password_has_deleted">该条密码已经被删除</string>
     <string name="action_save">保存</string>
+    <string name="notification">提醒</string>
 </resources>
