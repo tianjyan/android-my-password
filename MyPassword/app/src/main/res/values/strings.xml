@@ -59,4 +59,5 @@
     <string name="toast_password_has_deleted">该条密码已经被删除</string>
     <string name="action_save">保存</string>
     <string name="notification">提醒</string>
+    <string name="skip">跳过</string>
 </resources>
