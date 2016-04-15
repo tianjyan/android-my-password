@@ -54,7 +54,7 @@ public class PasswordDatabase extends SQLiteOpenHelper {
             contentValues.put("title", password.getTitle());
             contentValues.put("user_name",password.getUserName());
             contentValues.put("password", encrypt(password.getPassword()));
-            contentValues.put("note", encrypt(password.getNote()));
+            contentValues.put("note", password.getNote());
             contentValues.put("group_name",password.getGroupName());
             id = sqLiteDatabase.insert("password",null,contentValues);
         } catch (Exception e){

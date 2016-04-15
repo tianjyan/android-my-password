@@ -33,14 +33,6 @@ public class SetPasswordActivity extends BaseActivity implements TextWatcher {
         pwdEt.addTextChangedListener(this);
         rePwdEt.addTextChangedListener(this);
 
-        showFirstUserDialog();
-    }
-
-    private void showFirstUserDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.set_lock_pattern_first_message);
-        builder.setPositiveButton(R.string.set_lock_pattern_first_sure, null);
-        builder.show();
     }
 
     public void nextClick(View v) {
