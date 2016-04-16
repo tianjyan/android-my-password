@@ -26,17 +26,15 @@ import young.home.com.mypassword.service.OnSettingChangeListener;
 public class PasswordListFragment extends BaseFragment implements OnGetAllPasswordCallback,
         android.view.View.OnClickListener {
 
-    /** 数据 */
+    //region field
     private PasswordListAdapter mainAdapter;
-
-    /** 数据源 */
     private MainBinder mainBinder;
-
     private ListView listView;
-    /** 没有数据的提示框 */
     private View noDataView;
-
     private String passwordGroupName;
+    //endregion
+
+    //region lambda
     private OnPasswordChangeListener onPasswordListener = new OnPasswordChangeListener() {
         @Override
         public void onNewPassword(Password password) {
@@ -58,20 +56,11 @@ public class PasswordListFragment extends BaseFragment implements OnGetAllPasswo
             initView();
         }
     };
+    //endregion
 
-    public void setDataSource(MainBinder mainBinder) {
-        this.mainBinder = mainBinder;
-    }
+    //region function
 
-    public void showPasswordGroup(String passwordGroupName) {
-        this.passwordGroupName = passwordGroupName;
-        mainBinder.getAllPassword(this, passwordGroupName);
-    }
-
-    public String getPasswordGroupName() {
-        return passwordGroupName;
-    }
-
+    //region override
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,13 +74,6 @@ public class PasswordListFragment extends BaseFragment implements OnGetAllPasswo
     public void onDestroy() {
         super.onDestroy();
         unregistOnPasswordListener();
-    }
-
-    private void unregistOnPasswordListener() {
-        if (mainBinder != null) {
-            mainBinder.unregistOnPasswordListener(onPasswordListener);
-            mainBinder = null;
-        }
     }
 
     @Override
@@ -112,18 +94,6 @@ public class PasswordListFragment extends BaseFragment implements OnGetAllPasswo
         return rootView;
     }
 
-    private void initView() {
-        if (noDataView != null) {
-            if (mainAdapter.getCount() == 0) {
-                noDataView.setVisibility(View.VISIBLE);
-                listView.setVisibility(View.GONE);
-            } else {
-                noDataView.setVisibility(View.GONE);
-                listView.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -142,7 +112,6 @@ public class PasswordListFragment extends BaseFragment implements OnGetAllPasswo
         }
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -155,4 +124,41 @@ public class PasswordListFragment extends BaseFragment implements OnGetAllPasswo
                 break;
         }
     }
+    //endregion
+
+    //region private
+    public void setDataSource(MainBinder mainBinder) {
+        this.mainBinder = mainBinder;
+    }
+
+    public void showPasswordGroup(String passwordGroupName) {
+        this.passwordGroupName = passwordGroupName;
+        mainBinder.getAllPassword(this, passwordGroupName);
+    }
+
+    public String getPasswordGroupName() {
+        return passwordGroupName;
+    }
+
+    private void unregistOnPasswordListener() {
+        if (mainBinder != null) {
+            mainBinder.unregistOnPasswordListener(onPasswordListener);
+            mainBinder = null;
+        }
+    }
+
+    private void initView() {
+        if (noDataView != null) {
+            if (mainAdapter.getCount() == 0) {
+                noDataView.setVisibility(View.VISIBLE);
+                listView.setVisibility(View.GONE);
+            } else {
+                noDataView.setVisibility(View.GONE);
+                listView.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+    //endregion
+
+    //endregion
 }

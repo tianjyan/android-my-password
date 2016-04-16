@@ -30,6 +30,8 @@ import young.home.com.mypassword.service.MainBinder;
  * Created by YOUNG on 2016/4/10.
  */
 public class PasswordListAdapter  extends BaseAdapter {
+
+    //region field
     private static final long DAY = 1000 * 60 * 60 * 24;
     private List<PasswordItem> passwords = new ArrayList<PasswordItem>();
     private Context context;
@@ -38,7 +40,9 @@ public class PasswordListAdapter  extends BaseAdapter {
     private MainBinder mainBinder;
     private SimpleDateFormat simpleDateFormatMonth = new SimpleDateFormat("MM-dd", Locale.getDefault());
     private String passwordGroup;
+    //endregion
 
+    //region lambda
     private Comparator<PasswordItem> comparator = new Comparator<PasswordItem>() {
         @Override
         public int compare(PasswordItem lhs, PasswordItem rhs) {
@@ -52,27 +56,18 @@ public class PasswordListAdapter  extends BaseAdapter {
                 return -1;
         }
     };
+    //endregion
 
+    //region constructor
     public PasswordListAdapter(Context context) {
         this.context = context;
         padding = dip2px(6);
     }
+    //endregion
 
-    public int dip2px(float dipValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dipValue * scale + 0.5f);
-    }
+    //region function
 
-    public void setData(List<Password> passwords, MainBinder mainBinder) {
-        this.mainBinder = mainBinder;
-        this.passwords.clear();
-        for (Password password : passwords) {
-            this.passwords.add(new PasswordItem(password));
-        }
-        Collections.sort(this.passwords, comparator);
-        notifyDataSetChanged();
-    }
-
+    //region override
     @Override
     public int getCount() {
         return passwords.size();
@@ -133,6 +128,23 @@ public class PasswordListAdapter  extends BaseAdapter {
 
         return convertView;
     }
+    //endregion
+
+    //region public
+    public int dip2px(float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
+    }
+
+    public void setData(List<Password> passwords, MainBinder mainBinder) {
+        this.mainBinder = mainBinder;
+        this.passwords.clear();
+        for (Password password : passwords) {
+            this.passwords.add(new PasswordItem(password));
+        }
+        Collections.sort(this.passwords, comparator);
+        notifyDataSetChanged();
+    }
 
     public void onNewPassword(Password password) {
         passwords.add(0, new PasswordItem(password));
@@ -191,6 +203,47 @@ public class PasswordListAdapter  extends BaseAdapter {
         this.passwordGroup = passwordGroup;
     }
 
+    public class PasswordItem {
+        public String dataString;
+        public Password password;
+
+        private PasswordItem(Password password) {
+            this.password = password;
+            initDataString();
+        }
+
+        public void initDataString() {
+            dataString = formatDate(password.getPublish());
+        }
+
+        private String formatDate(long createDate) {
+            String result = "";
+            long currentTime = System.currentTimeMillis();
+            long distance = currentTime - createDate;
+            if (createDate > currentTime) {
+                result = simpleDateFormatYear.format(createDate);
+            } else if (distance < 1000 * 60) {
+                result = context.getString(R.string.just);
+            } else if (distance < 1000 * 60 * 60) {
+                String dateString = context.getString(R.string.minute_ago);
+                result = String.format(Locale.getDefault(), dateString, distance / (1000 * 60));
+            } else if (distance < DAY) {
+                String dateString = context.getString(R.string.hour_ago);
+                result = String.format(Locale.getDefault(), dateString, distance / (1000 * 60 * 60));
+            } else if (distance < DAY * 365) {
+                result = simpleDateFormatMonth.format(createDate);
+            } else {
+                result = simpleDateFormatYear.format(createDate);
+            }
+
+            return result;
+        }
+    }
+    //endregion
+
+    //endregion
+
+    //region nested class
     private class ViewHolder implements android.view.View.OnClickListener {
 
         public TextView titleView;
@@ -293,41 +346,5 @@ public class PasswordListAdapter  extends BaseAdapter {
             }
         }
     }
-
-    public class PasswordItem {
-        public String dataString;
-        public Password password;
-
-        private PasswordItem(Password password) {
-            this.password = password;
-            initDataString();
-        }
-
-        public void initDataString() {
-            dataString = formatDate(password.getPublish());
-        }
-
-        private String formatDate(long createDate) {
-            String result = "";
-            long currentTime = System.currentTimeMillis();
-            long distance = currentTime - createDate;
-            if (createDate > currentTime) {
-                result = simpleDateFormatYear.format(createDate);
-            } else if (distance < 1000 * 60) {
-                result = context.getString(R.string.just);
-            } else if (distance < 1000 * 60 * 60) {
-                String dateString = context.getString(R.string.minute_ago);
-                result = String.format(Locale.getDefault(), dateString, distance / (1000 * 60));
-            } else if (distance < DAY) {
-                String dateString = context.getString(R.string.hour_ago);
-                result = String.format(Locale.getDefault(), dateString, distance / (1000 * 60 * 60));
-            } else if (distance < DAY * 365) {
-                result = simpleDateFormatMonth.format(createDate);
-            } else {
-                result = simpleDateFormatYear.format(createDate);
-            }
-
-            return result;
-        }
-    }
+    //endregion
 }

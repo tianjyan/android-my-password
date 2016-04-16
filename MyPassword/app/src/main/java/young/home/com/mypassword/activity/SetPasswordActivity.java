@@ -1,6 +1,5 @@
 package young.home.com.mypassword.activity;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,10 +16,15 @@ import young.home.com.mypassword.model.SettingKey;
 
 public class SetPasswordActivity extends BaseActivity implements TextWatcher {
 
+    //region field
     private EditText pwdEt;
     private EditText rePwdEt;
     private Button nextBtn;
+    //endregion
 
+    //region function
+
+    //region override
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,20 +37,6 @@ public class SetPasswordActivity extends BaseActivity implements TextWatcher {
         pwdEt.addTextChangedListener(this);
         rePwdEt.addTextChangedListener(this);
 
-    }
-
-    public void nextClick(View v) {
-        if(pwdEt.getText().toString().equals(rePwdEt.getText().toString())){
-            String pwd = pwdEt.getText().toString();
-            super.putSetting(SettingKey.LOCK_PWD, MD5.getMD5(pwd));
-
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        else{
-            Toast.makeText(this, R.string.different_password, Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
@@ -68,4 +58,23 @@ public class SetPasswordActivity extends BaseActivity implements TextWatcher {
             nextBtn.setEnabled(false);
         }
     }
+    //endregion
+
+    //region private
+    public void nextClick(View v) {
+        if(pwdEt.getText().toString().equals(rePwdEt.getText().toString())){
+            String pwd = pwdEt.getText().toString();
+            super.putSetting(SettingKey.LOCK_PWD, MD5.getMD5(pwd));
+
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else{
+            Toast.makeText(this, R.string.different_password, Toast.LENGTH_SHORT).show();
+        }
+    }
+    //endregion
+
+    //endregion
 }

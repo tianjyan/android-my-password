@@ -17,11 +17,15 @@ import young.home.com.mypassword.model.SettingKey;
 
 public class StartActivity extends BaseActivity implements TextWatcher{
 
+    //region field
     EditText inputPwd;
     Button enterBtn;
-
     String pwd;
+    //endregion
 
+    //region function
+
+    //region override
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,16 +42,6 @@ public class StartActivity extends BaseActivity implements TextWatcher{
         enterBtn = (Button)findViewById(R.id.enterBtn);
 
         inputPwd.addTextChangedListener(this);
-    }
-
-    public void enterClick(View v) {
-        if (pwd.equals(MD5.getMD5(inputPwd.getText().toString()))) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
@@ -68,4 +62,19 @@ public class StartActivity extends BaseActivity implements TextWatcher{
             enterBtn.setEnabled(false);
         }
     }
+    //endregion
+
+    //region private
+    public void enterClick(View v) {
+        if (pwd.equals(MD5.getMD5(inputPwd.getText().toString()))) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
+        }
+    }
+    //endregion
+
+    //endregion
 }

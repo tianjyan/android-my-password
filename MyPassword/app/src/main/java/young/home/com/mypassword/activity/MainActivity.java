@@ -26,14 +26,16 @@ import young.home.com.mypassword.service.OnPasswordGroupSelected;
 
 public class MainActivity extends BaseActivity {
 
+    //region field
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private View drawerView;
     private MainBinder mainBinder;
-
     private PasswordListFragment passwordListFragment;
     private PasswordGroupFragment passwordGroupFragment;
+    //endregion
 
+    //region lambda
     private OnPasswordGroupSelected onPasswordGroupSelected = new OnPasswordGroupSelected() {
         @Override
         public void onPasswordGroupSelected(String passwordGroupName) {
@@ -55,7 +57,11 @@ public class MainActivity extends BaseActivity {
             initFragment();
         }
     };
+    //endregion
 
+    //region function
+
+    //region override
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +77,12 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(serviceConnection);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!drawerLayout.isDrawerOpen(drawerView)) {
             getMenuInflater().inflate(R.menu.main, menu);
@@ -80,6 +92,35 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        int id = item.getItemId();
+        switch (id){
+            case R.id.action_add_password:
+                if (mainBinder == null)
+                    break;
+                Intent intent = new Intent(this, EditPasswordActivity.class);
+                if (passwordListFragment != null)
+                    intent.putExtra(EditPasswordActivity.PASSWORD_GROUP, passwordListFragment.getPasswordGroupName());
+                startActivity(intent);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+    //endregion
+
+    //region init
     private void initDrawer(){
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         ActionBar actionBar = getSupportActionBar();
@@ -139,37 +180,7 @@ public class MainActivity extends BaseActivity {
         fragmentTransaction.replace(R.id.container, passwordListFragment, "PasswordListFragment");
         fragmentTransaction.commitAllowingStateLoss();
     }
+    //endregion
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        int id = item.getItemId();
-        switch (id){
-            case R.id.action_add_password:
-                if (mainBinder == null)
-                    break;
-                Intent intent = new Intent(this, EditPasswordActivity.class);
-                if (passwordListFragment != null)
-                    intent.putExtra(EditPasswordActivity.PASSWORD_GROUP, passwordListFragment.getPasswordGroupName());
-                startActivity(intent);
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unbindService(serviceConnection);
-    }
+    //endregion
 }

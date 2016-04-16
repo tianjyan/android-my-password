@@ -17,55 +17,23 @@ import young.home.com.mypassword.model.PasswordGroup;
  * Created by YOUNG on 2016/4/9.
  */
 public class PasswordGroupAdapter extends BaseAdapter {
+
+    //region field
     private List<PasswordGroup> passwordGroups = new ArrayList<PasswordGroup>();
     private Context context;
     private String currentGroupName;
+    //endregion
 
+    //region constructor
     public PasswordGroupAdapter(Context context) {
         super();
         this.context = context;
     }
+    //endregion
 
-    public String getCurrentGroupName() {
-        return currentGroupName;
-    }
+    //region function
 
-    public void setCurrentGroupName(String currentGroupName) {
-        this.currentGroupName = currentGroupName;
-        notifyDataSetChanged();
-    }
-
-    public void setData(List<PasswordGroup> passwordGroups) {
-        this.passwordGroups.clear();
-        this.passwordGroups.addAll(passwordGroups);
-        notifyDataSetChanged();
-    }
-
-    public void addPasswordGroup(PasswordGroup passwordGroup) {
-        passwordGroups.add(passwordGroup);
-        notifyDataSetChanged();
-    }
-
-    /**
-     * 移除密码分组
-     *
-     * @param passwordGroupName 密码分组名字
-     * @return 是否移除成功
-     */
-    public boolean removePasswordGroup(String passwordGroupName) {
-        boolean result = false;
-        for (int i = 0; i < passwordGroups.size(); i++) {
-            PasswordGroup passwordGroup = passwordGroups.get(i);
-            if (passwordGroup.getGroupName().equals(passwordGroupName)) {
-                result = true;
-                passwordGroups.remove(i);
-                break;
-            }
-        }
-        notifyDataSetChanged();
-        return result;
-    }
-
+    //region override
     @Override
     public int getCount() {
         return passwordGroups.size();
@@ -105,9 +73,50 @@ public class PasswordGroupAdapter extends BaseAdapter {
 
         return convertView;
     }
+    //endregion
 
+    //region public
+    public String getCurrentGroupName() {
+        return currentGroupName;
+    }
+
+    public void setCurrentGroupName(String currentGroupName) {
+        this.currentGroupName = currentGroupName;
+        notifyDataSetChanged();
+    }
+
+    public void setData(List<PasswordGroup> passwordGroups) {
+        this.passwordGroups.clear();
+        this.passwordGroups.addAll(passwordGroups);
+        notifyDataSetChanged();
+    }
+
+    public void addPasswordGroup(PasswordGroup passwordGroup) {
+        passwordGroups.add(passwordGroup);
+        notifyDataSetChanged();
+    }
+
+    public boolean removePasswordGroup(String passwordGroupName) {
+        boolean result = false;
+        for (int i = 0; i < passwordGroups.size(); i++) {
+            PasswordGroup passwordGroup = passwordGroups.get(i);
+            if (passwordGroup.getGroupName().equals(passwordGroupName)) {
+                result = true;
+                passwordGroups.remove(i);
+                break;
+            }
+        }
+        notifyDataSetChanged();
+        return result;
+    }
+    //endregion
+
+    //endregion
+
+    //region nested class
     private class ViewHolder {
         TextView name;
         View arrowView;
     }
+    //endregion
 }
