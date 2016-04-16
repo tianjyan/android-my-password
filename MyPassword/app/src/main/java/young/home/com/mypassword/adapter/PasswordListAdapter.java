@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -108,10 +109,13 @@ public class PasswordListAdapter  extends BaseAdapter {
             viewHolder.copyView = convertView.findViewById(R.id.main_item_copy);
             viewHolder.deleteView = convertView.findViewById(R.id.main_item_delete);
             viewHolder.editView = convertView.findViewById(R.id.main_item_edit);
-
+            viewHolder.showOrHideView = convertView.findViewById(R.id.main_item_display);
+            viewHolder.showOrHideTextView = (TextView) convertView.findViewById(R.id.main_item_showorhide);
             viewHolder.copyView.setOnClickListener(viewHolder);
             viewHolder.deleteView.setOnClickListener(viewHolder);
             viewHolder.editView.setOnClickListener(viewHolder);
+            viewHolder.showOrHideView.setOnClickListener(viewHolder);
+
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
@@ -255,8 +259,9 @@ public class PasswordListAdapter  extends BaseAdapter {
         public View copyView;
         public View deleteView;
         public View editView;
+        public View showOrHideView;
         private PasswordItem passwordItem;
-
+        private TextView showOrHideTextView;
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
@@ -269,7 +274,9 @@ public class PasswordListAdapter  extends BaseAdapter {
                 case R.id.main_item_edit:
                     onEditClick();
                     break;
-
+                case R.id.main_item_display:
+                    onShowOrHideClick();
+                    break;
                 default:
                     break;
             }
@@ -328,6 +335,16 @@ public class PasswordListAdapter  extends BaseAdapter {
             });
             builder.setNegativeButton(R.string.no, null);
             builder.show();
+        }
+
+        private void onShowOrHideClick(){
+               if(passwordView.getInputType() == (EditorInfo.TYPE_TEXT_VARIATION_PASSWORD | EditorInfo.TYPE_CLASS_TEXT)){
+                    passwordView.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+                    showOrHideTextView.setText(R.string.hide);
+               } else {
+                   passwordView.setInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD | EditorInfo.TYPE_CLASS_TEXT);
+                   showOrHideTextView.setText(R.string.show);
+               }
         }
 
         void bindView(PasswordItem passwordItem) {

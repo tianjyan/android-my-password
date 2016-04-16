@@ -19,6 +19,8 @@
     <string name="copy">复制</string>
     <string name="delete">删除</string>
     <string name="edit">修改</string>
+    <string name="show">显示</string>
+    <string name="hide">隐藏</string>
     <string name="add">添加</string>
     <string name="just">刚刚</string>
     <string name="minute_ago">%d分钟前</string>
