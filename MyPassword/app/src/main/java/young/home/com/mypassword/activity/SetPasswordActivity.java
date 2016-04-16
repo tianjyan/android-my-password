@@ -45,7 +45,7 @@ public class SetPasswordActivity extends BaseActivity implements TextWatcher {
             finish();
         }
         else{
-            Toast.makeText(this, R.string.different_pwd, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.different_password, Toast.LENGTH_SHORT).show();
         }
     }
 

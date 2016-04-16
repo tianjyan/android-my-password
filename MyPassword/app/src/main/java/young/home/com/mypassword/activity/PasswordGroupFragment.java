@@ -111,8 +111,8 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
             final String passwordGroupName = ((PasswordGroup) (parent.getItemAtPosition(position))).getGroupName();
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-            CharSequence[] items = new String[]{getString(R.string.password_group_update_group_name),
-                    getString(R.string.password_group_merge), getString(R.string.password_group_delete_group)};
+            CharSequence[] items = new String[]{getString(R.string.edit_password_group_name),
+                    getString(R.string.merge_password_group), getString(R.string.delete_password_group)};
 
             builder.setItems(items, new android.content.DialogInterface.OnClickListener() {
                 @Override
@@ -150,7 +150,7 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
      */
     private void mergeGroup(final String passwordGroupName) {
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage(getString(R.string.password_group_merge_loading));
+        progressDialog.setMessage(getString(R.string.merge_password_group_loading));
         progressDialog.setCancelable(true);
         progressDialog.setIndeterminate(false);
         progressDialog.show();
@@ -163,7 +163,7 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
                 // 分组获取成功
 
                 if (passwordGroups.size() <= 1) {
-                    getBaseActivity().showToast(R.string.password_group_merge_error);
+                    getBaseActivity().showToast(R.string.merge_password_group_error);
                     return;
                 }
 
@@ -198,15 +198,15 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
      */
     private void showDeleteDialog(final String passwordGroupName) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(getString(R.string.delete_password_group_message, passwordGroupName));
-        builder.setTitle(R.string.delete_password_group_title);
-        builder.setNeutralButton(R.string.delete_password_sure, new DialogInterface.OnClickListener() {
+        builder.setMessage(getString(R.string.delete_password_group_msg, passwordGroupName));
+        builder.setTitle(R.string.delete_password_group);
+        builder.setNeutralButton(R.string.sure, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mainBinder.deletePasswordgroup(passwordGroupName);
             }
         });
-        builder.setNegativeButton(R.string.delete_password_cancle, null);
+        builder.setNegativeButton(R.string.cancel, null);
         builder.show();
     }
 
@@ -256,7 +256,7 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
         BaseActivity baseActivity = getBaseActivity();
         if (baseActivity != null) {
             String lastGroupName = baseActivity.getSetting(SettingKey.LAST_SHOW_PASSWORDGROUP_NAME,
-                    getString(R.string.password_group_default_name));
+                    getString(R.string.default_password_group_name));
 
             passwordGroupAdapter.setCurrentGroupName(lastGroupName);
 

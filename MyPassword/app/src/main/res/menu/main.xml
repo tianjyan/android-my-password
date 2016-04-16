@@ -5,5 +5,5 @@
         android:icon="@drawable/ic_action_add"
         android:orderInCategory="10"
         android:showAsAction="always"
-        android:title="@string/action_add_password"/>
+        android:title="@string/add"/>
 </menu>

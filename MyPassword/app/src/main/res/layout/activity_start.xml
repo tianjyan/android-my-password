@@ -37,7 +37,7 @@
             android:background="@drawable/edit_text_holo_light"
             android:ellipsize="end"
             android:gravity="center_vertical"
-            android:hint="@string/please_input_password"
+            android:hint="@string/set_password_hint"
             android:inputType="textPassword"
             android:maxLength="10"
             android:maxLines="1"
@@ -47,7 +47,7 @@
 
     <Button
         android:id="@+id/enterBtn"
-        android:text="@string/Yes"
+        android:text="@string/yes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"

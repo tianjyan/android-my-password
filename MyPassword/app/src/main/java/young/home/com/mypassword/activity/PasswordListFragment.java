@@ -78,7 +78,7 @@ public class PasswordListFragment extends BaseFragment implements OnGetAllPasswo
         mainAdapter = new PasswordListAdapter(getActivity());
         mainBinder.registOnPasswordListener(onPasswordListener);
         showPasswordGroup(getBaseActivity().getSetting(SettingKey.LAST_SHOW_PASSWORDGROUP_NAME,
-                getString(R.string.password_group_default_name)));
+                getString(R.string.default_password_group_name)));
     }
 
     @Override

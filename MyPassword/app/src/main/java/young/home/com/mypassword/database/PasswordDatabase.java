@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import young.home.com.mypassword.application.AES;
 import young.home.com.mypassword.application.App;
@@ -21,15 +20,41 @@ import young.home.com.mypassword.model.SettingKey;
  */
 public class PasswordDatabase extends SQLiteOpenHelper {
 
-    private String encryptKey;
+    //region field
     private static  final  int version = 1;
+    private String encryptKey;
     private Context context;
+    //endregion
 
+    //region constructor
     public PasswordDatabase(Context context) {
         super(context, "password", null, version);
         this.context = context;
     }
+    //endregion
 
+    //region function
+
+    //region init
+    private void createPasswordTable(SQLiteDatabase db){
+        String sql = "create table password(id integer primary key autoincrement, publish integer, title text, "
+                + "user_name text, password text, url text, note text, group_name text default '"
+                + getDefaultGroupName() + "')";
+        db.execSQL(sql);
+    }
+
+    private  void createGroupTable(SQLiteDatabase db){
+        String sql;
+        sql = "create table password_group(name text primary key)";
+        db.execSQL(sql);
+
+        sql = "insert into password_group(name) values('" + getDefaultGroupName() + "')";
+        db.execSQL(sql);
+        getApp().putSetting(SettingKey.LAST_SHOW_PASSWORDGROUP_NAME, getDefaultGroupName());
+    }
+    //endregion
+
+    //region override
     @Override
     public void onCreate(SQLiteDatabase db) {
         createPasswordTable(db);
@@ -40,11 +65,9 @@ public class PasswordDatabase extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+    //endregion
 
-    public void setEncryptKey(String key){
-        this.encryptKey = key;
-    }
-
+    //region password
     public long insertPassword(Password password){
         long id = -1;
         try {
@@ -62,6 +85,64 @@ public class PasswordDatabase extends SQLiteOpenHelper {
         }
 
         return  id;
+    }
+
+    public int updatePassword(Password password) {
+        int result = 0;
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        try {
+            ContentValues contentValues = new ContentValues();
+            if (password.getPublish() != 0)
+                contentValues.put("create_date", password.getPublish());
+            if (password.getTitle() != null)
+                contentValues.put("title", password.getTitle());
+            if (password.getUserName() != null)
+                contentValues.put("user_name", password.getUserName());
+            if (password.getPassword() != null)
+                contentValues.put("password", encrypt(password.getPassword()));
+            if (password.getNote() != null)
+                contentValues.put("note", password.getNote());
+
+            if (password.getGroupName() != null)
+                contentValues.put("group_name", password.getGroupName());
+
+            result = sqLiteDatabase.update("password", contentValues, "id = ?",
+                    new String[]{String.valueOf(password.getId())});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public int deletePassword(int id){
+        int result = -1;
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        result = sqLiteDatabase.delete("password", "id = ?", new String[]{String.valueOf(id)});
+        return result;
+    }
+
+    public Password getPassword(int id) {
+        Password password = null;
+
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        Cursor cursor = null;
+        try {
+            cursor = sqLiteDatabase.query("password", null, "id = ?", new String[]{String.valueOf(id)}, null, null,
+                    null);
+
+            if (cursor.moveToNext()) {
+                password = mapPassword(cursor);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return password;
     }
 
     public List<Password> getAllPassword(){
@@ -114,65 +195,9 @@ public class PasswordDatabase extends SQLiteOpenHelper {
         }
         return passwords;
     }
+    //endregion
 
-    public int deletePassword(int id){
-        int result = -1;
-        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-        result = sqLiteDatabase.delete("password", "id = ?", new String[]{String.valueOf(id)});
-        return result;
-    }
-
-    public Password getPassword(int id) {
-        Password password = null;
-
-        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-        Cursor cursor = null;
-        try {
-            cursor = sqLiteDatabase.query("password", null, "id = ?", new String[]{String.valueOf(id)}, null, null,
-                    null);
-
-            if (cursor.moveToNext()) {
-                password = mapPassword(cursor);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-
-        return password;
-    }
-
-    public int updatePassword(Password password) {
-        int result = 0;
-        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-        try {
-            ContentValues contentValues = new ContentValues();
-            if (password.getPublish() != 0)
-                contentValues.put("create_date", password.getPublish());
-            if (password.getTitle() != null)
-                contentValues.put("title", password.getTitle());
-            if (password.getUserName() != null)
-                contentValues.put("user_name", password.getUserName());
-            if (password.getPassword() != null)
-                contentValues.put("password", encrypt(password.getPassword()));
-            if (password.getNote() != null)
-                contentValues.put("note", password.getNote());
-
-            if (password.getGroupName() != null)
-                contentValues.put("group_name", password.getGroupName());
-
-            result = sqLiteDatabase.update("password", contentValues, "id = ?",
-                    new String[]{String.valueOf(password.getId())});
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return result;
-    }
-
+    //region password group
     public void addPasswordGroup(PasswordGroup passwordGroup) {
         try {
             SQLiteDatabase sqLiteDatabase = getWritableDatabase();
@@ -242,30 +267,11 @@ public class PasswordDatabase extends SQLiteOpenHelper {
 
         return passwordGroups;
     }
+    //endregion
 
-    private void createPasswordTable(SQLiteDatabase db){
-        String sql = "create table password(id integer primary key autoincrement, publish integer, title text, "
-                + "user_name text, password text, url text, note text, group_name text default '"
-                + getDefaultGroupName() + "')";
-        db.execSQL(sql);
-    }
-
-    private  void createGroupTable(SQLiteDatabase db){
-        String sql;
-        sql = "create table password_group(name text primary key)";
-        db.execSQL(sql);
-
-        sql = "insert into password_group(name) values('" + getDefaultGroupName() + "')";
-        db.execSQL(sql);
-        getApp().putSetting(SettingKey.LAST_SHOW_PASSWORDGROUP_NAME, getDefaultGroupName());
-    }
-
-    private String getDefaultGroupName() {
-        return "个人";
-    }
-
-    private App getApp() {
-        return (App) context.getApplicationContext();
+    //region misc.
+    public void setEncryptKey(String key){
+        this.encryptKey = key;
     }
 
     private String encrypt(String password){
@@ -291,6 +297,14 @@ public class PasswordDatabase extends SQLiteOpenHelper {
         return result;
     }
 
+    private String getDefaultGroupName() {
+        return "默认";
+    }
+
+    private App getApp() {
+        return (App) context.getApplicationContext();
+    }
+
     private Password mapPassword(Cursor cursor) {
         Password password = new Password();
         password.setId(cursor.getInt(cursor.getColumnIndex("id")));
@@ -302,4 +316,7 @@ public class PasswordDatabase extends SQLiteOpenHelper {
         password.setGroupName(cursor.getString(cursor.getColumnIndex("group_name")));
         return password;
     }
+    //endregion
+
+     //endregion
 }

@@ -91,13 +91,13 @@ public class MainActivity extends BaseActivity {
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 getActivity().invalidateOptionsMenu();
-                getSupportActionBar().setTitle("Main");
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 getActivity().invalidateOptionsMenu();
+                getSupportActionBar().setTitle(getActivity().getSetting(SettingKey.LAST_SHOW_PASSWORDGROUP_NAME, getString(R.string.app_name)));
             }
         };
 

@@ -37,31 +37,24 @@ import young.home.com.mypassword.service.OnGetPasswordCallback;
 
 public class EditPasswordActivity extends BaseActivity implements OnGetPasswordCallback, OnGetAllPasswordCallback,
         OnGetAllPasswordGroupCallback {
-    /** 传入参数 密码 ID */
+
+    //region field
     public static final String ID = "password_id";
     public static final String PASSWORD_GROUP = "password_group";
-    /** 添加模式 */
     private static final int MODE_ADD = 0;
-    /** 修改模式 */
     private static final int MODE_MODIFY = 1;
-
-    /** 当前模式，默认增加 */
     private int MODE = MODE_ADD;
-
-    /** 修改密码的ID */
     private int id;
-
-    /** 数据源 */
     private MainBinder mainBinder;
-
     private EditText titleView;
     private AutoCompleteTextView nameView;
     private AutoCompleteTextView passwordView;
     private EditText noteView;
     private Spinner spinner;
-
     private String passwordGroup;
+    //endregion
 
+    //region lambda
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceDisconnected(ComponentName name) {
@@ -79,7 +72,11 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
             mainBinder.getAllPasswordGroup(EditPasswordActivity.this);
         }
     };
+    //endregion
 
+    //region function
+
+    //region override
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +98,7 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
         passwordGroup = getIntent().getStringExtra(PASSWORD_GROUP);
 
         if (passwordGroup == null || passwordGroup.equals("")) {
-            passwordGroup = getString(R.string.password_group_default_name);
+            passwordGroup = getString(R.string.default_password_group_name);
         }
 
         initActionBar();
@@ -114,17 +111,6 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
     protected void onDestroy() {
         super.onDestroy();
         unbindService(serviceConnection);
-    }
-
-    private void initActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        if (MODE == MODE_ADD) {
-            actionBar.setTitle(R.string.title_activity_add_password);
-        } else {
-            actionBar.setTitle(R.string.title_activity_modify_password);
-        }
     }
 
     @Override
@@ -160,47 +146,10 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
         return super.onOptionsItemSelected(item);
     }
 
-    private void deletePassword() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.alert_delete_message);
-        builder.setNeutralButton(R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mainBinder.deletePassword(id);
-                finish();
-            }
-        });
-        builder.setNegativeButton(R.string.no, null);
-        builder.show();
-    }
-
-    private void onSaveBtnClick() {
-        if (titleView.getText().toString().trim().equals("")) {
-            Toast.makeText(this, R.string.add_password_save_no_data, Toast.LENGTH_SHORT).show();
-        } else {
-            Password password = new Password();
-            password.setTitle(titleView.getText().toString().trim());
-            password.setUserName(nameView.getText().toString().trim());
-            password.setPassword(passwordView.getText().toString().trim());
-            password.setNote(noteView.getText().toString().trim());
-            password.setGroupName(passwordGroup);
-            if (MODE == MODE_ADD) {
-                // 添加
-                password.setPublish(System.currentTimeMillis());
-                mainBinder.insertPassword(password);
-            } else {
-                // 修改密码
-                password.setId(id);
-                mainBinder.updatePassword(password);
-            }
-            finish();
-        }
-    }
-
     @Override
     public void onGetPassword(Password password) {
         if (password == null) {
-            Toast.makeText(this, R.string.toast_password_has_deleted, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.deleted_password_message, Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -265,4 +214,57 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
             }
         });
     }
+    //endregion
+
+    //region private
+    private void initActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (MODE == MODE_ADD) {
+            actionBar.setTitle(R.string.add);
+        } else {
+            actionBar.setTitle(R.string.edit);
+        }
+    }
+
+    private void deletePassword() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_password_message);
+        builder.setNeutralButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mainBinder.deletePassword(id);
+                finish();
+            }
+        });
+        builder.setNegativeButton(R.string.no, null);
+        builder.show();
+    }
+
+    private void onSaveBtnClick() {
+        if (titleView.getText().toString().trim().equals("")) {
+            Toast.makeText(this, R.string.empty_title, Toast.LENGTH_SHORT).show();
+        } else {
+            Password password = new Password();
+            password.setTitle(titleView.getText().toString().trim());
+            password.setUserName(nameView.getText().toString().trim());
+            password.setPassword(passwordView.getText().toString().trim());
+            password.setNote(noteView.getText().toString().trim());
+            password.setGroupName(passwordGroup);
+            if (MODE == MODE_ADD) {
+                // 添加
+                password.setPublish(System.currentTimeMillis());
+                mainBinder.insertPassword(password);
+            } else {
+                // 修改密码
+                password.setId(id);
+                mainBinder.updatePassword(password);
+            }
+            finish();
+        }
+    }
+    //endregion
+
+    //endregion
 }

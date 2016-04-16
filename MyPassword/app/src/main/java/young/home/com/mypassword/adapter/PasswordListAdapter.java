@@ -225,7 +225,7 @@ public class PasswordListAdapter  extends BaseAdapter {
         private void onCopyClick() {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-            String[] item = new String[]{context.getResources().getString(R.string.copy_name),
+            String[] item = new String[]{context.getResources().getString(R.string.copy_user_name),
                     context.getResources().getString(R.string.copy_password)};
 
             builder.setItems(item, new DialogInterface.OnClickListener() {
@@ -238,7 +238,7 @@ public class PasswordListAdapter  extends BaseAdapter {
                                     .getSystemService(Context.CLIPBOARD_SERVICE);
                             ClipData clipDataName = ClipData.newPlainText(null, passwordItem.password.getUserName());
                             cmbName.setPrimaryClip(clipDataName);
-                            Toast.makeText(context, R.string.copy_name_toast, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, R.string.copy_use_name_msg, Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
                             // 复制密码
@@ -246,7 +246,7 @@ public class PasswordListAdapter  extends BaseAdapter {
                                     .getSystemService(Context.CLIPBOARD_SERVICE);
                             ClipData clipData = ClipData.newPlainText(null, passwordItem.password.getPassword());
                             cmbPassword.setPrimaryClip(clipData);
-                            Toast.makeText(context, R.string.copy_password_toast, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, R.string.copy_password_msg, Toast.LENGTH_SHORT).show();
                             break;
                         default:
                             break;
@@ -265,7 +265,7 @@ public class PasswordListAdapter  extends BaseAdapter {
 
         private void onDeleteClick() {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage(R.string.alert_delete_message);
+            builder.setMessage(R.string.delete_password_message);
             builder.setTitle(passwordItem.password.getTitle());
             builder.setNeutralButton(R.string.yes, new DialogInterface.OnClickListener() {
                 @Override

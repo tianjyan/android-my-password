@@ -2,12 +2,10 @@ package young.home.com.mypassword.activity;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.os.Binder;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import young.home.com.mypassword.R;
 import young.home.com.mypassword.model.PasswordGroup;
@@ -18,12 +16,15 @@ import young.home.com.mypassword.service.MainBinder;
  */
 public class AddPasswordGroupDialog extends Dialog {
 
+    //region field
     private EditText editText;
     private View cancelBtn;
     private View sureBtn;
     private View container;
     private MainBinder mainBinder;
+    //endregion
 
+    //region lambda
     private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -43,13 +44,17 @@ public class AddPasswordGroupDialog extends Dialog {
             }
         }
     };
+    //endregion
 
+    //region constructor
     public AddPasswordGroupDialog(Context context, MainBinder mainBinder){
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         this.mainBinder = mainBinder;
     }
+    //endregion
 
+    //region override
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +71,5 @@ public class AddPasswordGroupDialog extends Dialog {
 
         editText.requestFocus();
     }
-
-
+    //endregion
 }
