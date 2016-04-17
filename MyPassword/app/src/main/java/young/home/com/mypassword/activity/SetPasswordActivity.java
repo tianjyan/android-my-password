@@ -30,9 +30,9 @@ public class SetPasswordActivity extends BaseActivity implements TextWatcher {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_password);
 
-        pwdEt = (EditText)findViewById(R.id.PwdEt);
-        rePwdEt = (EditText)findViewById(R.id.RePwdEt);
-        nextBtn = (Button)findViewById(R.id.nextBtn);
+        pwdEt = (EditText)findViewById(R.id.set_password_first);
+        rePwdEt = (EditText)findViewById(R.id.set_password_second);
+        nextBtn = (Button)findViewById(R.id.set_password_next);
 
         pwdEt.addTextChangedListener(this);
         rePwdEt.addTextChangedListener(this);

@@ -20,7 +20,6 @@ public class AddPasswordGroupDialog extends Dialog {
     private EditText editText;
     private View cancelBtn;
     private View sureBtn;
-    private View container;
     private MainBinder mainBinder;
     //endregion
 
@@ -60,14 +59,12 @@ public class AddPasswordGroupDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_create_password_group);
 
-        cancelBtn = findViewById(R.id.add_password_group_cancle_btn);
-        sureBtn = findViewById(R.id.add_password_group_sure_btn);
-        editText = (EditText)findViewById(R.id.add_passwrdGroup_editview);
-        container = findViewById(R.id.container);
+        cancelBtn = findViewById(R.id.create_passwordGroup_cancel);
+        sureBtn = findViewById(R.id.create_passwordGroup_sure);
+        editText = (EditText)findViewById(R.id.create_passwordGroup_name);
 
         cancelBtn.setOnClickListener(onCancelClickListener);
         sureBtn.setOnClickListener(onSureClickListener);
-        container.setOnClickListener(onCancelClickListener);
 
         editText.requestFocus();
     }

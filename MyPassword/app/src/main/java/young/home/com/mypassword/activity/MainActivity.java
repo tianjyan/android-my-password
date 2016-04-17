@@ -67,8 +67,8 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        drawerView = (View)findViewById(R.id.navigation_drawer);
+        drawerLayout = (DrawerLayout)findViewById(R.id.main_layout);
+        drawerView = (View)findViewById(R.id.main_navigation_drawer);
 
         Intent intent = new Intent(this, MainService.class);
         this.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
@@ -176,8 +176,8 @@ public class MainActivity extends BaseActivity {
 
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.navigation_drawer, passwordGroupFragment, "PasswordGroupFragment");
-        fragmentTransaction.replace(R.id.container, passwordListFragment, "PasswordListFragment");
+        fragmentTransaction.replace(R.id.main_navigation_drawer, passwordGroupFragment, "PasswordGroupFragment");
+        fragmentTransaction.replace(R.id.main_container, passwordListFragment, "PasswordListFragment");
         fragmentTransaction.commitAllowingStateLoss();
     }
     //endregion

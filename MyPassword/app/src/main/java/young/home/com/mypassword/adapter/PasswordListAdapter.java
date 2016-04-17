@@ -97,20 +97,20 @@ public class PasswordListAdapter  extends BaseAdapter {
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            convertView = LayoutInflater.from(context).inflate(R.layout.main_password_item, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.password_item, parent, false);
             convertView.setTag(viewHolder);
 
-            viewHolder.titleView = (TextView)convertView.findViewById(R.id.main_item_title);
-            viewHolder.dateView = (TextView)convertView.findViewById(R.id.main_item_date);
-            viewHolder.nameView = (TextView)convertView.findViewById(R.id.main_item_name);
-            viewHolder.passwordView = (TextView)convertView.findViewById(R.id.main_item_password);
-            viewHolder.noteView = (TextView)convertView.findViewById(R.id.main_item_note);
-            viewHolder.noteConainer = convertView.findViewById(R.id.main_item_note_container);
-            viewHolder.copyView = convertView.findViewById(R.id.main_item_copy);
-            viewHolder.deleteView = convertView.findViewById(R.id.main_item_delete);
-            viewHolder.editView = convertView.findViewById(R.id.main_item_edit);
-            viewHolder.showOrHideView = convertView.findViewById(R.id.main_item_display);
-            viewHolder.showOrHideTextView = (TextView) convertView.findViewById(R.id.main_item_showorhide);
+            viewHolder.titleView = (TextView)convertView.findViewById(R.id.password_item_title);
+            viewHolder.dateView = (TextView)convertView.findViewById(R.id.password_item_date);
+            viewHolder.nameView = (TextView)convertView.findViewById(R.id.password_item_name);
+            viewHolder.passwordView = (TextView)convertView.findViewById(R.id.password_item_password);
+            viewHolder.noteView = (TextView)convertView.findViewById(R.id.password_item_note);
+            viewHolder.noteConainer = convertView.findViewById(R.id.password_item_note_container);
+            viewHolder.copyView = convertView.findViewById(R.id.password_item_copy);
+            viewHolder.deleteView = convertView.findViewById(R.id.password_item_delete);
+            viewHolder.editView = convertView.findViewById(R.id.password_item_edit);
+            viewHolder.showOrHideView = convertView.findViewById(R.id.password_item_showOrHide);
+            viewHolder.showOrHideTextView = (TextView) convertView.findViewById(R.id.password_item_showOrHide_text);
             viewHolder.copyView.setOnClickListener(viewHolder);
             viewHolder.deleteView.setOnClickListener(viewHolder);
             viewHolder.editView.setOnClickListener(viewHolder);
@@ -265,16 +265,16 @@ public class PasswordListAdapter  extends BaseAdapter {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.main_item_copy:
+                case R.id.password_item_copy:
                     onCopyClick();
                     break;
-                case R.id.main_item_delete:
+                case R.id.password_item_delete:
                     onDeleteClick();
                     break;
-                case R.id.main_item_edit:
+                case R.id.password_item_edit:
                     onEditClick();
                     break;
-                case R.id.main_item_display:
+                case R.id.password_item_showOrHide:
                     onShowOrHideClick();
                     break;
                 default:

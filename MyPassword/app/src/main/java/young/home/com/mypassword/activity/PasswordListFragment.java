@@ -79,10 +79,10 @@ public class PasswordListFragment extends BaseFragment implements OnGetAllPasswo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_password_list, container, false);
-        listView = (ListView) rootView.findViewById(R.id.main_listview);
+        listView = (ListView) rootView.findViewById(R.id.fragment_password_listView);
         listView.setAdapter(mainAdapter);
 
-        noDataView = rootView.findViewById(R.id.main_no_passsword);
+        noDataView = rootView.findViewById(R.id.fragment_password_noData);
         noDataView.setOnClickListener(this);
         if (mainBinder == null) {
             noDataView.setVisibility(View.GONE);
@@ -115,7 +115,7 @@ public class PasswordListFragment extends BaseFragment implements OnGetAllPasswo
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.main_no_passsword:
+            case R.id.fragment_password_noData:
                 Intent intent = new Intent(getActivity(), EditPasswordActivity.class);
                 intent.putExtra(EditPasswordActivity.PASSWORD_GROUP, passwordGroupName);
                 getActivity().startActivity(intent);

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import young.home.com.mypassword.R;
 import young.home.com.mypassword.application.PwdGen;
@@ -46,13 +47,20 @@ public class GenPasswordDialog extends Dialog {
     private View.OnClickListener genClick = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            String password = PwdGen.generatePassword(
-                    eight.isChecked() ? 8 : 16,
-                    lows.isChecked() ? PwdGen.Optionality.MANDATORY : PwdGen.Optionality.PROHIBITED,
-                    caps.isChecked() ? PwdGen.Optionality.MANDATORY : PwdGen.Optionality.PROHIBITED,
-                    numbers.isChecked() ? PwdGen.Optionality.MANDATORY : PwdGen.Optionality.PROHIBITED,
-                    special.isChecked() ? PwdGen.Optionality.MANDATORY : PwdGen.Optionality.PROHIBITED);
-            result.setText(password);
+            if(lows.isChecked() || caps.isChecked() || numbers.isChecked() || special.isChecked()) {
+
+                String password = PwdGen.generatePassword(
+                        eight.isChecked() ? 8 : 16,
+                        lows.isChecked() ? PwdGen.Optionality.MANDATORY : PwdGen.Optionality.PROHIBITED,
+                        caps.isChecked() ? PwdGen.Optionality.MANDATORY : PwdGen.Optionality.PROHIBITED,
+                        numbers.isChecked() ? PwdGen.Optionality.MANDATORY : PwdGen.Optionality.PROHIBITED,
+                        special.isChecked() ? PwdGen.Optionality.MANDATORY : PwdGen.Optionality.PROHIBITED);
+                result.setText(password);
+            }
+            else {
+                Toast.makeText(getContext(), getContext().getString(R.string.gen_password_msg),
+                        Toast.LENGTH_SHORT).show();
+            }
         }
     };
     //endregion

@@ -38,8 +38,8 @@ public class StartActivity extends BaseActivity implements TextWatcher{
             finish();
         }
 
-        inputPwd = (EditText) findViewById(R.id.inputPwd);
-        enterBtn = (Button)findViewById(R.id.enterBtn);
+        inputPwd = (EditText) findViewById(R.id.start_password);
+        enterBtn = (Button)findViewById(R.id.start_sure);
 
         inputPwd.addTextChangedListener(this);
     }

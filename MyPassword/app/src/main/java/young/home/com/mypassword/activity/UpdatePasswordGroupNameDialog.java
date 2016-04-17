@@ -21,7 +21,6 @@ public class UpdatePasswordGroupNameDialog extends Dialog {
     private String oldGroupName;
     private View cancelBtn;
     private View sureBtn;
-    private View container;
     //endregion
 
     //region lambda
@@ -54,13 +53,11 @@ public class UpdatePasswordGroupNameDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_update_password_group_name);
 
-        cancelBtn = findViewById(R.id.edit_passwordGroup_cancelBtn);
-        sureBtn = findViewById(R.id.edit_passwordGroup_sureBtn);
-        editText = (EditText) findViewById(R.id.edit_passwordGroup_editView);
-        container = findViewById(R.id.container);
+        cancelBtn = findViewById(R.id.update_passwordGroup_cancel);
+        sureBtn = findViewById(R.id.update_passwordGroup_sure);
+        editText = (EditText) findViewById(R.id.update_passwordGroup_name);
 
         cancelBtn.setOnClickListener(onCancelClickListener);
-        container.setOnClickListener(onCancelClickListener);
         sureBtn.setOnClickListener(onSureClickListener);
 
         editText.setText(oldGroupName);

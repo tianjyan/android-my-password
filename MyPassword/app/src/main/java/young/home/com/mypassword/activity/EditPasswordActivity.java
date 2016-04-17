@@ -82,11 +82,11 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_password);
 
-        titleView = (EditText) findViewById(R.id.editview_title);
-        nameView = (AutoCompleteTextView) findViewById(R.id.editview_name);
-        passwordView = (AutoCompleteTextView) findViewById(R.id.editview_password);
-        noteView = (EditText) findViewById(R.id.editview_note);
-        spinner = (Spinner) findViewById(R.id.editview_spinner);
+        titleView = (EditText) findViewById(R.id.edit_password_title);
+        nameView = (AutoCompleteTextView) findViewById(R.id.edit_password_name);
+        passwordView = (AutoCompleteTextView) findViewById(R.id.edit_password_password);
+        noteView = (EditText) findViewById(R.id.edit_password_note);
+        spinner = (Spinner) findViewById(R.id.edit_password_group);
 
         id = getIntent().getIntExtra(ID, -1);
         if (id == -1) {
