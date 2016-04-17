@@ -141,6 +141,9 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
         } else if(id == android.R.id.home){
             finish();
             return true;
+        } else if(id == R.id.action_gen){
+            GenPasswordDialog dialog = new GenPasswordDialog(getActivity());
+            dialog.show();
         }
 
         return super.onOptionsItemSelected(item);

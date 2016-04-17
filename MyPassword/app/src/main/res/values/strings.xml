@@ -33,6 +33,18 @@
     <string name="new_password_group_name">新的分组名</string>
     <string name="default_password_group_name">默认</string>
     <string name="delete_password_group">删除分组</string>
+    <string name="gen_password">生成密码</string>
+    <string name="gen_char">字符：</string>
+    <string name="gen_length">长度：</string>
+    <string name="gen_password_result">密码：</string>
+    <string name="gen_char_lows">a&#8211;z</string>
+    <string name="gen_char_caps">A&#8211;Z</string>
+    <string name="gen_char_numbers">0&#8211;9</string>
+    <string name="gen_char_special">其他</string>
+    <string name="gen_length_eight">8</string>
+    <string name="gen_length_sixteen">16</string>
+    <string name="gen">生成</string>
+    <string name="regen">重新生成</string>
     <!--Msg！-->
     <string name="first_password_hint">为了安全，请设置密码.</string>
     <string name="set_password_hint">请输入密码</string>
