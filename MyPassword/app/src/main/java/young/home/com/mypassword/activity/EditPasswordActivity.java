@@ -144,6 +144,16 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
         } else if(id == R.id.action_gen){
             GenPasswordDialog dialog = new GenPasswordDialog(getActivity());
             dialog.show();
+            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    String result = ((GenPasswordDialog)dialog).getPassword();
+                    if(!result.equals("")){
+                        passwordView.setText(result);
+                    }
+                }
+            });
+
         }
 
         return super.onOptionsItemSelected(item);
