@@ -20,9 +20,6 @@ import young.home.com.mypassword.service.OnGetAllPasswordCallback;
 import young.home.com.mypassword.service.OnPasswordChangeListener;
 import young.home.com.mypassword.service.OnSettingChangeListener;
 
-/**
- * Created by YOUNG on 2016/4/9.
- */
 public class PasswordListFragment extends BaseFragment implements OnGetAllPasswordCallback,
         android.view.View.OnClickListener {
 
@@ -66,7 +63,7 @@ public class PasswordListFragment extends BaseFragment implements OnGetAllPasswo
         super.onCreate(savedInstanceState);
         mainAdapter = new PasswordListAdapter(getActivity());
         mainBinder.registOnPasswordListener(onPasswordListener);
-        showPasswordGroup(getBaseActivity().getSetting(SettingKey.LAST_SHOW_PASSWORDGROUP_NAME,
+        showPasswordGroup(getBaseActivity().getSetting(SettingKey.LAST_SHOW_PASSWORD_GROUP_NAME,
                 getString(R.string.default_password_group_name)));
     }
 

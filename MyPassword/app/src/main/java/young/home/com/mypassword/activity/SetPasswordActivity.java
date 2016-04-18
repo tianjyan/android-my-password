@@ -12,6 +12,7 @@ import android.widget.Toast;
 import young.home.com.mypassword.R;
 import young.home.com.mypassword.application.BaseActivity;
 import young.home.com.mypassword.application.MD5;
+import young.home.com.mypassword.application.PwdGen;
 import young.home.com.mypassword.model.SettingKey;
 
 public class SetPasswordActivity extends BaseActivity implements TextWatcher {
@@ -60,11 +61,13 @@ public class SetPasswordActivity extends BaseActivity implements TextWatcher {
     }
     //endregion
 
-    //region private
+    //region public
     public void nextClick(View v) {
         if(pwdEt.getText().toString().equals(rePwdEt.getText().toString())){
             String pwd = pwdEt.getText().toString();
             super.putSetting(SettingKey.LOCK_PWD, MD5.getMD5(pwd));
+            super.putSetting(SettingKey.NO_LOCK_PWD, "false");
+            GenKey();
 
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
@@ -72,6 +75,29 @@ public class SetPasswordActivity extends BaseActivity implements TextWatcher {
         }
         else{
             Toast.makeText(this, R.string.different_password, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void skipClick(View v) {
+        super.putSetting(SettingKey.NO_LOCK_PWD, "true");
+        GenKey();
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+    //endregion
+
+    //region private
+    private void GenKey(){
+        String key = super.getSetting(SettingKey.KEY, "");
+        if(key.equals("")){
+            key = PwdGen.generatePassword(8,
+                    PwdGen.Optionality.MANDATORY,
+                    PwdGen.Optionality.MANDATORY,
+                    PwdGen.Optionality.MANDATORY,
+                    PwdGen.Optionality.MANDATORY);
+            super.putSetting(SettingKey.KEY, key);
         }
     }
     //endregion

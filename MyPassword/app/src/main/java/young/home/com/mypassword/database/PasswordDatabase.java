@@ -15,9 +15,6 @@ import young.home.com.mypassword.model.Password;
 import young.home.com.mypassword.model.PasswordGroup;
 import young.home.com.mypassword.model.SettingKey;
 
-/**
- * Created by YOUNG on 2016/4/3.
- */
 public class PasswordDatabase extends SQLiteOpenHelper {
 
     //region field
@@ -50,7 +47,7 @@ public class PasswordDatabase extends SQLiteOpenHelper {
 
         sql = "insert into password_group(name) values('" + getDefaultGroupName() + "')";
         db.execSQL(sql);
-        getApp().putSetting(SettingKey.LAST_SHOW_PASSWORDGROUP_NAME, getDefaultGroupName());
+        getApp().putSetting(SettingKey.LAST_SHOW_PASSWORD_GROUP_NAME, getDefaultGroupName());
     }
     //endregion
 
@@ -116,7 +113,7 @@ public class PasswordDatabase extends SQLiteOpenHelper {
     }
 
     public int deletePassword(int id){
-        int result = -1;
+        int result;
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         result = sqLiteDatabase.delete("password", "id = ?", new String[]{String.valueOf(id)});
         return result;
@@ -146,7 +143,7 @@ public class PasswordDatabase extends SQLiteOpenHelper {
     }
 
     public List<Password> getAllPassword(){
-        List<Password> passwords = new ArrayList<Password>();
+        List<Password> passwords = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 
         Cursor cursor = null;
@@ -155,7 +152,7 @@ public class PasswordDatabase extends SQLiteOpenHelper {
             cursor = sqLiteDatabase.query("password", null, null, null, null, null, null);
 
             while (cursor.moveToNext()) {
-                Password password = null;
+                Password password;
                 password = mapPassword(cursor);
 
                 passwords.add(password);
@@ -171,7 +168,7 @@ public class PasswordDatabase extends SQLiteOpenHelper {
     }
 
     public List<Password> getAllPasswordByGroupName(String groupName) {
-        List<Password> passwords = new ArrayList<Password>();
+        List<Password> passwords = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 
         Cursor cursor = null;
@@ -181,7 +178,7 @@ public class PasswordDatabase extends SQLiteOpenHelper {
                     null);
 
             while (cursor.moveToNext()) {
-                Password password = null;
+                Password password;
                 password = mapPassword(cursor);
 
                 passwords.add(password);
@@ -247,7 +244,7 @@ public class PasswordDatabase extends SQLiteOpenHelper {
     }
 
     public List<PasswordGroup> getAllPasswordGroup() {
-        List<PasswordGroup> passwordGroups = new ArrayList<PasswordGroup>();
+        List<PasswordGroup> passwordGroups = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         Cursor cursor = null;
         try {
@@ -275,7 +272,7 @@ public class PasswordDatabase extends SQLiteOpenHelper {
     }
 
     private String encrypt(String password){
-        String result = "";
+        String result;
         try{
             result = AES.encrypt(password, encryptKey);
         }
@@ -287,7 +284,7 @@ public class PasswordDatabase extends SQLiteOpenHelper {
     }
 
     private String decrypt(String data) {
-        String result = "";
+        String result;
         try {
             result = AES.decrypt(data, encryptKey);
         } catch (Exception e) {

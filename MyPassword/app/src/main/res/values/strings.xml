@@ -8,7 +8,8 @@
     <string name="yes">是</string>
     <string name="no">否</string>
     <string name="next">下一步</string>
-    <string name="skip">跳过</string>
+    <string name="skip">不设置密码</string>
+    <string name="change">修改登录密码</string>
     <string name="set_password">输入密码：</string>
     <string name="reset_password">再输一次：</string>
     <string name="title">标题：</string>
@@ -45,6 +46,7 @@
     <string name="gen_length_sixteen">16</string>
     <string name="gen">生成</string>
     <string name="regen">重新生成</string>
+    <string name="decription">Image</string>
     <!--Msg！-->
     <string name="first_password_hint">为了安全，请设置密码.</string>
     <string name="set_password_hint">请输入密码</string>

@@ -40,8 +40,9 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onPasswordGroupSelected(String passwordGroupName) {
             drawerLayout.closeDrawer(drawerView);
-            if (passwordListFragment != null){}
+            if (passwordListFragment != null){
                 passwordListFragment.showPasswordGroup(passwordGroupName);
+            }
         }
     };
 
@@ -68,7 +69,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         drawerLayout = (DrawerLayout)findViewById(R.id.main_layout);
-        drawerView = (View)findViewById(R.id.main_navigation_drawer);
+        drawerView = findViewById(R.id.main_navigation_drawer);
 
         Intent intent = new Intent(this, MainService.class);
         this.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
@@ -108,6 +109,10 @@ public class MainActivity extends BaseActivity {
                     intent.putExtra(EditPasswordActivity.PASSWORD_GROUP, passwordListFragment.getPasswordGroupName());
                 startActivity(intent);
                 break;
+            case R.id.action_change_login_password:
+                Intent setIntent = new Intent(this, SetPasswordActivity.class);
+                startActivity(setIntent);
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -138,7 +143,7 @@ public class MainActivity extends BaseActivity {
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 getActivity().invalidateOptionsMenu();
-                getSupportActionBar().setTitle(getActivity().getSetting(SettingKey.LAST_SHOW_PASSWORDGROUP_NAME, getString(R.string.app_name)));
+                getSupportActionBar().setTitle(getActivity().getSetting(SettingKey.LAST_SHOW_PASSWORD_GROUP_NAME, getString(R.string.app_name)));
             }
         };
 
@@ -154,7 +159,7 @@ public class MainActivity extends BaseActivity {
             putSetting(SettingKey.IS_SHOWED_DRAWER, "true");
             drawerLayout.openDrawer(drawerView);
         } else {
-            String lastGroupName = getSetting(SettingKey.LAST_SHOW_PASSWORDGROUP_NAME, "");
+            String lastGroupName = getSetting(SettingKey.LAST_SHOW_PASSWORD_GROUP_NAME, "");
             if (lastGroupName.equals(""))
                 lastGroupName = getString(R.string.app_name);
             getSupportActionBar().setTitle(lastGroupName);

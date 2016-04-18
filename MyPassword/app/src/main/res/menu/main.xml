@@ -7,4 +7,9 @@
         android:orderInCategory="10"
         app:showAsAction="always"
         android:title="@string/add"/>
+
+    <item
+        android:id="@+id/action_change_login_password"
+        android:orderInCategory="10"
+        android:title="@string/change"/>
 </menu>

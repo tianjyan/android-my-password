@@ -24,9 +24,6 @@ import young.home.com.mypassword.service.OnGetAllPasswordGroupCallback;
 import young.home.com.mypassword.service.OnPasswordGroupChangeListener;
 import young.home.com.mypassword.service.OnPasswordGroupSelected;
 
-/**
- * Created by YOUNG on 2016/4/9.
- */
 public class PasswordGroupFragment  extends Fragment implements AdapterView.OnItemClickListener, OnGetAllPasswordGroupCallback {
 
     //region field
@@ -187,7 +184,7 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
     public void onGetAllPasswordGroup(List<PasswordGroup> passwordGroups) {
         BaseActivity baseActivity = getBaseActivity();
         if (baseActivity != null) {
-            String lastGroupName = baseActivity.getSetting(SettingKey.LAST_SHOW_PASSWORDGROUP_NAME,
+            String lastGroupName = baseActivity.getSetting(SettingKey.LAST_SHOW_PASSWORD_GROUP_NAME,
                     getString(R.string.default_password_group_name));
 
             passwordGroupAdapter.setCurrentGroupName(lastGroupName);
@@ -218,7 +215,7 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
                 }
 
                 // 用户选择需要合并到的分组
-                final List<String> items = new ArrayList<String>();
+                final List<String> items = new ArrayList<>();
                 for (PasswordGroup passwordGroup : passwordGroups) {
                     if (!passwordGroup.getGroupName().equals(passwordGroupName)) {
                         items.add(passwordGroup.getGroupName());
@@ -266,7 +263,7 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
 
     private void selectItem(String selectedname) {
         BaseActivity baseActivity = getBaseActivity();
-        baseActivity.putSetting(SettingKey.LAST_SHOW_PASSWORDGROUP_NAME, selectedname);
+        baseActivity.putSetting(SettingKey.LAST_SHOW_PASSWORD_GROUP_NAME, selectedname);
 
         passwordGroupAdapter.setCurrentGroupName(selectedname);
         onPasswordGroupSelected.onPasswordGroupSelected(selectedname);
