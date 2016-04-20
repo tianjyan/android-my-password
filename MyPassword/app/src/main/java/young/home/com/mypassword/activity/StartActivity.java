@@ -50,6 +50,8 @@ public class StartActivity extends BaseActivity implements TextWatcher{
         enterBtn = (Button)findViewById(R.id.start_sure);
 
         inputPwd.addTextChangedListener(this);
+
+        inputPwd.requestFocus();
     }
 
     @Override

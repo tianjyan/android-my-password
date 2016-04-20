@@ -38,6 +38,7 @@ public class SetPasswordActivity extends BaseActivity implements TextWatcher {
         pwdEt.addTextChangedListener(this);
         rePwdEt.addTextChangedListener(this);
 
+        pwdEt.requestFocus();
     }
 
     @Override
