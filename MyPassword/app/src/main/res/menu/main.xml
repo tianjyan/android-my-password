@@ -12,4 +12,12 @@
         android:id="@+id/action_change_login_password"
         android:orderInCategory="10"
         android:title="@string/change"/>
+    <item
+        android:id="@+id/action_import_password"
+        android:orderInCategory="10"
+        android:title="@string/import_password"/>
+    <item
+        android:id="@+id/action_output_password"
+        android:orderInCategory="10"
+        android:title="@string/output_password"/>
 </menu>

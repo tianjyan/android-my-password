@@ -23,6 +23,8 @@
     <string name="show">显示</string>
     <string name="hide">隐藏</string>
     <string name="add">添加</string>
+    <string name="import_password">导入</string>
+    <string name="output_password">导出</string>
     <string name="just">刚刚</string>
     <string name="minute_ago">%d分钟前</string>
     <string name="hour_ago">%d小时前</string>
