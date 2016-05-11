@@ -113,6 +113,10 @@ public class MainActivity extends BaseActivity {
                 Intent setIntent = new Intent(this, SetPasswordActivity.class);
                 startActivity(setIntent);
                 break;
+            case R.id.action_import_password:
+                break;
+            case R.id.action_output_password:
+                break;
         }
 
         return super.onOptionsItemSelected(item);
