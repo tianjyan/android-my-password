@@ -4,11 +4,16 @@ import android.app.Application;
 import android.test.ApplicationTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
 
+import junit.framework.Assert;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import young.home.com.mypassword.application.IOHelper;
 import young.home.com.mypassword.application.JsonHelper;
 import young.home.com.mypassword.application.PwdGen;
 import young.home.com.mypassword.model.Password;
@@ -75,5 +80,13 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
 
         Password[] newPasswords = JsonHelper.parseArray(jsonStr,Password.class);
         assertNotNull(newPasswords);
+    }
+
+    @SmallTest
+    public void testReadFile() throws IOException {
+        IOHelper.writeSDFile("/sdcard/Download/young.txt","123");
+        String str = IOHelper.readSDFile("/sdcard/Download/young.txt");
+        Assert.assertNotNull(str);
+        IOHelper.deleteSDFile("/sdcard/Download/young.txt");
     }
 }
