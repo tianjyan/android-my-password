@@ -70,4 +70,8 @@
     <string name="merge_password_group_error">没有分组可合并</string>
     <string name="merge_password_group_loading">读取数据中，请稍候&#8230;</string>
     <string name="gen_password_msg">请选择你需要的字符</string>
+    <string name="output_error">导出异常</string>
+    <string name="output_done">导出完成，路径:/sdcard/Download/MyPasswordBackup.json</string>
+    <string name="import_error">导入异常</string>
+    <string name="import_done">导入成功</string>
 </resources>

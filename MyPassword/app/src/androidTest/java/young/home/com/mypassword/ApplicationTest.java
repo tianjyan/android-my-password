@@ -1,6 +1,7 @@
 package young.home.com.mypassword;
 
 import android.app.Application;
+import android.os.Environment;
 import android.test.ApplicationTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
 
@@ -84,9 +85,9 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
 
     @SmallTest
     public void testReadFile() throws IOException {
-        IOHelper.writeSDFile("/sdcard/Download/young.txt","123");
-        String str = IOHelper.readSDFile("/sdcard/Download/young.txt");
+        IOHelper.writeSDFile(Environment.getExternalStorageDirectory().getPath()+ "/Download/MyPasswordBackup.json","123");
+        String str = IOHelper.readSDFile(Environment.getExternalStorageDirectory().getPath()+ "/Download/MyPasswordBackup.json");
         Assert.assertNotNull(str);
-        IOHelper.deleteSDFile("/sdcard/Download/young.txt");
+        IOHelper.deleteSDFile(Environment.getExternalStorageDirectory().getPath()+ "/Download/MyPasswordBackup.json");
     }
 }

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,15 +17,26 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import young.home.com.mypassword.R;
 import young.home.com.mypassword.application.BaseActivity;
+import young.home.com.mypassword.application.IOHelper;
+import young.home.com.mypassword.application.JsonHelper;
+import young.home.com.mypassword.model.Password;
+import young.home.com.mypassword.model.PasswordGroup;
 import young.home.com.mypassword.model.SettingKey;
 import young.home.com.mypassword.service.MainBinder;
 import young.home.com.mypassword.service.MainService;
+import young.home.com.mypassword.service.OnGetAllPasswordCallback;
+import young.home.com.mypassword.service.OnGetAllPasswordGroupCallback;
 import young.home.com.mypassword.service.OnPasswordGroupSelected;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements OnGetAllPasswordCallback, OnGetAllPasswordGroupCallback {
 
     //region field
     private DrawerLayout drawerLayout;
@@ -114,8 +126,10 @@ public class MainActivity extends BaseActivity {
                 startActivity(setIntent);
                 break;
             case R.id.action_import_password:
+                mainBinder.getAllPasswordGroup(this);
                 break;
             case R.id.action_output_password:
+                mainBinder.getAllPassword(this);
                 break;
         }
 
@@ -126,6 +140,46 @@ public class MainActivity extends BaseActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onGetAllPassword(String groupName, List<Password> passwords) {
+        String jsonPasswords = JsonHelper.toJSON(passwords);
+        try {
+            IOHelper.writeSDFile(Environment.getExternalStorageDirectory().getPath() + "/Download/MyPasswordBackup.json", jsonPasswords);
+        }
+        catch (IOException ex){
+            showToast(R.string.output_error);
+        }
+        showToast(R.string.output_done);
+    }
+
+    @Override
+    public void onGetAllPasswordGroup(List<PasswordGroup> passwordGroups) {
+        try {
+            String json = IOHelper.readSDFile(Environment.getExternalStorageDirectory().getPath() + "/Download/MyPasswordBackup.json");
+            Password[] passwords = JsonHelper.parseArray(json,Password.class);
+            for(int i=0;i<passwords.length;i++){
+                boolean existGroup = false;
+                for(int j=0;j<passwordGroups.size();j++){
+                    if(passwordGroups.get(j).getGroupName().equals(passwords[i].getGroupName())){
+                        existGroup = true;
+                        break;
+                    }
+                }
+                if(!existGroup){
+                    PasswordGroup group = new PasswordGroup();
+                    group.setGroupName(passwords[i].getGroupName());
+                    mainBinder.insertPasswordGroup(group);
+                    passwordGroups.add(group);
+                }
+                mainBinder.insertPassword(passwords[i]);
+            }
+
+        }
+        catch (IOException ex){
+            showToast(R.string.import_error);
+        }
     }
     //endregion
 
@@ -189,6 +243,7 @@ public class MainActivity extends BaseActivity {
         fragmentTransaction.replace(R.id.main_container, passwordListFragment, "PasswordListFragment");
         fragmentTransaction.commitAllowingStateLoss();
     }
+
     //endregion
 
     //endregion
