@@ -11,6 +11,7 @@ public class Password {
     private String title;
     private String userName;
     private String password;
+    private String payPassword;
     private String note;
     private String groupName;
 
@@ -53,6 +54,10 @@ public class Password {
     public void setPassword(String password){
         this.password = password;
     }
+
+    public String getPayPassword(){return payPassword;}
+
+    public void setPayPassword(String payPassword) { this.payPassword = payPassword; }
 
     public String getNote(){
         return note;

@@ -35,7 +35,7 @@ public class PasswordDatabase extends SQLiteOpenHelper {
     //region init
     private void createPasswordTable(SQLiteDatabase db){
         String sql = "create table password(id integer primary key autoincrement, publish integer, title text, "
-                + "user_name text, password text, url text, note text, group_name text default '"
+                + "user_name text, password text, pay_password text, url text, note text, group_name text default '"
                 + getDefaultGroupName() + "')";
         db.execSQL(sql);
     }
@@ -74,6 +74,7 @@ public class PasswordDatabase extends SQLiteOpenHelper {
             contentValues.put("title", password.getTitle());
             contentValues.put("user_name",password.getUserName());
             contentValues.put("password", encrypt(password.getPassword()));
+            contentValues.put("pay_password",encrypt(password.getPayPassword()));
             contentValues.put("note", password.getNote());
             contentValues.put("group_name",password.getGroupName());
             id = sqLiteDatabase.insert("password",null,contentValues);
@@ -97,9 +98,10 @@ public class PasswordDatabase extends SQLiteOpenHelper {
                 contentValues.put("user_name", password.getUserName());
             if (password.getPassword() != null)
                 contentValues.put("password", encrypt(password.getPassword()));
+            if(password.getPayPassword() != null)
+                contentValues.put("pay_password",encrypt(password.getPayPassword()));
             if (password.getNote() != null)
                 contentValues.put("note", password.getNote());
-
             if (password.getGroupName() != null)
                 contentValues.put("group_name", password.getGroupName());
 
@@ -309,6 +311,7 @@ public class PasswordDatabase extends SQLiteOpenHelper {
         password.setTitle(cursor.getString(cursor.getColumnIndex("title")));
         password.setUserName(cursor.getString(cursor.getColumnIndex("user_name")));
         password.setPassword(decrypt(cursor.getString(cursor.getColumnIndex("password"))));
+        password.setPayPassword(decrypt(cursor.getString(cursor.getColumnIndex("pay_password"))));
         password.setNote(cursor.getString(cursor.getColumnIndex("note")));
         password.setGroupName(cursor.getString(cursor.getColumnIndex("group_name")));
         return password;

@@ -104,6 +104,8 @@ public class PasswordListAdapter  extends BaseAdapter {
             viewHolder.dateView = (TextView)convertView.findViewById(R.id.password_item_date);
             viewHolder.nameView = (TextView)convertView.findViewById(R.id.password_item_name);
             viewHolder.passwordView = (TextView)convertView.findViewById(R.id.password_item_password);
+            viewHolder.payPasswordView = (TextView)convertView.findViewById(R.id.password_item_pay_password);
+            viewHolder.payConainer = convertView.findViewById(R.id.password_item_pay_container);
             viewHolder.noteView = (TextView)convertView.findViewById(R.id.password_item_note);
             viewHolder.noteConainer = convertView.findViewById(R.id.password_item_note_container);
             viewHolder.copyView = convertView.findViewById(R.id.password_item_copy);
@@ -185,6 +187,8 @@ public class PasswordListAdapter  extends BaseAdapter {
                     oldPassword.setPassword(newPassword.getPassword());
                 if (newPassword.getNote() != null)
                     oldPassword.setNote(newPassword.getNote());
+                if (newPassword.getPayPassword() != null)
+                    oldPassword.setPayPassword(newPassword.getPayPassword());
 
                 if (!oldPassword.getGroupName().equals(newPassword.getGroupName()))
                     passwords.remove(i);
@@ -254,8 +258,10 @@ public class PasswordListAdapter  extends BaseAdapter {
         public TextView dateView;
         public TextView nameView;
         public TextView passwordView;
+        public TextView payPasswordView;
         public TextView noteView;
         public View noteConainer;
+        public View payConainer;
         public View copyView;
         public View deleteView;
         public View editView;
@@ -285,8 +291,17 @@ public class PasswordListAdapter  extends BaseAdapter {
         private void onCopyClick() {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-            String[] item = new String[]{context.getResources().getString(R.string.copy_user_name),
-                    context.getResources().getString(R.string.copy_password)};
+            String[] item;
+            String payPassword = passwordItem.password.getPayPassword();
+            if(!TextUtils.isEmpty(payPassword)) {
+               item =  new String[]{context.getResources().getString(R.string.copy_user_name),
+                       context.getResources().getString(R.string.copy_password),
+                       context.getResources().getString(R.string.copy_pay_password)};
+            }
+            else {
+                item =  new String[]{context.getResources().getString(R.string.copy_user_name),
+                        context.getResources().getString(R.string.copy_password)};
+            }
 
             builder.setItems(item, new DialogInterface.OnClickListener() {
                 @Override
@@ -307,6 +322,14 @@ public class PasswordListAdapter  extends BaseAdapter {
                             ClipData clipData = ClipData.newPlainText(null, passwordItem.password.getPassword());
                             cmbPassword.setPrimaryClip(clipData);
                             Toast.makeText(context, R.string.copy_password_msg, Toast.LENGTH_SHORT).show();
+                            break;
+                        case 2:
+                            //复制支付密码
+                            ClipboardManager cmbPayPassword = (ClipboardManager) context
+                                    .getSystemService(Context.CLIPBOARD_SERVICE);
+                            ClipData clip = ClipData.newPlainText(null, passwordItem.password.getPayPassword());
+                            cmbPayPassword.setPrimaryClip(clip);
+                            Toast.makeText(context, R.string.copy_pay_password_msg, Toast.LENGTH_SHORT).show();
                             break;
                         default:
                             break;
@@ -340,9 +363,19 @@ public class PasswordListAdapter  extends BaseAdapter {
         private void onShowOrHideClick(){
                if(passwordView.getInputType() == (EditorInfo.TYPE_TEXT_VARIATION_PASSWORD | EditorInfo.TYPE_CLASS_TEXT)){
                     passwordView.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+
+                    if(payConainer.getVisibility() == View.VISIBLE){
+                        payPasswordView.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+                    }
+
                     showOrHideTextView.setText(R.string.hide);
                } else {
                    passwordView.setInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD | EditorInfo.TYPE_CLASS_TEXT);
+
+                   if(payConainer.getVisibility() == View.VISIBLE){
+                       payPasswordView.setInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD | EditorInfo.TYPE_CLASS_TEXT);
+                   }
+
                    showOrHideTextView.setText(R.string.show);
                }
         }
@@ -360,6 +393,14 @@ public class PasswordListAdapter  extends BaseAdapter {
             } else {
                 noteConainer.setVisibility(View.VISIBLE);
                 noteView.setText(note);
+            }
+
+            String payPassword = passwordItem.password.getPayPassword();
+            if(TextUtils.isEmpty(payPassword)) {
+                payConainer.setVisibility(View.GONE);
+            } else {
+                payConainer.setVisibility(View.VISIBLE);
+                payPasswordView.setText(payPassword);
             }
         }
     }

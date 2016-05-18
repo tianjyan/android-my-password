@@ -49,6 +49,7 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
     private EditText titleView;
     private AutoCompleteTextView nameView;
     private AutoCompleteTextView passwordView;
+    private AutoCompleteTextView payPasswordView;
     private EditText noteView;
     private Spinner spinner;
     private String passwordGroup;
@@ -85,6 +86,7 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
         titleView = (EditText) findViewById(R.id.edit_password_title);
         nameView = (AutoCompleteTextView) findViewById(R.id.edit_password_name);
         passwordView = (AutoCompleteTextView) findViewById(R.id.edit_password_password);
+        payPasswordView = (AutoCompleteTextView)findViewById(R.id.edit_password_pay_password);
         noteView = (EditText) findViewById(R.id.edit_password_note);
         spinner = (Spinner) findViewById(R.id.edit_password_group);
 
@@ -169,6 +171,7 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
         titleView.setText(password.getTitle());
         nameView.setText(password.getUserName());
         passwordView.setText(password.getPassword());
+        payPasswordView.setText(password.getPayPassword());
         noteView.setText(password.getNote());
         titleView.setSelection(titleView.getText().length());
     }
@@ -181,6 +184,7 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
             Password password = passwords.get(i);
             arrays.add(password.getUserName());
             arrays.add(password.getPassword());
+            arrays.add(password.getPayPassword());
         }
 
         // 自动完成
@@ -188,6 +192,7 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, id, new ArrayList<>(arrays));
         nameView.setAdapter(arrayAdapter);
         passwordView.setAdapter(arrayAdapter);
+        payPasswordView.setAdapter(arrayAdapter);
     }
 
     @Override
@@ -263,6 +268,7 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
             password.setTitle(titleView.getText().toString().trim());
             password.setUserName(nameView.getText().toString().trim());
             password.setPassword(passwordView.getText().toString().trim());
+            password.setPayPassword(payPasswordView.getText().toString().trim());
             password.setNote(noteView.getText().toString().trim());
             password.setGroupName(passwordGroup);
             if (MODE == MODE_ADD) {

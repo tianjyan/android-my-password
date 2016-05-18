@@ -16,6 +16,7 @@
     <string name="password_group">分组：</string>
     <string name="user_name">账号：</string>
     <string name="password">密码：</string>
+    <string name="pay_password">支付：</string>
     <string name="save">保存</string>
     <string name="copy">复制</string>
     <string name="delete">删除</string>
@@ -30,6 +31,7 @@
     <string name="hour_ago">%d小时前</string>
     <string name="copy_user_name">复制账号到剪贴板</string>
     <string name="copy_password">复制密码到剪贴板</string>
+    <string name="copy_pay_password">复制支付密码到剪切板</string>
     <string name="add_password_group">添加分组</string>
     <string name="merge_password_group">合并分组到</string>
     <string name="edit_password_group_name">修改分组名</string>
@@ -59,10 +61,12 @@
     <string name="title_hint">输入标题(必须)</string>
     <string name="user_name_hint">输入您的账号</string>
     <string name="password_hint">输入您的密码</string>
+    <string name="pay_password_hit">输入您的支付密码</string>
     <string name="note_hint">这里可以记录一些备注信息</string>
     <string name="empty_title">标题不可为空</string>
     <string name="copy_use_name_msg">已复制账号到剪贴板</string>
     <string name="copy_password_msg">已复制密码到剪贴板</string>
+    <string name="copy_pay_password_msg">已复制支付密码到剪切板</string>
     <string name="delete_password_message">删除后不可恢复，您确定吗？</string>
     <string name="deleted_password_message">该条密码已经被删除</string>
     <string name="password_group_hint">输入分组名</string>
