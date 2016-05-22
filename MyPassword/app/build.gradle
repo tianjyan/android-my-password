@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "young.home.com.mypassword"
+        applicationId "com.home.young.myPassword"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
