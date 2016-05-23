@@ -1,0 +1,2 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('appcompat-v7-23.3.0.aar'))
