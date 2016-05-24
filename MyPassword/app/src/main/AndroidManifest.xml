@@ -19,6 +19,7 @@
         <activity android:name=".activity.SetPasswordActivity" android:theme="@style/AppNoActionBarTheme"/>
         <activity android:name=".activity.MainActivity" android:launchMode="singleTask"/>
         <activity android:name=".activity.EditPasswordActivity"/>
+        <activity android:name="com.home.young.filepicker.FilePickerActivity" android:theme="@style/NNF_BaseTheme.Light"/>
         <service
             android:name="com.home.young.myPassword.service.MainService"
             android:exported="false"
