@@ -151,7 +151,11 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
                 public void onDismiss(DialogInterface dialog) {
                     String result = ((GenPasswordDialog)dialog).getPassword();
                     if(!result.equals("")){
-                        passwordView.setText(result);
+                        if(passwordView.isFocused()) {
+                            passwordView.setText(result);
+                        }else if(payPasswordView.isFocused()){
+                            payPasswordView.setText(result);
+                        }
                     }
                 }
             });
