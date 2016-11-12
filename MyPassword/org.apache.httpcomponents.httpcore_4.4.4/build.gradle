@@ -1,2 +1,0 @@
-configurations.maybeCreate("default")
-artifacts.add("default", file('org.apache.httpcomponents.httpcore_4.4.4.jar'))

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id=":recyclerview-v7-23.3.0" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" external.system.module.group="MyPassword" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":filepicker-3.1.0" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="android-gradle" name="Android-Gradle">
       <configuration>
-        <option name="GRADLE_PROJECT_PATH" value=":recyclerview-v7-23.3.0" />
+        <option name="GRADLE_PROJECT_PATH" value=":filepicker-3.1.0" />
       </configuration>
     </facet>
     <facet type="java-gradle" name="Java-Gradle">
@@ -17,6 +17,7 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -1,2 +1,0 @@
-configurations.maybeCreate("default")
-artifacts.add("default", file('recyclerview-v7-23.3.0.aar'))
