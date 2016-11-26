@@ -14,6 +14,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:background="@drawable/edit_text_holo_light"
         android:gravity="center_horizontal"
         android:hint="@string/set_password_hint"
         android:imeOptions="actionDone"
