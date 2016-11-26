@@ -7,12 +7,10 @@
     <color name="text_color">#7C7F89</color>
     <color name="line_color">#DDDADFE5</color>
     <color name="title_color">#50B3FA</color>
-    <color name="copyright_color">#FFFFFF</color>
     <color name="item_function_text_color">#333333</color>
     <color name="name_color">#F65EA5</color>
     <color name="white">#FFFFFF</color>
     <color name="item_function_bg_pressed">#7050B3FA</color>
     <color name="item_group_bg_pressed">#555555</color>
-    <color name="item_group_divider">#404040</color>
     <color name="nnf_light_separator_color">#1e000000</color>
 </resources>

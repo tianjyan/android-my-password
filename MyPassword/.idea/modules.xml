@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MyPassword.iml" filepath="$PROJECT_DIR$/MyPassword.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/butterknife-8.4.0/butterknife-8.4.0.iml" filepath="$PROJECT_DIR$/butterknife-8.4.0/butterknife-8.4.0.iml" />
       <module fileurl="file://$PROJECT_DIR$/filepicker-3.1.0/filepicker-3.1.0.iml" filepath="$PROJECT_DIR$/filepicker-3.1.0/filepicker-3.1.0.iml" />
     </modules>
   </component>

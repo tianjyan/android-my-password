@@ -1,13 +1,11 @@
 package com.home.young.myPassword.activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
-import android.widget.Button;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.home.young.myPassword.R;
@@ -15,11 +13,10 @@ import com.home.young.myPassword.application.BaseActivity;
 import com.home.young.myPassword.application.MD5;
 import com.home.young.myPassword.model.SettingKey;
 
-public class StartActivity extends BaseActivity implements TextWatcher{
+public class StartActivity extends BaseActivity implements TextView.OnEditorActionListener {
 
     //region field
     EditText inputPwd;
-    Button enterBtn;
     String pwd;
     String noPwd;
     //endregion
@@ -47,42 +44,27 @@ public class StartActivity extends BaseActivity implements TextWatcher{
         }
 
         inputPwd = (EditText) findViewById(R.id.start_password);
-        enterBtn = (Button)findViewById(R.id.start_sure);
-
-        inputPwd.addTextChangedListener(this);
-
+        inputPwd.setOnEditorActionListener(this);
         inputPwd.requestFocus();
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-        if(inputPwd.getText().length() > 0) {
-            enterBtn.setEnabled(true);
-        } else {
-            enterBtn.setEnabled(false);
+    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+        switch (i) {
+            case EditorInfo.IME_ACTION_DONE:
+                if (pwd.equals(MD5.getMD5(inputPwd.getText().toString()))) {
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                break;
         }
-    }
-    //endregion
 
-    //region private
-    public void enterClick(View v) {
-        if (pwd.equals(MD5.getMD5(inputPwd.getText().toString()))) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
-        }
+        return true;
     }
     //endregion
 
