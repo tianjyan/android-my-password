@@ -10,8 +10,6 @@
     <string name="next">下一步</string>
     <string name="skip">不设置密码</string>
     <string name="change">修改登录密码</string>
-    <string name="set_password">输入密码：</string>
-    <string name="reset_password">再输一次：</string>
     <string name="title">标题：</string>
     <string name="password_group">分组：</string>
     <string name="user_name">账号：</string>
@@ -35,7 +33,6 @@
     <string name="add_password_group">添加分组</string>
     <string name="merge_password_group">合并分组到</string>
     <string name="edit_password_group_name">修改分组名</string>
-    <string name="new_password_group_name">新的分组名</string>
     <string name="default_password_group_name">默认</string>
     <string name="delete_password_group">删除分组</string>
     <string name="gen_password">生成密码</string>
@@ -49,8 +46,6 @@
     <string name="gen_length_eight">8</string>
     <string name="gen_length_sixteen">16</string>
     <string name="gen">生成</string>
-    <string name="regen">重新生成</string>
-    <string name="decription">Image</string>
     <!--Msg！-->
     <string name="first_password_hint">为了安全，请设置密码.</string>
     <string name="set_password_hint">请输入密码</string>
@@ -69,7 +64,6 @@
     <string name="copy_pay_password_msg">已复制支付密码到剪切板</string>
     <string name="delete_password_message">删除后不可恢复，您确定吗？</string>
     <string name="deleted_password_message">该条密码已经被删除</string>
-    <string name="password_group_hint">输入分组名</string>
     <string name="delete_password_group_msg">将删除\"%s\"分组下的所有密码，不可恢复，你确定删除吗？</string>
     <string name="merge_password_group_error">没有分组可合并</string>
     <string name="merge_password_group_loading">读取数据中，请稍候&#8230;</string>
@@ -77,5 +71,4 @@
     <string name="output_error">导出异常</string>
     <string name="output_done">导出完成，路径:/sdcard/Download/MyPasswordBackup.json</string>
     <string name="import_error">导入异常</string>
-    <string name="import_done">导入成功</string>
 </resources>

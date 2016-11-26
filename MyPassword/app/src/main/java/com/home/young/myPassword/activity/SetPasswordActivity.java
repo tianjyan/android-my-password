@@ -15,12 +15,16 @@ import com.home.young.myPassword.application.MD5;
 import com.home.young.myPassword.application.PwdGen;
 import com.home.young.myPassword.model.SettingKey;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class SetPasswordActivity extends BaseActivity implements TextWatcher {
 
     //region field
-    private EditText pwdEt;
-    private EditText rePwdEt;
-    private Button nextBtn;
+    @BindView(R.id.set_password_first) EditText pwdEt;
+    @BindView(R.id.set_password_second) EditText rePwdEt;
+    @BindView(R.id.set_password_next) Button nextBtn;
     //endregion
 
     //region function
@@ -30,14 +34,10 @@ public class SetPasswordActivity extends BaseActivity implements TextWatcher {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_password);
-
-        pwdEt = (EditText)findViewById(R.id.set_password_first);
-        rePwdEt = (EditText)findViewById(R.id.set_password_second);
-        nextBtn = (Button)findViewById(R.id.set_password_next);
+        ButterKnife.bind(this);
 
         pwdEt.addTextChangedListener(this);
         rePwdEt.addTextChangedListener(this);
-
         pwdEt.requestFocus();
     }
 
@@ -62,8 +62,9 @@ public class SetPasswordActivity extends BaseActivity implements TextWatcher {
     }
     //endregion
 
-    //region public
-    public void nextClick(View v) {
+    //region click event
+
+    @OnClick(R.id.set_password_next) void nextClick(View v) {
         if(pwdEt.getText().toString().equals(rePwdEt.getText().toString())){
             String pwd = pwdEt.getText().toString();
             super.putSetting(SettingKey.LOCK_PWD, MD5.getMD5(pwd));
@@ -79,7 +80,7 @@ public class SetPasswordActivity extends BaseActivity implements TextWatcher {
         }
     }
 
-    public void skipClick(View v) {
+    @OnClick(R.id.set_password_skip) void skipClick(View v) {
         super.putSetting(SettingKey.NO_LOCK_PWD, "true");
         GenKey();
 

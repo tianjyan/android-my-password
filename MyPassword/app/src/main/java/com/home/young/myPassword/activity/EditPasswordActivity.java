@@ -55,7 +55,7 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
     private String passwordGroup;
     //endregion
 
-    //region lambda
+    //region anonymous class
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceDisconnected(ComponentName name) {

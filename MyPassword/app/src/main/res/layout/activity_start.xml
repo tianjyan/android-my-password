@@ -1,60 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/app_background"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:gravity="center|center_horizontal|center_vertical"
+    android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher"
-        android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="8dp"/>
-
-    <LinearLayout
+    <EditText
+        android:id="@+id/start_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp">
-        <TextView
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:text="@string/set_password"
-            android:textColor="@color/title_color"
-            android:textSize="16sp" />
-        <EditText
-            android:id="@+id/start_password"
-            android:layout_width="0dp"
-            android:layout_height="42dp"
-            android:layout_weight="1"
-            android:background="@drawable/edit_text_holo_light"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:hint="@string/set_password_hint"
-            android:inputType="textPassword"
-            android:maxLength="10"
-            android:maxLines="1"
-            android:textColor="@color/title_color"
-            android:textSize="16sp" />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/start_sure"
-        android:text="@string/yes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:textColor="@color/white"
-        android:onClick="enterClick"
-        android:enabled="false" />
+        android:layout_marginStart="8dp"
+        android:background="@drawable/edit_text_holo_light"
+        android:gravity="center_horizontal"
+        android:hint="@string/set_password_hint"
+        android:imeOptions="actionDone"
+        android:inputType="textPassword" />
 
 </LinearLayout>
