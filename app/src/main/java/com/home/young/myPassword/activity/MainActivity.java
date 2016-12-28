@@ -47,21 +47,24 @@ import com.home.young.myPassword.service.OnPasswordGroupSelected;
 import com.nononsenseapps.filepicker.AbstractFilePickerFragment;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends BaseActivity implements OnGetAllPasswordCallback, OnGetAllPasswordGroupCallback {
 
     //region field
     private static final int CODE_OUT = 0;
     private static final int CODE_IN = 1;
-    private DrawerLayout drawerLayout;
+    @BindView(R.id.main_layout) DrawerLayout drawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-    private View drawerView;
+    @BindView(R.id.main_navigation_drawer) View drawerView;
     private MainBinder mainBinder;
     private PasswordListFragment passwordListFragment;
     private PasswordGroupFragment passwordGroupFragment;
     private String fullPath;
     //endregion
 
-    //region lambda
+    //region anonymous class
     private OnPasswordGroupSelected onPasswordGroupSelected = new OnPasswordGroupSelected() {
         @Override
         public void onPasswordGroupSelected(String passwordGroupName) {
@@ -93,9 +96,7 @@ public class MainActivity extends BaseActivity implements OnGetAllPasswordCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        drawerLayout = (DrawerLayout)findViewById(R.id.main_layout);
-        drawerView = findViewById(R.id.main_navigation_drawer);
+        ButterKnife.bind(this);
 
         Intent intent = new Intent(this, MainService.class);
         this.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);

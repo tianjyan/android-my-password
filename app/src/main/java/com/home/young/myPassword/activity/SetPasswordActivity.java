@@ -64,7 +64,8 @@ public class SetPasswordActivity extends BaseActivity implements TextWatcher {
 
     //region click event
 
-    @OnClick(R.id.set_password_next) void nextClick(View v) {
+    @OnClick(R.id.set_password_next)
+    public void nextClick(View v) {
         if(pwdEt.getText().toString().equals(rePwdEt.getText().toString())){
             String pwd = pwdEt.getText().toString();
             super.putSetting(SettingKey.LOCK_PWD, MD5.getMD5(pwd));
@@ -80,7 +81,8 @@ public class SetPasswordActivity extends BaseActivity implements TextWatcher {
         }
     }
 
-    @OnClick(R.id.set_password_skip) void skipClick(View v) {
+    @OnClick(R.id.set_password_skip)
+    public void skipClick(View v) {
         super.putSetting(SettingKey.NO_LOCK_PWD, "true");
         GenKey();
 

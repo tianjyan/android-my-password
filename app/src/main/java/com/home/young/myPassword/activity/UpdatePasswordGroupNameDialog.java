@@ -3,6 +3,7 @@ package com.home.young.myPassword.activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.test.suitebuilder.annotation.Smoke;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -10,39 +11,37 @@ import android.widget.EditText;
 import com.home.young.myPassword.R;
 import com.home.young.myPassword.service.MainBinder;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * Created by YOUNG on 2016/4/9.
  */
 public class UpdatePasswordGroupNameDialog extends Dialog {
 
     //region field
-    private EditText editText;
+    @BindView(R.id.update_passwordGroup_name) EditText editText;
     private MainBinder mainBinder;
     private String oldGroupName;
-    private View cancelBtn;
-    private View sureBtn;
     //endregion
 
-    //region lambda
-    private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
+    //region onclick
+    @OnClick(R.id.update_passwordGroup_cancel)
+    public void cancelClick() {
+        dismiss();
+    }
+
+    @OnClick(R.id.update_passwordGroup_sure)
+    public void sureClick() {
+        String name = editText.getText().toString().trim();
+        if(name.length() > 0){
+            if(!name.equals(oldGroupName)){
+                mainBinder.updatePasswdGroupName(oldGroupName, name);
+            }
             dismiss();
         }
-    };
-
-    private View.OnClickListener onSureClickListener = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            String name = editText.getText().toString().trim();
-            if(name.length() > 0){
-                if(!name.equals(oldGroupName)){
-                    mainBinder.updatePasswdGroupName(oldGroupName, name);
-                }
-                dismiss();
-            }
-        }
-    };
+    }
     //endregion
 
     //region function
@@ -52,16 +51,9 @@ public class UpdatePasswordGroupNameDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_update_password_group_name);
-
-        cancelBtn = findViewById(R.id.update_passwordGroup_cancel);
-        sureBtn = findViewById(R.id.update_passwordGroup_sure);
-        editText = (EditText) findViewById(R.id.update_passwordGroup_name);
-
-        cancelBtn.setOnClickListener(onCancelClickListener);
-        sureBtn.setOnClickListener(onSureClickListener);
+        ButterKnife.bind(this);
 
         editText.setText(oldGroupName);
-
         editText.requestFocus();
     }
     //endregion

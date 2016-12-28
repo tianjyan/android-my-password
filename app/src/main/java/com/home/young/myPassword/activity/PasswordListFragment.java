@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -18,7 +17,6 @@ import com.home.young.myPassword.model.SettingKey;
 import com.home.young.myPassword.service.MainBinder;
 import com.home.young.myPassword.service.OnGetAllPasswordCallback;
 import com.home.young.myPassword.service.OnPasswordChangeListener;
-import com.home.young.myPassword.service.OnSettingChangeListener;
 
 public class PasswordListFragment extends BaseFragment implements OnGetAllPasswordCallback,
         android.view.View.OnClickListener {
@@ -31,7 +29,7 @@ public class PasswordListFragment extends BaseFragment implements OnGetAllPasswo
     private String passwordGroupName;
     //endregion
 
-    //region lambda
+    //region anonymous class
     private OnPasswordChangeListener onPasswordListener = new OnPasswordChangeListener() {
         @Override
         public void onNewPassword(Password password) {
