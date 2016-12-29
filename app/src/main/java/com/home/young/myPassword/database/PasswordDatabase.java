@@ -15,6 +15,8 @@ import com.home.young.myPassword.model.Password;
 import com.home.young.myPassword.model.PasswordGroup;
 import com.home.young.myPassword.model.SettingKey;
 
+//Class for SQLite
+@Deprecated
 public class PasswordDatabase extends SQLiteOpenHelper {
 
     //region field

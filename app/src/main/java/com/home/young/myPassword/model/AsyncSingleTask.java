@@ -6,9 +6,6 @@ import android.os.Looper;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * Created by YOUNG on 2016/4/9.
- */
 public abstract class AsyncSingleTask<D> {
     private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private static final Handler handler = new Handler(Looper.getMainLooper());

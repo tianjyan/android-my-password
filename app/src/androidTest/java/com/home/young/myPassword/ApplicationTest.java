@@ -13,11 +13,17 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.UUID;
 
 import com.home.young.myPassword.application.IOHelper;
 import com.home.young.myPassword.application.JsonHelper;
 import com.home.young.myPassword.application.PwdGen;
+import com.home.young.myPassword.database.PasswordDBRealm;
 import com.home.young.myPassword.model.Password;
+import com.home.young.myPassword.model.PasswordRealm;
+
+import io.realm.RealmResults;
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
@@ -89,5 +95,30 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         String str = IOHelper.readSDFile(Environment.getExternalStorageDirectory().getPath()+ "/Download/MyPasswordBackup.json");
         Assert.assertNotNull(str);
         IOHelper.deleteSDFile(Environment.getExternalStorageDirectory().getPath()+ "/Download/MyPasswordBackup.json");
+    }
+
+    @SmallTest
+    public void testInsertPasswordRealm() {
+        PasswordDBRealm passwordDBRealm = new PasswordDBRealm();
+        PasswordRealm passwordRealm = new PasswordRealm();
+        passwordRealm.setTitle("Test Title");
+        passwordRealm.setUserName("Test UserName");
+        String id = passwordDBRealm.insertPasswordRealm(getContext(), passwordRealm);
+
+        RealmResults<PasswordRealm> passwordRealms = passwordDBRealm.getAllPasswordRealm(getContext());
+
+        Iterator<PasswordRealm> iterator = passwordRealms.iterator();
+
+        boolean result = false;
+
+        while (iterator.hasNext()) {
+            PasswordRealm item = iterator.next();
+            if (item.getId().equals(id)) {
+                result = true;
+                break;
+            }
+        }
+
+        Assert.assertEquals(result, true);
     }
 }
