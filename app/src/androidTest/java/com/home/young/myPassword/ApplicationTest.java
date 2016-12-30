@@ -99,11 +99,11 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
 
     @SmallTest
     public void testInsertPasswordRealm() {
-        PasswordDBRealm passwordDBRealm = new PasswordDBRealm();
+        PasswordDBRealm passwordDBRealm = new PasswordDBRealm(getContext());
         PasswordRealm passwordRealm = new PasswordRealm();
         passwordRealm.setTitle("Test Title");
         passwordRealm.setUserName("Test UserName");
-        String id = passwordDBRealm.insertPasswordRealm(getContext(), passwordRealm);
+        String id = passwordDBRealm.insertOrUpdatePasswordRealm(passwordRealm);
 
         RealmResults<PasswordRealm> passwordRealms = passwordDBRealm.getAllPasswordRealm(getContext());
 

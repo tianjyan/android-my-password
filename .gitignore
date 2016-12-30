@@ -33,3 +33,5 @@ captures/
 
 # Idea folder
 .idea
+
+*.iml
