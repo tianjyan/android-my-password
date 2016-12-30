@@ -2,9 +2,6 @@ package com.home.young.myPassword.model;
 
 import android.os.Bundle;
 
-/**
- * Created by YOUNG on 2016/4/9.
- */
 public class AsyncResult<Data> {
     private int result;
     private Data data;

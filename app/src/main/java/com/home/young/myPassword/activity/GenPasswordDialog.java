@@ -12,57 +12,51 @@ import android.widget.Toast;
 import com.home.young.myPassword.R;
 import com.home.young.myPassword.application.PwdGen;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class GenPasswordDialog extends Dialog {
 
     //region field
-    View cancel;
-    View sure;
-    View gen;
-    CheckBox lows;
-    CheckBox caps;
-    CheckBox numbers;
-    CheckBox special;
-    RadioButton eight;
-    RadioButton sixteen;
-    EditText result;
+    @BindView(R.id.gen_password_lows) CheckBox lows;
+    @BindView(R.id.gen_password_caps) CheckBox caps;
+    @BindView(R.id.gen_password_numbers) CheckBox numbers;
+    @BindView(R.id.gen_password_special) CheckBox special;
+    @BindView(R.id.gen_password_len_eight) RadioButton eight;
+    @BindView(R.id.gen_password_result) EditText result;
     String genPassword;
     //endregion
 
-    //region lambda
-    private View.OnClickListener cancelClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            dismiss();
-        }
-    };
+    //region onclick
+    @OnClick(R.id.gen_password_cancel)
+    public void cancelClick() {
+        dismiss();
+    }
 
-    private View.OnClickListener sureClick = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            genPassword = result.getText().toString();
-            dismiss();
-        }
-    };
+    @OnClick(R.id.gen_password_sure)
+    public void sureClick() {
+        genPassword = result.getText().toString();
+        dismiss();
+    }
 
-    private View.OnClickListener genClick = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            if(lows.isChecked() || caps.isChecked() || numbers.isChecked() || special.isChecked()) {
+    @OnClick(R.id.gen_password_gen)
+    public void genClick() {
+        if(lows.isChecked() || caps.isChecked() || numbers.isChecked() || special.isChecked()) {
 
-                String password = PwdGen.generatePassword(
-                        eight.isChecked() ? 8 : 16,
-                        lows.isChecked() ? PwdGen.Optionality.MANDATORY : PwdGen.Optionality.PROHIBITED,
-                        caps.isChecked() ? PwdGen.Optionality.MANDATORY : PwdGen.Optionality.PROHIBITED,
-                        numbers.isChecked() ? PwdGen.Optionality.MANDATORY : PwdGen.Optionality.PROHIBITED,
-                        special.isChecked() ? PwdGen.Optionality.MANDATORY : PwdGen.Optionality.PROHIBITED);
-                result.setText(password);
-            }
-            else {
-                Toast.makeText(getContext(), getContext().getString(R.string.gen_password_msg),
-                        Toast.LENGTH_SHORT).show();
-            }
+            String password = PwdGen.generatePassword(
+                    eight.isChecked() ? 8 : 16,
+                    lows.isChecked() ? PwdGen.Optionality.MANDATORY : PwdGen.Optionality.PROHIBITED,
+                    caps.isChecked() ? PwdGen.Optionality.MANDATORY : PwdGen.Optionality.PROHIBITED,
+                    numbers.isChecked() ? PwdGen.Optionality.MANDATORY : PwdGen.Optionality.PROHIBITED,
+                    special.isChecked() ? PwdGen.Optionality.MANDATORY : PwdGen.Optionality.PROHIBITED);
+            result.setText(password);
         }
-    };
+        else {
+            Toast.makeText(getContext(), getContext().getString(R.string.gen_password_msg),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
     //endregion
 
     //region constructor
@@ -78,21 +72,7 @@ public class GenPasswordDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_gen_password);
-
-        cancel = findViewById(R.id.gen_password_cancel);
-        sure = findViewById(R.id.gen_password_sure);
-        gen = findViewById(R.id.gen_password_gen);
-        lows = (CheckBox) findViewById(R.id.gen_password_lows);
-        caps = (CheckBox) findViewById(R.id.gen_password_caps);
-        numbers = (CheckBox) findViewById(R.id.gen_password_numbers);
-        special = (CheckBox) findViewById(R.id.gen_password_special);
-        eight = (RadioButton) findViewById(R.id.gen_password_len_eight);
-        sixteen = (RadioButton) findViewById(R.id.gen_password_len_sixteen);
-        result = (EditText) findViewById(R.id.gen_password_result);
-
-        cancel.setOnClickListener(cancelClick);
-        sure.setOnClickListener(sureClick);
-        gen.setOnClickListener(genClick);
+        ButterKnife.bind(this);
     }
     //endregion
 

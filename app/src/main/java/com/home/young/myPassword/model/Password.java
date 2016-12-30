@@ -1,10 +1,7 @@
 package com.home.young.myPassword.model;
 
-import java.util.UUID;
-
-/**
- * Created by YOUNG on 2016/4/4.
- */
+//Class for SQLite
+@Deprecated
 public class Password {
     private int id;
     private long publish;

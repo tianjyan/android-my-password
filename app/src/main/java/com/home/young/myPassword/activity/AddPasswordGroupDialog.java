@@ -3,7 +3,6 @@ package com.home.young.myPassword.activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 
@@ -11,38 +10,33 @@ import com.home.young.myPassword.R;
 import com.home.young.myPassword.model.PasswordGroup;
 import com.home.young.myPassword.service.MainBinder;
 
-/**
- * Created by YOUNG on 2016/4/9.
- */
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class AddPasswordGroupDialog extends Dialog {
 
     //region field
-    private EditText editText;
-    private View cancelBtn;
-    private View sureBtn;
+    @BindView(R.id.create_passwordGroup_name) EditText editText;
     private MainBinder mainBinder;
     //endregion
 
-    //region lambda
-    private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
+    //region onclick
+    @OnClick(R.id.create_passwordGroup_cancel)
+    public void cancelClick() {
+        dismiss();
+    }
+
+    @OnClick(R.id.create_passwordGroup_sure)
+    public void sureClick() {
+        String name = editText.getText().toString().trim();
+        if(name.length() > 0){
+            PasswordGroup passwordGroup = new PasswordGroup();
+            passwordGroup.setGroupName(name);
+            mainBinder.insertPasswordGroup(passwordGroup);
             dismiss();
         }
-    };
-
-    private View.OnClickListener onSureClickListener = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            String name = editText.getText().toString().trim();
-            if(name.length() > 0){
-                PasswordGroup passwordGroup = new PasswordGroup();
-                passwordGroup.setGroupName(name);
-                mainBinder.insertPasswordGroup(passwordGroup);
-                dismiss();
-            }
-        }
-    };
+    }
     //endregion
 
     //region constructor
@@ -58,13 +52,7 @@ public class AddPasswordGroupDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_create_password_group);
-
-        cancelBtn = findViewById(R.id.create_passwordGroup_cancel);
-        sureBtn = findViewById(R.id.create_passwordGroup_sure);
-        editText = (EditText)findViewById(R.id.create_passwordGroup_name);
-
-        cancelBtn.setOnClickListener(onCancelClickListener);
-        sureBtn.setOnClickListener(onSureClickListener);
+        ButterKnife.bind(this);
 
         editText.requestFocus();
     }

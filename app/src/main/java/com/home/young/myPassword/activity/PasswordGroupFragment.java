@@ -32,7 +32,7 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
     private OnPasswordGroupSelected onPasswordGroupSelected;
     //endregion
 
-    //region lambda
+    //region anonymous class
     private View.OnClickListener onAddClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {

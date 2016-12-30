@@ -35,6 +35,9 @@ import com.home.young.myPassword.service.OnGetAllPasswordCallback;
 import com.home.young.myPassword.service.OnGetAllPasswordGroupCallback;
 import com.home.young.myPassword.service.OnGetPasswordCallback;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class EditPasswordActivity extends BaseActivity implements OnGetPasswordCallback, OnGetAllPasswordCallback,
         OnGetAllPasswordGroupCallback {
 
@@ -46,12 +49,12 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
     private int MODE = MODE_ADD;
     private int id;
     private MainBinder mainBinder;
-    private EditText titleView;
-    private AutoCompleteTextView nameView;
-    private AutoCompleteTextView passwordView;
-    private AutoCompleteTextView payPasswordView;
-    private EditText noteView;
-    private Spinner spinner;
+    @BindView(R.id.edit_password_title) EditText titleView;
+    @BindView(R.id.edit_password_name) AutoCompleteTextView nameView;
+    @BindView(R.id.edit_password_password) AutoCompleteTextView passwordView;
+    @BindView(R.id.edit_password_pay_password) AutoCompleteTextView payPasswordView;
+    @BindView(R.id.edit_password_note) EditText noteView;
+    @BindView(R.id.edit_password_group) Spinner spinner;
     private String passwordGroup;
     //endregion
 
@@ -82,13 +85,7 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_password);
-
-        titleView = (EditText) findViewById(R.id.edit_password_title);
-        nameView = (AutoCompleteTextView) findViewById(R.id.edit_password_name);
-        passwordView = (AutoCompleteTextView) findViewById(R.id.edit_password_password);
-        payPasswordView = (AutoCompleteTextView)findViewById(R.id.edit_password_pay_password);
-        noteView = (EditText) findViewById(R.id.edit_password_note);
-        spinner = (Spinner) findViewById(R.id.edit_password_group);
+        ButterKnife.bind(this);
 
         id = getIntent().getIntExtra(ID, -1);
         if (id == -1) {
