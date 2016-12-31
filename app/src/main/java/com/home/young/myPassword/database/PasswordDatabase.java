@@ -11,8 +11,6 @@ import java.util.List;
 
 import com.home.young.myPassword.application.AES;
 import com.home.young.myPassword.application.App;
-import com.home.young.myPassword.model.Password;
-import com.home.young.myPassword.model.PasswordGroup;
 import com.home.young.myPassword.model.SettingKey;
 
 //Class for SQLite
@@ -275,28 +273,7 @@ public class PasswordDatabase extends SQLiteOpenHelper {
         this.encryptKey = key;
     }
 
-    private String encrypt(String password){
-        String result;
-        try{
-            result = AES.encrypt(password, encryptKey);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            result = password;
-        }
-        return result;
-    }
 
-    private String decrypt(String data) {
-        String result;
-        try {
-            result = AES.decrypt(data, encryptKey);
-        } catch (Exception e) {
-            e.printStackTrace();
-            result = data;
-        }
-        return result;
-    }
 
     private String getDefaultGroupName() {
         return "默认";

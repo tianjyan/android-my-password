@@ -5,7 +5,6 @@ import java.util.List;
 import com.home.young.myPassword.database.PasswordDatabase;
 import com.home.young.myPassword.model.AsyncResult;
 import com.home.young.myPassword.model.AsyncSingleTask;
-import com.home.young.myPassword.model.Password;
 import com.home.young.myPassword.service.OnGetAllPasswordCallback;
 
 /**

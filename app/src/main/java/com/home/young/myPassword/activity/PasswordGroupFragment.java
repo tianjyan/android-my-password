@@ -17,7 +17,6 @@ import java.util.List;
 import com.home.young.myPassword.R;
 import com.home.young.myPassword.adapter.PasswordGroupAdapter;
 import com.home.young.myPassword.application.BaseActivity;
-import com.home.young.myPassword.model.PasswordGroup;
 import com.home.young.myPassword.model.SettingKey;
 import com.home.young.myPassword.service.MainBinder;
 import com.home.young.myPassword.service.OnGetAllPasswordGroupCallback;

@@ -12,7 +12,6 @@ import java.util.List;
 import com.home.young.myPassword.R;
 import com.home.young.myPassword.adapter.PasswordListAdapter;
 import com.home.young.myPassword.application.BaseFragment;
-import com.home.young.myPassword.model.Password;
 import com.home.young.myPassword.model.SettingKey;
 import com.home.young.myPassword.service.MainBinder;
 import com.home.young.myPassword.service.OnGetAllPasswordCallback;

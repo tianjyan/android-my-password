@@ -24,7 +24,6 @@ import java.util.Locale;
 
 import com.home.young.myPassword.R;
 import com.home.young.myPassword.activity.EditPasswordActivity;
-import com.home.young.myPassword.model.Password;
 import com.home.young.myPassword.service.MainBinder;
 
 /**

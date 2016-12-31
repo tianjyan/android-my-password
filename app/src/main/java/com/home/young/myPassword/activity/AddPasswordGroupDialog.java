@@ -7,7 +7,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.home.young.myPassword.R;
-import com.home.young.myPassword.model.PasswordGroup;
 import com.home.young.myPassword.service.MainBinder;
 
 import butterknife.BindView;

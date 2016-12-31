@@ -8,19 +8,15 @@ import android.test.suitebuilder.annotation.SmallTest;
 import junit.framework.Assert;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.UUID;
 
 import com.home.young.myPassword.application.IOHelper;
 import com.home.young.myPassword.application.JsonHelper;
 import com.home.young.myPassword.application.PwdGen;
 import com.home.young.myPassword.database.PasswordDBRealm;
-import com.home.young.myPassword.model.Password;
 import com.home.young.myPassword.model.PasswordRealm;
 
 import io.realm.RealmResults;

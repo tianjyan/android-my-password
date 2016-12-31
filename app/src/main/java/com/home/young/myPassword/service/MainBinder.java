@@ -10,8 +10,6 @@ import com.home.young.myPassword.application.App;
 import com.home.young.myPassword.database.PasswordDatabase;
 import com.home.young.myPassword.model.AsyncResult;
 import com.home.young.myPassword.model.AsyncSingleTask;
-import com.home.young.myPassword.model.Password;
-import com.home.young.myPassword.model.PasswordGroup;
 import com.home.young.myPassword.model.SettingKey;
 import com.home.young.myPassword.service.Task.GetAllPasswordTask;
 
@@ -21,6 +19,14 @@ import com.home.young.myPassword.service.Task.GetAllPasswordTask;
 public class MainBinder extends Binder {
     private App app;
     private PasswordDatabase passwordDatabase;
+
+    public List<OnPasswordChangeListener> getOnPasswordListeners() {
+        return onPasswordListeners;
+    }
+
+    public List<OnPasswordGroupChangeListener> getOnPasswordGroupListeners() {
+        return onPasswordGroupListeners;
+    }
 
     private List<OnPasswordChangeListener> onPasswordListeners = new ArrayList<OnPasswordChangeListener>();
     private List<OnPasswordGroupChangeListener> onPasswordGroupListeners = new ArrayList<OnPasswordGroupChangeListener>();
