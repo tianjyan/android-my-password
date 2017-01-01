@@ -24,12 +24,9 @@ import java.util.Locale;
 
 import com.home.young.myPassword.R;
 import com.home.young.myPassword.activity.EditPasswordActivity;
+import com.home.young.myPassword.database.PasswordDBRealm;
 import com.home.young.myPassword.model.Password;
-import com.home.young.myPassword.service.MainBinder;
 
-/**
- * Created by YOUNG on 2016/4/10.
- */
 public class PasswordListAdapter  extends BaseAdapter {
 
     //region field
@@ -38,7 +35,7 @@ public class PasswordListAdapter  extends BaseAdapter {
     private Context context;
     private SimpleDateFormat simpleDateFormatYear = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     private int padding;
-    private MainBinder mainBinder;
+    private PasswordDBRealm mainBinder;
     private SimpleDateFormat simpleDateFormatMonth = new SimpleDateFormat("MM-dd", Locale.getDefault());
     private String passwordGroup;
     //endregion
@@ -142,7 +139,7 @@ public class PasswordListAdapter  extends BaseAdapter {
         return (int) (dipValue * scale + 0.5f);
     }
 
-    public void setData(List<Password> passwords, MainBinder mainBinder) {
+    public void setData(List<Password> passwords, PasswordDBRealm mainBinder) {
         this.mainBinder = mainBinder;
         this.passwords.clear();
         for (Password password : passwords) {
@@ -158,7 +155,7 @@ public class PasswordListAdapter  extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void onDeletePassword(int id) {
+    public void onDeletePassword(String id) {
         for (int i = 0; i < passwords.size(); i++) {
             PasswordItem passwordItem = passwords.get(i);
             if (passwordItem.password.getId() == id) {

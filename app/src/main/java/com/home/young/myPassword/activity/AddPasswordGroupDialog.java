@@ -7,8 +7,8 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.home.young.myPassword.R;
+import com.home.young.myPassword.database.PasswordDBRealm;
 import com.home.young.myPassword.model.PasswordGroup;
-import com.home.young.myPassword.service.MainBinder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,7 +18,7 @@ public class AddPasswordGroupDialog extends Dialog {
 
     //region field
     @BindView(R.id.create_passwordGroup_name) EditText editText;
-    private MainBinder mainBinder;
+    private PasswordDBRealm mainBinder;
     //endregion
 
     //region onclick
@@ -33,14 +33,14 @@ public class AddPasswordGroupDialog extends Dialog {
         if(name.length() > 0){
             PasswordGroup passwordGroup = new PasswordGroup();
             passwordGroup.setGroupName(name);
-            mainBinder.insertPasswordGroup(passwordGroup);
+            mainBinder.addPasswordGroup(passwordGroup);
             dismiss();
         }
     }
     //endregion
 
     //region constructor
-    public AddPasswordGroupDialog(Context context, MainBinder mainBinder){
+    public AddPasswordGroupDialog(Context context, PasswordDBRealm mainBinder){
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         this.mainBinder = mainBinder;

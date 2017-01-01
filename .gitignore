@@ -35,3 +35,8 @@ captures/
 .idea
 
 *.iml
+
+# freeline
+freeline.py
+freeline_project_description.json
+freeline

@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Random;
 import org.apache.commons.lang3.StringUtils;
 
-/**
- * Created by YOUNG on 2016/4/3.
- */
 public class PwdGen {
 
     private static final char[] LOWERS = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };

@@ -9,6 +9,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,9 +28,9 @@ import java.util.Set;
 
 import com.home.young.myPassword.R;
 import com.home.young.myPassword.application.BaseActivity;
+import com.home.young.myPassword.database.PasswordDBRealm;
 import com.home.young.myPassword.model.Password;
 import com.home.young.myPassword.model.PasswordGroup;
-import com.home.young.myPassword.service.MainBinder;
 import com.home.young.myPassword.service.MainService;
 import com.home.young.myPassword.service.OnGetAllPasswordCallback;
 import com.home.young.myPassword.service.OnGetAllPasswordGroupCallback;
@@ -47,8 +48,8 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
     private static final int MODE_ADD = 0;
     private static final int MODE_MODIFY = 1;
     private int MODE = MODE_ADD;
-    private int id;
-    private MainBinder mainBinder;
+    private String id;
+    private PasswordDBRealm mainBinder;
     @BindView(R.id.edit_password_title) EditText titleView;
     @BindView(R.id.edit_password_name) AutoCompleteTextView nameView;
     @BindView(R.id.edit_password_password) AutoCompleteTextView passwordView;
@@ -67,12 +68,12 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            mainBinder = (MainBinder) service;
+            mainBinder = (PasswordDBRealm) service;
             if (MODE == MODE_MODIFY) {
                 mainBinder.getPassword(id, EditPasswordActivity.this);
             }
             // 获得所有密码、用户名，用于自动完成
-            mainBinder.getAllPassword(EditPasswordActivity.this);
+            mainBinder.getAllPasswordByGroupName(null, EditPasswordActivity.this);
             mainBinder.getAllPasswordGroup(EditPasswordActivity.this);
         }
     };
@@ -87,8 +88,8 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
         setContentView(R.layout.activity_edit_password);
         ButterKnife.bind(this);
 
-        id = getIntent().getIntExtra(ID, -1);
-        if (id == -1) {
+        id = getIntent().getStringExtra(ID);
+        if (TextUtils.isEmpty(id)) {
             MODE = MODE_ADD;
         } else {
             MODE = MODE_MODIFY;
@@ -275,7 +276,7 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
             if (MODE == MODE_ADD) {
                 // 添加
                 password.setPublish(System.currentTimeMillis());
-                mainBinder.insertPassword(password);
+                mainBinder.addPassword(password);
             } else {
                 // 修改密码
                 password.setId(id);

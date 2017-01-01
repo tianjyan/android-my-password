@@ -10,9 +10,6 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-/**
- * Created by YOUNG on 2016/4/1.
- */
 public class AES {
     public static String encrypt(String cleartext, String seed) throws Exception {
         byte[] rawKey = getRawKey(seed.getBytes());

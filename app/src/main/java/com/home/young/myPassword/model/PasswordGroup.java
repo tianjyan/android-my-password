@@ -1,8 +1,10 @@
 package com.home.young.myPassword.model;
 
-//Class for SQLite
-@Deprecated
-public class PasswordGroup {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class PasswordGroup extends RealmObject {
+    @PrimaryKey
     private String groupName;
 
     public String getGroupName() {
@@ -18,3 +20,4 @@ public class PasswordGroup {
         return "PasswordGroup [groupName=" + groupName + "]";
     }
 }
+

@@ -7,9 +7,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-/**
- * Created by YOUNG on 16/5/12.
- */
 public class IOHelper {
 
     public static String readSDFile(String fileName) throws IOException {

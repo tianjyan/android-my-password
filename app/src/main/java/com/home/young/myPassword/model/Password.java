@@ -1,9 +1,11 @@
 package com.home.young.myPassword.model;
 
-//Class for SQLite
-@Deprecated
-public class Password {
-    private int id;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Password extends RealmObject {
+    @PrimaryKey
+    private String id;
     private long publish;
     private String title;
     private String userName;
@@ -12,63 +14,68 @@ public class Password {
     private String note;
     private String groupName;
 
-    public int getId(){
+    public String getId() {
         return id;
     }
 
-    public void setId(int id){
+    public void setId(String id) {
         this.id = id;
     }
 
-    public long getPublish(){
+    public long getPublish() {
         return publish;
     }
 
-    public void setPublish(long publish){
+    public void setPublish(long publish) {
         this.publish = publish;
     }
 
-    public String getTitle(){
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title){
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    public String getUserName(){
+    public String getUserName() {
         return userName;
     }
 
-    public void setUserName(String userName){
+    public void setUserName(String userName) {
         this.userName = userName;
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password){
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getPayPassword(){return payPassword;}
+    public String getPayPassword() {
+        return payPassword;
+    }
 
-    public void setPayPassword(String payPassword) { this.payPassword = payPassword; }
+    public void setPayPassword(String payPassword) {
+        this.payPassword = payPassword;
+    }
 
-    public String getNote(){
+    public String getNote() {
         return note;
     }
 
-    public void setNote(String note){
+    public void setNote(String note) {
         this.note = note;
     }
 
-    public String getGroupName(){
+    public String getGroupName() {
         return groupName;
     }
 
-    public void setGroupName(String groupName){
+    public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
+
 }
