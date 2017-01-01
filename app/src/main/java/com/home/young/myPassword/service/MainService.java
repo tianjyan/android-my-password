@@ -3,16 +3,14 @@ package com.home.young.myPassword.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 
 import com.home.young.myPassword.application.App;
+import com.home.young.myPassword.database.PasswordDBRealm;
+import com.home.young.myPassword.model.SettingKey;
 
-/**
- * Created by YOUNG on 2016/4/9.
- */
 public class MainService extends Service {
 
-    private MainBinder mainBinder;
+    private PasswordDBRealm mainBinder;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -28,7 +26,9 @@ public class MainService extends Service {
     @Override
     public  void onCreate(){
         super.onCreate();
-        mainBinder = new MainBinder(this, (App) getApplicationContext());
+        App app = (App)getApplicationContext();
+        final String key = app.getSetting(SettingKey.KEY, "");
+        mainBinder = new PasswordDBRealm((App) getApplicationContext(), key);
     }
 
     @Override

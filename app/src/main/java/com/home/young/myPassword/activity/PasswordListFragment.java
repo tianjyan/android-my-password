@@ -12,8 +12,9 @@ import java.util.List;
 import com.home.young.myPassword.R;
 import com.home.young.myPassword.adapter.PasswordListAdapter;
 import com.home.young.myPassword.application.BaseFragment;
+import com.home.young.myPassword.database.PasswordDBRealm;
+import com.home.young.myPassword.model.Password;
 import com.home.young.myPassword.model.SettingKey;
-import com.home.young.myPassword.service.MainBinder;
 import com.home.young.myPassword.service.OnGetAllPasswordCallback;
 import com.home.young.myPassword.service.OnPasswordChangeListener;
 
@@ -22,7 +23,7 @@ public class PasswordListFragment extends BaseFragment implements OnGetAllPasswo
 
     //region field
     private PasswordListAdapter mainAdapter;
-    private MainBinder mainBinder;
+    private PasswordDBRealm mainBinder;
     private ListView listView;
     private View noDataView;
     private String passwordGroupName;
@@ -39,7 +40,7 @@ public class PasswordListFragment extends BaseFragment implements OnGetAllPasswo
         }
 
         @Override
-        public void onDeletePassword(int id) {
+        public void onDeletePassword(String id) {
             mainAdapter.onDeletePassword(id);
             initView();
         }
@@ -121,13 +122,13 @@ public class PasswordListFragment extends BaseFragment implements OnGetAllPasswo
     //endregion
 
     //region private
-    public void setDataSource(MainBinder mainBinder) {
+    public void setDataSource(PasswordDBRealm mainBinder) {
         this.mainBinder = mainBinder;
     }
 
     public void showPasswordGroup(String passwordGroupName) {
         this.passwordGroupName = passwordGroupName;
-        mainBinder.getAllPassword(this, passwordGroupName);
+        mainBinder.getAllPasswordByGroupName(passwordGroupName, this);
     }
 
     public String getPasswordGroupName() {

@@ -3,9 +3,6 @@ package com.home.young.myPassword.application;
 import android.app.Fragment;
 import android.os.Bundle;
 
-/**
- * Created by YOUNG on 2016/4/7.
- */
 public class BaseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {

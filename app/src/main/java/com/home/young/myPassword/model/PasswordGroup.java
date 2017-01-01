@@ -1,8 +1,10 @@
 package com.home.young.myPassword.model;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class PasswordGroup extends RealmObject {
+    @PrimaryKey
     private String groupName;
 
     public String getGroupName() {

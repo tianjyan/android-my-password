@@ -3,13 +3,11 @@ package com.home.young.myPassword.activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.test.suitebuilder.annotation.Smoke;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.home.young.myPassword.R;
-import com.home.young.myPassword.service.MainBinder;
+import com.home.young.myPassword.database.PasswordDBRealm;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,7 +20,7 @@ public class UpdatePasswordGroupNameDialog extends Dialog {
 
     //region field
     @BindView(R.id.update_passwordGroup_name) EditText editText;
-    private MainBinder mainBinder;
+    private PasswordDBRealm mainBinder;
     private String oldGroupName;
     //endregion
 
@@ -37,7 +35,7 @@ public class UpdatePasswordGroupNameDialog extends Dialog {
         String name = editText.getText().toString().trim();
         if(name.length() > 0){
             if(!name.equals(oldGroupName)){
-                mainBinder.updatePasswdGroupName(oldGroupName, name);
+                mainBinder.updatePasswordGroup(oldGroupName, name);
             }
             dismiss();
         }
@@ -59,7 +57,7 @@ public class UpdatePasswordGroupNameDialog extends Dialog {
     //endregion
 
     //region private
-    public UpdatePasswordGroupNameDialog(Context context, String oldGroupName, MainBinder mainBinder){
+    public UpdatePasswordGroupNameDialog(Context context, String oldGroupName, PasswordDBRealm mainBinder){
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         this.mainBinder = mainBinder;

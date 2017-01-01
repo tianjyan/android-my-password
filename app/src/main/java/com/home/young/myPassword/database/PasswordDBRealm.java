@@ -1,14 +1,16 @@
 package com.home.young.myPassword.database;
 
 import android.content.Context;
+import android.os.Binder;
 import android.text.TextUtils;
 
 import com.home.young.myPassword.application.AES;
+import com.home.young.myPassword.model.AsyncResult;
+import com.home.young.myPassword.model.AsyncSingleTask;
 import com.home.young.myPassword.model.Password;
 import com.home.young.myPassword.model.PasswordGroup;
-import com.home.young.myPassword.model.PasswordRealm;
-import com.home.young.myPassword.service.MainBinder;
 import com.home.young.myPassword.service.OnGetAllPasswordCallback;
+import com.home.young.myPassword.service.OnGetAllPasswordGroupCallback;
 import com.home.young.myPassword.service.OnGetPasswordCallback;
 import com.home.young.myPassword.service.OnPasswordChangeListener;
 import com.home.young.myPassword.service.OnPasswordGroupChangeListener;
@@ -19,34 +21,93 @@ import java.util.List;
 import java.util.UUID;
 
 import io.realm.Realm;
-import io.realm.RealmAsyncTask;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 //TODO: 添加版本的代码（RealmMigration must be provided）
-public class PasswordDBRealm {
+public class PasswordDBRealm extends Binder{
 
     private Realm realm;
     private String encryptKey;
-    private MainBinder mainBinder;
 
-    public PasswordDBRealm(Context context, String encryptKey, MainBinder mainBinder) {
+    public List<OnPasswordChangeListener> getOnPasswordListeners() {
+        return onPasswordListeners;
+    }
+
+    public List<OnPasswordGroupChangeListener> getOnPasswordGroupListeners() {
+        return onPasswordGroupListeners;
+    }
+
+    private List<OnPasswordChangeListener> onPasswordListeners = new ArrayList<OnPasswordChangeListener>();
+    private List<OnPasswordGroupChangeListener> onPasswordGroupListeners = new ArrayList<OnPasswordGroupChangeListener>();
+
+    public PasswordDBRealm(Context context, String encryptKey) {
         Realm.init(context);
         Realm.setDefaultConfiguration(getConfiguration());
         this.realm = Realm.getDefaultInstance();
         this.encryptKey = encryptKey;
-        this.mainBinder = mainBinder;
+    }
+
+    public void registOnPasswordGroupListener(final OnPasswordGroupChangeListener onPasswordGroupListener) {
+        new AsyncSingleTask<Void>() {
+            @Override
+            protected AsyncResult<Void> doInBackground(AsyncResult<Void> asyncResult) {
+                return asyncResult;
+            }
+
+            @Override
+            protected void runOnUIThread(AsyncResult<Void> asyncResult) {
+                onPasswordGroupListeners.add(onPasswordGroupListener);
+            }
+        }.execute();
+    }
+
+    public void unregistOnPasswordGroupListener(final OnPasswordGroupChangeListener onPasswordGroupListener) {
+        new AsyncSingleTask<Void>() {
+            @Override
+            protected AsyncResult<Void> doInBackground(AsyncResult<Void> asyncResult) {
+                return asyncResult;
+            }
+
+            @Override
+            protected void runOnUIThread(AsyncResult<Void> asyncResult) {
+                onPasswordGroupListeners.remove(onPasswordGroupListener);
+            }
+        }.execute();
+    }
+
+    public void registOnPasswordListener(final OnPasswordChangeListener onPasswordListener) {
+        new AsyncSingleTask<Void>() {
+            @Override
+            protected AsyncResult<Void> doInBackground(AsyncResult<Void> asyncResult) {
+                return asyncResult;
+            }
+
+            @Override
+            protected void runOnUIThread(AsyncResult<Void> asyncResult) {
+                onPasswordListeners.add(onPasswordListener);
+            }
+        }.execute();
+    }
+
+    public void unregistOnPasswordListener(final OnPasswordChangeListener onPasswordListener) {
+        new AsyncSingleTask<Void>() {
+            @Override
+            protected AsyncResult<Void> doInBackground(AsyncResult<Void> asyncResult) {
+                return asyncResult;
+            }
+
+            @Override
+            protected void runOnUIThread(AsyncResult<Void> asyncResult) {
+                onPasswordListeners.remove(onPasswordListener);
+            }
+        }.execute();
     }
 
     private RealmConfiguration getConfiguration() {
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
                 .name("mypasswordrealm.realm").deleteRealmIfMigrationNeeded().build();
         return realmConfiguration;
-    }
-
-    private Realm getRealm(Context context) {
-        Realm.init(context);
-        return Realm.getDefaultInstance();
     }
 
     public void addPassword(final Password password) {
@@ -89,11 +150,11 @@ public class PasswordDBRealm {
         });
     }
 
-    public void deletePassword(final Password password) {
+    public void deletePassword(final String id) {
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                RealmResults<Password> realmResults = realm.where(Password.class).equalTo("id", password.getId()).findAll();
+                RealmResults<Password> realmResults = realm.where(Password.class).equalTo("Id", id).findAll();
                 if (realmResults.size() > 0) {
                     realmResults.deleteAllFromRealm();
                 }
@@ -102,7 +163,7 @@ public class PasswordDBRealm {
 
             @Override
             public void onSuccess() {
-                callDeletePassword(password);
+                callDeletePassword(id);
             }
         });
     }
@@ -138,20 +199,19 @@ public class PasswordDBRealm {
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                RealmResults<Password> results = realm.where(Password.class).equalTo("groupname", groupName).findAll();
+                RealmResults<Password> results;
+                if (TextUtils.isEmpty(groupName)) {
+                    results = realm.where(Password.class).findAll();
+                } else {
+                    results = realm.where(Password.class).equalTo("groupName", groupName).findAll();
+                }
+
                 Iterator<Password> iterator = results.iterator();
                 while (iterator.hasNext()) {
-                    Password item = iterator.next();
-                    Password password = new Password();
-                    password.setId(item.getId());
-                    password.setGroupName(item.getGroupName());
-                    password.setUserName(item.getUserName());
-                    password.setTitle(item.getTitle());
-                    password.setNote(item.getNote());
-                    password.setPassword(decrypt(item.getPassword()));
-                    password.setPayPassword(decrypt(item.getPayPassword()));
-                    password.setPublish(item.getPublish());
-                    passwords.add(item);
+                    Password password = realm.copyFromRealm(iterator.next());
+                    password.setPassword(decrypt(password.getPassword()));
+                    password.setPayPassword(decrypt(password.getPayPassword()));
+                    passwords.add(password);
                 }
             }
         }, new Realm.Transaction.OnSuccess() {
@@ -181,8 +241,8 @@ public class PasswordDBRealm {
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                PasswordGroup newGroup = realm.where(PasswordGroup.class).equalTo("groupname", newGroupName).findFirst();
-                PasswordGroup oldGroup = realm.where(PasswordGroup.class).equalTo("groupname", oldGroupName).findFirst();
+                PasswordGroup newGroup = realm.where(PasswordGroup.class).equalTo("groupName", newGroupName).findFirst();
+                PasswordGroup oldGroup = realm.where(PasswordGroup.class).equalTo("groupName", oldGroupName).findFirst();
                 if(newGroup == null) {
                     oldGroup.setGroupName(newGroupName);
                 } else {
@@ -190,10 +250,10 @@ public class PasswordDBRealm {
                     oldGroup.deleteFromRealm();
                 }
 
-                PasswordGroup group = realm.where(PasswordGroup.class).equalTo("groupname", oldGroupName).findFirst();
+                PasswordGroup group = realm.where(PasswordGroup.class).equalTo("groupName", oldGroupName).findFirst();
                 group.setGroupName(newGroupName);
 
-                RealmResults<Password> passwords = realm.where(Password.class).equalTo("groupname", oldGroupName).findAll();
+                RealmResults<Password> passwords = realm.where(Password.class).equalTo("groupName", oldGroupName).findAll();
                 Iterator<Password> iterator = passwords.iterator();
                 while (iterator.hasNext()) {
                     Password password = iterator.next();
@@ -208,11 +268,17 @@ public class PasswordDBRealm {
         });
     }
 
+    /**
+     * 删除密码分组，包括密码分住下的所有密码都会被删除
+     *
+     * @param groupName 分组名
+     */
     public void deletePasswordGroup(final String groupName) {
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                realm.where(PasswordGroup.class).equalTo("groupname", groupName).findFirst().deleteFromRealm();
+                realm.where(Password.class).equalTo("groupName", groupName).findAll().deleteAllFromRealm();
+                realm.where(PasswordGroup.class).equalTo("groupName", groupName).findFirst().deleteFromRealm();
             }
         }, new Realm.Transaction.OnSuccess() {
             @Override
@@ -222,8 +288,49 @@ public class PasswordDBRealm {
         });
     }
 
-    public void Close() {
+    public void getAllPasswordGroup(final OnGetAllPasswordGroupCallback onGetAllPasswordGroupCallback) {
+        final List<PasswordGroup> groups = new ArrayList<>();
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<PasswordGroup> results = realm.where(PasswordGroup.class).findAll();
+                Iterator<PasswordGroup> iterator = results.iterator();
+                while (iterator.hasNext()) {
+                    PasswordGroup group = realm.copyFromRealm(iterator.next());
+                    groups.add(group);
+                }
+
+                if (groups.size() == 0) {
+                    PasswordGroup group = new PasswordGroup();
+                    group.setGroupName("默认");
+                    realm.insertOrUpdate(group);
+                    groups.add(group);
+                }
+
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                onGetAllPasswordGroupCallback.onGetAllPasswordGroup(groups);
+            }
+        });
+    }
+
+    public void close() {
         realm.close();
+        new AsyncSingleTask<Void>(){
+            @Override
+            protected AsyncResult<Void> doInBackground(AsyncResult<Void> asyncResult) {
+                return asyncResult;
+            }
+
+            @Override
+            protected void runOnUIThread(AsyncResult<Void> asyncResult) {
+                super.runOnUIThread(asyncResult);
+                onPasswordListeners.clear();
+                onPasswordGroupListeners.clear();
+            }
+        }.execute();
     }
 
     private String encrypt(String password){
@@ -250,38 +357,56 @@ public class PasswordDBRealm {
     }
 
     private synchronized void callNewPassword(Password password) {
-        for(OnPasswordChangeListener listener : mainBinder.getOnPasswordListeners()) {
+        for(OnPasswordChangeListener listener : getOnPasswordListeners()) {
             listener.onNewPassword(password);
         }
     }
 
     private synchronized void callUpdatePassword(Password password) {
-        for(OnPasswordChangeListener listener : mainBinder.getOnPasswordListeners()) {
+        for(OnPasswordChangeListener listener : getOnPasswordListeners()) {
             listener.onUpdatePassword(password);
         }
     }
 
-    private synchronized void callDeletePassword(Password password) {
-        for(OnPasswordChangeListener listener : mainBinder.getOnPasswordListeners()) {
-            listener.onDeletePassword(password);
+    private synchronized void callDeletePassword(String id) {
+        for(OnPasswordChangeListener listener : getOnPasswordListeners()) {
+            listener.onDeletePassword(id);
         }
     }
 
     private synchronized void callNewPasswordGroup(PasswordGroup group) {
-        for(OnPasswordGroupChangeListener listener : mainBinder.getOnPasswordGroupListeners()) {
+        for(OnPasswordGroupChangeListener listener : getOnPasswordGroupListeners()) {
             listener.onNewPasswordGroup(group);
         }
     }
 
     private synchronized void callUpdatePasswordGroup(String oldGroupName, String newGroupName) {
-        for(OnPasswordGroupChangeListener listener : mainBinder.getOnPasswordGroupListeners()) {
+        for(OnPasswordGroupChangeListener listener : getOnPasswordGroupListeners()) {
             listener.onUpdateGroupName(oldGroupName, newGroupName);
         }
     }
 
     private synchronized void callDeletePasswordGroup(String groupName) {
-        for(OnPasswordGroupChangeListener listener : mainBinder.getOnPasswordGroupListeners()) {
+        for(OnPasswordGroupChangeListener listener : getOnPasswordGroupListeners()) {
             listener.onDeletePasswordGroup(groupName);
         }
     }
+
+    public void onDestroy() {
+        realm.close();
+        new AsyncSingleTask<Void>(){
+            @Override
+            protected AsyncResult<Void> doInBackground(AsyncResult<Void> asyncResult) {
+                return asyncResult;
+            }
+
+            @Override
+            protected void runOnUIThread(AsyncResult<Void> asyncResult) {
+                super.runOnUIThread(asyncResult);
+                onPasswordListeners.clear();
+                onPasswordGroupListeners.clear();
+            }
+        }.execute();
+    }
+
 }

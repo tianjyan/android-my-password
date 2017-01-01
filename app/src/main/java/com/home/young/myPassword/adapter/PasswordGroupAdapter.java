@@ -11,10 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.home.young.myPassword.R;
+import com.home.young.myPassword.model.PasswordGroup;
 
-/**
- * Created by YOUNG on 2016/4/9.
- */
 public class PasswordGroupAdapter extends BaseAdapter {
 
     //region field

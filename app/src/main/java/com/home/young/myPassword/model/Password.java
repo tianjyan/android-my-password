@@ -1,10 +1,6 @@
 package com.home.young.myPassword.model;
 
-import java.io.BufferedOutputStream;
-import java.util.UUID;
-
 import io.realm.RealmObject;
-import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 public class Password extends RealmObject {

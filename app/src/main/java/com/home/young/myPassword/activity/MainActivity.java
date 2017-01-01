@@ -30,8 +30,10 @@ import com.home.young.myPassword.R;
 import com.home.young.myPassword.application.BaseActivity;
 import com.home.young.myPassword.application.IOHelper;
 import com.home.young.myPassword.application.JsonHelper;
+import com.home.young.myPassword.database.PasswordDBRealm;
+import com.home.young.myPassword.model.Password;
+import com.home.young.myPassword.model.PasswordGroup;
 import com.home.young.myPassword.model.SettingKey;
-import com.home.young.myPassword.service.MainBinder;
 import com.home.young.myPassword.service.MainService;
 import com.home.young.myPassword.service.OnGetAllPasswordCallback;
 import com.home.young.myPassword.service.OnGetAllPasswordGroupCallback;
@@ -50,7 +52,7 @@ public class MainActivity extends BaseActivity implements OnGetAllPasswordCallba
     @BindView(R.id.main_layout) DrawerLayout drawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     @BindView(R.id.main_navigation_drawer) View drawerView;
-    private MainBinder mainBinder;
+    private PasswordDBRealm mainBinder;
     private PasswordListFragment passwordListFragment;
     private PasswordGroupFragment passwordGroupFragment;
     private String fullPath;
@@ -75,7 +77,7 @@ public class MainActivity extends BaseActivity implements OnGetAllPasswordCallba
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            mainBinder = (MainBinder) service;
+            mainBinder = (PasswordDBRealm) service;
             initFragment();
         }
     };
@@ -188,10 +190,10 @@ public class MainActivity extends BaseActivity implements OnGetAllPasswordCallba
                 if(!existGroup){
                     PasswordGroup group = new PasswordGroup();
                     group.setGroupName(passwords[i].getGroupName());
-                    mainBinder.insertPasswordGroup(group);
+                    mainBinder.addPasswordGroup(group);
                     passwordGroups.add(group);
                 }
-                mainBinder.insertPassword(passwords[i]);
+                mainBinder.addPassword(passwords[i]);
             }
 
         }
@@ -238,7 +240,7 @@ public class MainActivity extends BaseActivity implements OnGetAllPasswordCallba
         }
         if(!TextUtils.isEmpty(fullPath)){
             if(CODE_OUT == requestCode)
-                mainBinder.getAllPassword(this);
+                mainBinder.getAllPasswordByGroupName(null, this);
             else if(CODE_IN == requestCode)
                 mainBinder.getAllPasswordGroup(this);
         }

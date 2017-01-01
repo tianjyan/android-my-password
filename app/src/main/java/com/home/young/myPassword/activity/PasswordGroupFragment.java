@@ -17,8 +17,9 @@ import java.util.List;
 import com.home.young.myPassword.R;
 import com.home.young.myPassword.adapter.PasswordGroupAdapter;
 import com.home.young.myPassword.application.BaseActivity;
+import com.home.young.myPassword.database.PasswordDBRealm;
+import com.home.young.myPassword.model.PasswordGroup;
 import com.home.young.myPassword.model.SettingKey;
-import com.home.young.myPassword.service.MainBinder;
 import com.home.young.myPassword.service.OnGetAllPasswordGroupCallback;
 import com.home.young.myPassword.service.OnPasswordGroupChangeListener;
 import com.home.young.myPassword.service.OnPasswordGroupSelected;
@@ -26,7 +27,7 @@ import com.home.young.myPassword.service.OnPasswordGroupSelected;
 public class PasswordGroupFragment  extends Fragment implements AdapterView.OnItemClickListener, OnGetAllPasswordGroupCallback {
 
     //region field
-    private MainBinder mainBinder;
+    private PasswordDBRealm mainBinder;
     private PasswordGroupAdapter passwordGroupAdapter;
     private OnPasswordGroupSelected onPasswordGroupSelected;
     //endregion
@@ -226,7 +227,7 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String newGroupName = items.get(which);
-                                mainBinder.updatePasswdGroupName(passwordGroupName, newGroupName);
+                                mainBinder.updatePasswordGroup(passwordGroupName, newGroupName);
                             }
                         });
                 builder.show();
@@ -244,14 +245,14 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
         builder.setNeutralButton(R.string.sure, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mainBinder.deletePasswordgroup(passwordGroupName);
+                mainBinder.deletePasswordGroup(passwordGroupName);
             }
         });
         builder.setNegativeButton(R.string.cancel, null);
         builder.show();
     }
 
-    public void setDataSource(MainBinder mainBinder, OnPasswordGroupSelected onPasswordGroupSelected) {
+    public void setDataSource(PasswordDBRealm mainBinder, OnPasswordGroupSelected onPasswordGroupSelected) {
         this.mainBinder = mainBinder;
         this.onPasswordGroupSelected = onPasswordGroupSelected;
     }
