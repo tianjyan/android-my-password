@@ -13,9 +13,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by YOUNG on 2016/4/9.
- */
 public class UpdatePasswordGroupNameDialog extends Dialog {
 
     //region field

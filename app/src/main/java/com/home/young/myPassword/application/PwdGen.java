@@ -15,7 +15,7 @@ public class PwdGen {
 
     public enum Optionality {
         PROHIBITED,
-        MANDATORY;
+        MANDATORY
     }
 
     public  static  String generatePassword(int length,
@@ -42,28 +42,28 @@ public class PwdGen {
                                                  Optionality includeCaps,
                                                  Optionality includeNumbers,
                                                  Optionality includeSpecials) {
-        List<Character> charList = new ArrayList<Character>();
+        List<Character> charList = new ArrayList<>();
         if(Optionality.MANDATORY == includeLows){
             for(char c : LOWERS){
-                charList.add(Character.valueOf(c));
+                charList.add(c);
             }
         }
 
         if(Optionality.MANDATORY == includeCaps) {
             for (char c : UPPERS){
-                charList.add(Character.valueOf((c)));
+                charList.add((c));
             }
         }
 
         if(Optionality.MANDATORY == includeNumbers) {
             for (char c: NUMBERS) {
-                charList.add(Character.valueOf(c));
+                charList.add(c);
             }
         }
 
         if(Optionality.MANDATORY == includeSpecials) {
             for (char c : SPECIALS) {
-                charList.add(Character.valueOf(c));
+                charList.add(c);
             }
         }
         return charList;

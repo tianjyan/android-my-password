@@ -40,7 +40,7 @@ public class IOHelper {
         fos.close();
     }
 
-    public static  void deleteSDFile(String fileName) throws IOException{
+    public static  void deleteSDFile(String fileName){
         File file = new File(fileName);
         file.delete();
     }

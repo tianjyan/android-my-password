@@ -6,7 +6,7 @@ import android.widget.Toast;
 import com.home.young.myPassword.model.SettingKey;
 
 public class BaseActivity extends AppCompatActivity {
-    public App getApp(){
+    private App getApp(){
         return (App)getApplication();
     }
 
@@ -26,7 +26,7 @@ public class BaseActivity extends AppCompatActivity {
         Toast.makeText(this, id, duration).show();
     }
 
-    public BaseActivity getActivity() {
+    protected BaseActivity getActivity() {
         return this;
     }
 }

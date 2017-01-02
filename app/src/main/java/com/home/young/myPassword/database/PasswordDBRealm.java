@@ -38,8 +38,8 @@ public class PasswordDBRealm extends Binder{
         return onPasswordGroupListeners;
     }
 
-    private List<OnPasswordChangeListener> onPasswordListeners = new ArrayList<OnPasswordChangeListener>();
-    private List<OnPasswordGroupChangeListener> onPasswordGroupListeners = new ArrayList<OnPasswordGroupChangeListener>();
+    private List<OnPasswordChangeListener> onPasswordListeners = new ArrayList<>();
+    private List<OnPasswordGroupChangeListener> onPasswordGroupListeners = new ArrayList<>();
 
     public PasswordDBRealm(Context context, String encryptKey) {
         Realm.init(context);
@@ -208,9 +208,8 @@ public class PasswordDBRealm extends Binder{
                     results = realm.where(Password.class).equalTo("groupName", groupName).findAll();
                 }
 
-                Iterator<Password> iterator = results.iterator();
-                while (iterator.hasNext()) {
-                    Password password = realm.copyFromRealm(iterator.next());
+                for (Password result : results) {
+                    Password password = realm.copyFromRealm(result);
                     password.setPassword(decrypt(password.getPassword()));
                     password.setPayPassword(decrypt(password.getPayPassword()));
                     passwords.add(password);
@@ -255,9 +254,7 @@ public class PasswordDBRealm extends Binder{
                 }
 
                 RealmResults<Password> passwords = realm.where(Password.class).equalTo("groupName", oldGroupName).findAll();
-                Iterator<Password> iterator = passwords.iterator();
-                while (iterator.hasNext()) {
-                    Password password = iterator.next();
+                for (Password password : passwords) {
                     password.setGroupName(newGroupName);
                 }
             }
@@ -295,9 +292,8 @@ public class PasswordDBRealm extends Binder{
             @Override
             public void execute(Realm realm) {
                 RealmResults<PasswordGroup> results = realm.where(PasswordGroup.class).findAll();
-                Iterator<PasswordGroup> iterator = results.iterator();
-                while (iterator.hasNext()) {
-                    PasswordGroup group = realm.copyFromRealm(iterator.next());
+                for (PasswordGroup result : results) {
+                    PasswordGroup group = realm.copyFromRealm(result);
                     groups.add(group);
                 }
 
