@@ -140,6 +140,8 @@ public class PasswordDBRealm extends Binder{
                 password.setPassword(encrypt(password.getPassword()));
                 password.setPayPassword(encrypt(password.getPayPassword()));
                 realm.insertOrUpdate(password);
+                password.setPassword(decrypt(password.getPassword()));
+                password.setPayPassword(decrypt(password.getPayPassword()));
             }
         }, new Realm.Transaction.OnSuccess() {
 
@@ -154,7 +156,7 @@ public class PasswordDBRealm extends Binder{
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                RealmResults<Password> realmResults = realm.where(Password.class).equalTo("Id", id).findAll();
+                RealmResults<Password> realmResults = realm.where(Password.class).equalTo("id", id).findAll();
                 if (realmResults.size() > 0) {
                     realmResults.deleteAllFromRealm();
                 }
@@ -243,15 +245,14 @@ public class PasswordDBRealm extends Binder{
             public void execute(Realm realm) {
                 PasswordGroup newGroup = realm.where(PasswordGroup.class).equalTo("groupName", newGroupName).findFirst();
                 PasswordGroup oldGroup = realm.where(PasswordGroup.class).equalTo("groupName", oldGroupName).findFirst();
-                if(newGroup == null) {
-                    oldGroup.setGroupName(newGroupName);
-                } else {
-                    // 新的分组已经存在 直接删除旧的分组
-                    oldGroup.deleteFromRealm();
-                }
 
-                PasswordGroup group = realm.where(PasswordGroup.class).equalTo("groupName", oldGroupName).findFirst();
-                group.setGroupName(newGroupName);
+                //对象创建后，主键不能修改，先删除旧的分组
+                oldGroup.deleteFromRealm();
+                if(newGroup == null) {
+                    PasswordGroup group = new PasswordGroup();
+                    group.setGroupName(newGroupName);
+                    realm.insertOrUpdate(group);
+                }
 
                 RealmResults<Password> passwords = realm.where(Password.class).equalTo("groupName", oldGroupName).findAll();
                 Iterator<Password> iterator = passwords.iterator();
