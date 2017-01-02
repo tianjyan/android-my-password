@@ -273,9 +273,9 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
             password.setPayPassword(payPasswordView.getText().toString().trim());
             password.setNote(noteView.getText().toString().trim());
             password.setGroupName(passwordGroup);
+            password.setPublish(System.currentTimeMillis());
             if (MODE == MODE_ADD) {
                 // 添加
-                password.setPublish(System.currentTimeMillis());
                 mainBinder.addPassword(password);
             } else {
                 // 修改密码
