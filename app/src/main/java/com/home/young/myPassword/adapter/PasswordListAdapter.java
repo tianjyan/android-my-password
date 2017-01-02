@@ -174,7 +174,7 @@ public class PasswordListAdapter  extends BaseAdapter {
 
         for (int i = 0; i < passwords.size(); i++) {
             Password oldPassword = passwords.get(i).password;
-            if (Objects.equals(oldPassword.getId(), newPassword.getId())) {
+            if (oldPassword.getId().equals(newPassword.getId())) {
                 if (newPassword.getPublish() != 0)
                     oldPassword.setPublish(newPassword.getPublish());
                 if (newPassword.getTitle() != null)
