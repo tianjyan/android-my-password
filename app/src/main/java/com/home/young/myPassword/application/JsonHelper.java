@@ -123,11 +123,9 @@ public class JsonHelper {
             js.object();
             @SuppressWarnings("unchecked")
             Map<String, Object> valueMap = (Map<String, Object>) map;
-            Iterator<Map.Entry<String, Object>> it = valueMap.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry<String, Object> entry = (Map.Entry<String, Object>)it.next();
+            for (Map.Entry<String, Object> entry : valueMap.entrySet()) {
                 js.key(entry.getKey());
-                serialize(js,entry.getValue());
+                serialize(js, entry.getValue());
             }
             js.endObject();
         } catch (Exception e) {
@@ -153,8 +151,8 @@ public class JsonHelper {
                     if (!haveMethod(methods, fieldGetName)) {
                         continue;
                     }
-                    Method fieldGetMet = objClazz.getMethod(fieldGetName, new Class[] {});
-                    Object fieldVal = fieldGetMet.invoke(obj, new Object[] {});
+                    Method fieldGetMet = objClazz.getMethod(fieldGetName);
+                    Object fieldVal = fieldGetMet.invoke(obj);
                     String result = null;
                     if ("Date".equals(fieldType)) {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.US);
@@ -264,7 +262,7 @@ public class JsonHelper {
      */
     public static Map<String, String> beanToMap(Object obj) {
         Class<?> cls = obj.getClass();
-        Map<String, String> valueMap = new HashMap<String, String>();
+        Map<String, String> valueMap = new HashMap<>();
         // 取出bean里的所有方法
         Method[] methods = cls.getDeclaredMethods();
         Field[] fields = cls.getDeclaredFields();
@@ -275,8 +273,8 @@ public class JsonHelper {
                 if (!haveMethod(methods, fieldGetName)) {
                     continue;
                 }
-                Method fieldGetMet = cls.getMethod(fieldGetName, new Class[] {});
-                Object fieldVal = fieldGetMet.invoke(obj, new Object[] {});
+                Method fieldGetMet = cls.getMethod(fieldGetName);
+                Object fieldVal = fieldGetMet.invoke(obj);
                 String result = null;
                 if ("Date".equals(fieldType)) {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.CHINA);
@@ -389,7 +387,7 @@ public class JsonHelper {
             return null;
         }
 
-        JSONObject jo = null;
+        JSONObject jo;
         jo = new JSONObject(jsonStr);
         if (isNull(jo)) {
             return null;
@@ -537,7 +535,7 @@ public class JsonHelper {
     private static <T> T newInstance(Class<T> clazz) throws JSONException {
         if (clazz == null)
             return null;
-        T obj = null;
+        T obj;
         if (clazz.isInterface()) {
             if (clazz.equals(Map.class)) {
                 obj = (T) new HashMap();
@@ -572,7 +570,7 @@ public class JsonHelper {
             @SuppressWarnings("unchecked")
             Map<String, Object> valueMap = (Map<String, Object>) obj;
             while (keyIter.hasNext()) {
-                key = (String) keyIter.next();
+                key = keyIter.next();
                 value = jo.get(key);
                 valueMap.put(key, value);
 

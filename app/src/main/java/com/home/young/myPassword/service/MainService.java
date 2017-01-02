@@ -28,11 +28,6 @@ public class MainService extends Service {
         super.onCreate();
         App app = (App)getApplicationContext();
         final String key = app.getSetting(SettingKey.KEY, "");
-        mainBinder = new PasswordDBRealm((App) getApplicationContext(), key);
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
+        mainBinder = new PasswordDBRealm(getApplicationContext(), key);
     }
 }

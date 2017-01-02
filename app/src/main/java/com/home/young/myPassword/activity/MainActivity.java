@@ -179,21 +179,21 @@ public class MainActivity extends BaseActivity implements OnGetAllPasswordCallba
         try {
             String json = IOHelper.readSDFile(fullPath);
             Password[] passwords = JsonHelper.parseArray(json,Password.class);
-            for(int i=0;i<passwords.length;i++){
+            for (Password password : passwords) {
                 boolean existGroup = false;
-                for(int j=0;j<passwordGroups.size();j++){
-                    if(passwordGroups.get(j).getGroupName().equals(passwords[i].getGroupName())){
+                for (int j = 0; j < passwordGroups.size(); j++) {
+                    if (passwordGroups.get(j).getGroupName().equals(password.getGroupName())) {
                         existGroup = true;
                         break;
                     }
                 }
-                if(!existGroup){
+                if (!existGroup) {
                     PasswordGroup group = new PasswordGroup();
-                    group.setGroupName(passwords[i].getGroupName());
+                    group.setGroupName(password.getGroupName());
                     mainBinder.addPasswordGroup(group);
                     passwordGroups.add(group);
                 }
-                mainBinder.addPassword(passwords[i]);
+                mainBinder.addPassword(password);
             }
 
         }

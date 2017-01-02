@@ -16,7 +16,7 @@ import com.home.young.myPassword.model.PasswordGroup;
 public class PasswordGroupAdapter extends BaseAdapter {
 
     //region field
-    private List<PasswordGroup> passwordGroups = new ArrayList<PasswordGroup>();
+    private List<PasswordGroup> passwordGroups = new ArrayList<>();
     private Context context;
     private String currentGroupName;
     //endregion
@@ -48,7 +48,7 @@ public class PasswordGroupAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder = null;
+        ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.password_group_item, null);

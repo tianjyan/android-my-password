@@ -11,14 +11,11 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import com.home.young.myPassword.application.IOHelper;
 import com.home.young.myPassword.application.JsonHelper;
 import com.home.young.myPassword.application.PwdGen;
 import com.home.young.myPassword.model.Password;
-
-import io.realm.RealmResults;
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>

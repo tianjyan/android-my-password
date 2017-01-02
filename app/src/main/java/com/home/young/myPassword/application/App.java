@@ -12,22 +12,18 @@ import java.util.List;
 import java.util.Map;
 
 import com.home.young.myPassword.database.PasswordDBRealm;
-import com.home.young.myPassword.model.AsyncResult;
-import com.home.young.myPassword.model.AsyncSingleTask;
 import com.home.young.myPassword.model.SettingKey;
 import com.home.young.myPassword.service.OnPasswordChangeListener;
 import com.home.young.myPassword.service.OnPasswordGroupChangeListener;
 import com.home.young.myPassword.service.OnSettingChangeListener;
 
-import io.realm.Realm;
-
 public class App extends Application implements OnSharedPreferenceChangeListener {
     private SharedPreferences sharedPreferences;
-    private Map<SettingKey, List<OnSettingChangeListener>> onSettingChangeListenerMap = new HashMap<SettingKey,List<OnSettingChangeListener>>();
+    private Map<SettingKey, List<OnSettingChangeListener>> onSettingChangeListenerMap = new HashMap<>();
     private PasswordDBRealm passwordDBRealm;
 
-    private List<OnPasswordChangeListener> onPasswordListeners = new ArrayList<OnPasswordChangeListener>();
-    private List<OnPasswordGroupChangeListener> onPasswordGroupListeners = new ArrayList<OnPasswordGroupChangeListener>();
+    private List<OnPasswordChangeListener> onPasswordListeners = new ArrayList<>();
+    private List<OnPasswordGroupChangeListener> onPasswordGroupListeners = new ArrayList<>();
 
     @Override
     public void onCreate(){
@@ -49,7 +45,7 @@ public class App extends Application implements OnSharedPreferenceChangeListener
         if (onSettingChangeListenerMap.containsKey(key)) {
             onSettingChangeListeners = onSettingChangeListenerMap.get(key);
         } else {
-            onSettingChangeListeners = new ArrayList<OnSettingChangeListener>();
+            onSettingChangeListeners = new ArrayList<>();
             onSettingChangeListenerMap.put(key, onSettingChangeListeners);
         }
         onSettingChangeListeners.add(onSettingChangeListener);
@@ -80,7 +76,7 @@ public class App extends Application implements OnSharedPreferenceChangeListener
     }
 
     public void putSetting(SettingKey key, String value) {
-        sharedPreferences.edit().putString(key.name(),value).commit();
+        sharedPreferences.edit().putString(key.name(),value).apply();
     }
 
     public PasswordDBRealm getRealm() {

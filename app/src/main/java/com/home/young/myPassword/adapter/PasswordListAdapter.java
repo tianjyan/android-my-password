@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import com.home.young.myPassword.R;
 import com.home.young.myPassword.activity.EditPasswordActivity;
@@ -31,7 +32,7 @@ public class PasswordListAdapter  extends BaseAdapter {
 
     //region field
     private static final long DAY = 1000 * 60 * 60 * 24;
-    private List<PasswordItem> passwords = new ArrayList<PasswordItem>();
+    private List<PasswordItem> passwords = new ArrayList<>();
     private Context context;
     private SimpleDateFormat simpleDateFormatYear = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     private int padding;
@@ -40,7 +41,7 @@ public class PasswordListAdapter  extends BaseAdapter {
     private String passwordGroup;
     //endregion
 
-    //region lambda
+    //region anonymous class
     private Comparator<PasswordItem> comparator = new Comparator<PasswordItem>() {
         @Override
         public int compare(PasswordItem lhs, PasswordItem rhs) {
@@ -158,7 +159,7 @@ public class PasswordListAdapter  extends BaseAdapter {
     public void onDeletePassword(String id) {
         for (int i = 0; i < passwords.size(); i++) {
             PasswordItem passwordItem = passwords.get(i);
-            if (passwordItem.password.getId() == id) {
+            if (Objects.equals(passwordItem.password.getId(), id)) {
                 passwords.remove(i);
                 break;
             }
@@ -173,7 +174,7 @@ public class PasswordListAdapter  extends BaseAdapter {
 
         for (int i = 0; i < passwords.size(); i++) {
             Password oldPassword = passwords.get(i).password;
-            if (oldPassword.getId() == newPassword.getId()) {
+            if (Objects.equals(oldPassword.getId(), newPassword.getId())) {
                 if (newPassword.getPublish() != 0)
                     oldPassword.setPublish(newPassword.getPublish());
                 if (newPassword.getTitle() != null)
@@ -222,7 +223,7 @@ public class PasswordListAdapter  extends BaseAdapter {
         }
 
         private String formatDate(long createDate) {
-            String result = "";
+            String result;
             long currentTime = System.currentTimeMillis();
             long distance = currentTime - createDate;
             if (createDate > currentTime) {
