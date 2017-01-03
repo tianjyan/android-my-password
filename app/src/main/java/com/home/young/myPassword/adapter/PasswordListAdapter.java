@@ -159,7 +159,7 @@ public class PasswordListAdapter  extends BaseAdapter {
     public void onDeletePassword(String id) {
         for (int i = 0; i < passwords.size(); i++) {
             PasswordItem passwordItem = passwords.get(i);
-            if (Objects.equals(passwordItem.password.getId(), id)) {
+            if (passwordItem.password.getId().equals(id)) {
                 passwords.remove(i);
                 break;
             }

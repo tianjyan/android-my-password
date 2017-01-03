@@ -200,7 +200,7 @@ public class JsonHelper {
         if (null == fieldName || "".equals(fieldName)) {
             return null;
         }
-        return methodType + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+        return methodType + fieldName.substring(0, 1).toUpperCase(Locale.ENGLISH) + fieldName.substring(1);
     }
 
     /**
