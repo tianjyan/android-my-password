@@ -7,4 +7,4 @@ android:
     - sys-img-armeabi-v7a-android-25
 
   licenses:
-      - 'android-sdk-license-00c2c576'
+      - 'android-sdk-license'
