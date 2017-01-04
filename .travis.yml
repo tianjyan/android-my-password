@@ -2,6 +2,8 @@ language: android
 jdk: oraclejdk8
 android:
   components:
+    - tools # to get the new `repository-11.xml`
+    - tools # to install Android SDK tools 25.1.x
     - build-tools-24.0.3
     - android-24
     - sys-img-armeabi-v7a-android-24
