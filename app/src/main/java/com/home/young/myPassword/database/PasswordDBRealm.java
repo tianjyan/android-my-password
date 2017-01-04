@@ -128,6 +128,8 @@ public class PasswordDBRealm extends Binder{
 
             @Override
             public void onSuccess() {
+                password.setPassword(decrypt(password.getPassword()));
+                password.setPayPassword(decrypt(password.getPayPassword()));
                 callNewPassword(password);
             }
         });
@@ -140,13 +142,13 @@ public class PasswordDBRealm extends Binder{
                 password.setPassword(encrypt(password.getPassword()));
                 password.setPayPassword(encrypt(password.getPayPassword()));
                 realm.insertOrUpdate(password);
-                password.setPassword(decrypt(password.getPassword()));
-                password.setPayPassword(decrypt(password.getPayPassword()));
             }
         }, new Realm.Transaction.OnSuccess() {
 
             @Override
             public void onSuccess() {
+                password.setPassword(decrypt(password.getPassword()));
+                password.setPayPassword(decrypt(password.getPayPassword()));
                 callUpdatePassword(password);
             }
         });
