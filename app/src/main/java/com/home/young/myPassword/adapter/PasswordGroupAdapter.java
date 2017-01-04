@@ -51,7 +51,7 @@ public class PasswordGroupAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            convertView = LayoutInflater.from(context).inflate(R.layout.password_group_item, parent);
+            convertView = LayoutInflater.from(context).inflate(R.layout.password_group_item, null);
             viewHolder.name = (TextView) convertView.findViewById(R.id.fragment_password_group_name);
             viewHolder.arrowView = convertView.findViewById(R.id.fragment_password_group_arrow);
             convertView.setTag(viewHolder);

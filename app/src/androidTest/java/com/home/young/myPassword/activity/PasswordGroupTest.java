@@ -31,13 +31,13 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class PasswordGropTest {
+public class PasswordGroupTest {
 
     @Rule
     public ActivityTestRule<StartActivity> mActivityTestRule = new ActivityTestRule<>(StartActivity.class);
 
     @Test
-    public void passwordGropTest() {
+    public void passwordGroupTest() {
         ViewInteraction appCompatTextView = onView(
                 allOf(withId(R.id.set_password_skip), withText("不设置密码")));
         appCompatTextView.perform(scrollTo(), click());
@@ -46,31 +46,23 @@ public class PasswordGropTest {
                 allOf(withId(R.id.fragment_password_group_add), isDisplayed()));
         relativeLayout.perform(click());
 
-        ViewInteraction relativeLayout2 = onView(
-                allOf(withId(R.id.create_passwordGroup_cancel), isDisplayed()));
-        relativeLayout2.perform(click());
-
-        ViewInteraction relativeLayout3 = onView(
-                allOf(withId(R.id.fragment_password_group_add), isDisplayed()));
-        relativeLayout3.perform(click());
-
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.create_passwordGroup_name), isDisplayed()));
-        appCompatEditText.perform(replaceText("测试"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("test"), closeSoftKeyboard());
 
-        ViewInteraction relativeLayout4 = onView(
+        ViewInteraction relativeLayout2 = onView(
                 allOf(withId(R.id.create_passwordGroup_sure), isDisplayed()));
-        relativeLayout4.perform(click());
+        relativeLayout2.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.fragment_password_group_name), withText("测试"),
+                allOf(withId(R.id.fragment_password_group_name), withText("test"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.fragment_password_group_listView),
                                         1),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("测试")));
+        textView.check(matches(withText("test")));
 
     }
 
