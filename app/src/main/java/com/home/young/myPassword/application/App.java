@@ -6,16 +6,20 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Looper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.home.young.myPassword.database.PasswordDBRealm;
 import com.home.young.myPassword.model.SettingKey;
 import com.home.young.myPassword.service.OnPasswordChangeListener;
 import com.home.young.myPassword.service.OnPasswordGroupChangeListener;
 import com.home.young.myPassword.service.OnSettingChangeListener;
+import com.tencent.wstt.gt.client.AbsGTParaLoader;
+import com.tencent.wstt.gt.client.GT;
+import com.tencent.wstt.gt.client.InParaManager;
+import com.tencent.wstt.gt.client.OutParaManager;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class App extends Application implements OnSharedPreferenceChangeListener {
     private SharedPreferences sharedPreferences;
@@ -28,6 +32,17 @@ public class App extends Application implements OnSharedPreferenceChangeListener
     @Override
     public void onCreate(){
         super.onCreate();
+        GT.connect(getApplicationContext(), new AbsGTParaLoader() {
+            @Override
+            public void loadInParas(InParaManager inParaManager) {
+
+            }
+
+            @Override
+            public void loadOutParas(OutParaManager outParaManager) {
+
+            }
+        });
         loadSettings();
         final String key = getSetting(SettingKey.KEY, "");
         passwordDBRealm = new PasswordDBRealm(getApplicationContext(), key);
