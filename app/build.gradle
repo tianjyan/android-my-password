@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'checkstyle'
 apply plugin: 'realm-android'
-apply plugin: 'com.antfortune.freeline'
 
 android {
     compileSdkVersion 25
