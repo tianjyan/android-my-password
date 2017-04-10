@@ -42,7 +42,8 @@ public class AddPasswordGroupDialog extends Dialog {
     //region constructor
     public AddPasswordGroupDialog(Context context, PasswordDBRealm mainBinder){
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+                | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         this.mainBinder = mainBinder;
     }
     //endregion

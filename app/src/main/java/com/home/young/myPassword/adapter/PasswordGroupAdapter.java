@@ -16,15 +16,15 @@ import com.home.young.myPassword.model.PasswordGroup;
 public class PasswordGroupAdapter extends BaseAdapter {
 
     //region field
-    private List<PasswordGroup> passwordGroups = new ArrayList<>();
-    private Context context;
-    private String currentGroupName;
+    private List<PasswordGroup> mPasswordGroups = new ArrayList<>();
+    private Context mContext;
+    private String mCurrentGroupName;
     //endregion
 
     //region constructor
     public PasswordGroupAdapter(Context context) {
         super();
-        this.context = context;
+        this.mContext = context;
     }
     //endregion
 
@@ -33,12 +33,12 @@ public class PasswordGroupAdapter extends BaseAdapter {
     //region override
     @Override
     public int getCount() {
-        return passwordGroups.size();
+        return mPasswordGroups.size();
     }
 
     @Override
     public PasswordGroup getItem(int position) {
-        return passwordGroups.get(position);
+        return mPasswordGroups.get(position);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class PasswordGroupAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            convertView = LayoutInflater.from(context).inflate(R.layout.password_group_item, null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.password_group_item, null);
             viewHolder.name = (TextView) convertView.findViewById(R.id.fragment_password_group_name);
             viewHolder.arrowView = convertView.findViewById(R.id.fragment_password_group_arrow);
             convertView.setTag(viewHolder);
@@ -62,7 +62,7 @@ public class PasswordGroupAdapter extends BaseAdapter {
         PasswordGroup passwordGroup = getItem(position);
         viewHolder.name.setText(passwordGroup.getGroupName());
 
-        if (passwordGroup.getGroupName().equals(currentGroupName)) {
+        if (passwordGroup.getGroupName().equals(mCurrentGroupName)) {
             viewHolder.arrowView.setVisibility(View.VISIBLE);
         } else {
             viewHolder.arrowView.setVisibility(View.INVISIBLE);
@@ -74,32 +74,32 @@ public class PasswordGroupAdapter extends BaseAdapter {
 
     //region public
     public String getCurrentGroupName() {
-        return currentGroupName;
+        return mCurrentGroupName;
     }
 
     public void setCurrentGroupName(String currentGroupName) {
-        this.currentGroupName = currentGroupName;
+        this.mCurrentGroupName = currentGroupName;
         notifyDataSetChanged();
     }
 
     public void setData(List<PasswordGroup> passwordGroups) {
-        this.passwordGroups.clear();
-        this.passwordGroups.addAll(passwordGroups);
+        this.mPasswordGroups.clear();
+        this.mPasswordGroups.addAll(passwordGroups);
         notifyDataSetChanged();
     }
 
     public void addPasswordGroup(PasswordGroup passwordGroup) {
-        passwordGroups.add(passwordGroup);
+        mPasswordGroups.add(passwordGroup);
         notifyDataSetChanged();
     }
 
     public boolean removePasswordGroup(String passwordGroupName) {
         boolean result = false;
-        for (int i = 0; i < passwordGroups.size(); i++) {
-            PasswordGroup passwordGroup = passwordGroups.get(i);
+        for (int i = 0; i < mPasswordGroups.size(); i++) {
+            PasswordGroup passwordGroup = mPasswordGroups.get(i);
             if (passwordGroup.getGroupName().equals(passwordGroupName)) {
                 result = true;
-                passwordGroups.remove(i);
+                mPasswordGroups.remove(i);
                 break;
             }
         }

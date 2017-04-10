@@ -4,4 +4,10 @@
     "http://www.puppycrawl.com/dtds/suppressions_1_0.dtd">
 
 <suppressions>
+    <suppress checks="." files="JsonHelper.java"/>
+    <suppress checks="ConstantName" files="AsyncSingleTask"/>
+    <suppress checks="CyclomaticComplexity" files="PwdGen"/>
+    <suppress checks="AvoidInlineConditionals" files="GenPasswordDialog"/>
+    <suppress checks="ReturnCount" files="EditPasswordActivity"/>
+    <suppress checks="." files="PasswordDBRealm"/>
 </suppressions>

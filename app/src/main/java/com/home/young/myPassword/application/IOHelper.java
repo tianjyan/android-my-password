@@ -27,13 +27,13 @@ public class IOHelper {
     }
 
 
-    public static void writeSDFile(String fileName, String write_str) throws IOException{
+    public static void writeSDFile(String fileName, String writeStr) throws IOException{
 
         File file = new File(fileName);
 
         FileOutputStream fos = new FileOutputStream(file);
 
-        byte [] bytes = write_str.getBytes();
+        byte [] bytes = writeStr.getBytes();
 
         fos.write(bytes);
 

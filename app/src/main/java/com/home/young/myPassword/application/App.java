@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.Map;
 
 public class App extends Application implements OnSharedPreferenceChangeListener {
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences mSharedPreferences;
     private Map<SettingKey, List<OnSettingChangeListener>> onSettingChangeListenerMap = new HashMap<>();
-    private PasswordDBRealm passwordDBRealm;
+    private PasswordDBRealm mPasswordDBRealm;
 
     private List<OnPasswordChangeListener> onPasswordListeners = new ArrayList<>();
     private List<OnPasswordGroupChangeListener> onPasswordGroupListeners = new ArrayList<>();
@@ -30,12 +30,12 @@ public class App extends Application implements OnSharedPreferenceChangeListener
         super.onCreate();
         loadSettings();
         final String key = getSetting(SettingKey.KEY, "");
-        passwordDBRealm = new PasswordDBRealm(getApplicationContext(), key);
+        mPasswordDBRealm = new PasswordDBRealm(getApplicationContext(), key);
     }
 
     private  void loadSettings(){
-        sharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        mSharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE);
+        mSharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
     public void registOnSettingChangeListener(SettingKey key, OnSettingChangeListener onSettingChangeListener) {
@@ -72,15 +72,15 @@ public class App extends Application implements OnSharedPreferenceChangeListener
     }
 
     public String getSetting(SettingKey key, String defaultValue){
-        return sharedPreferences.getString(key.name(),defaultValue);
+        return mSharedPreferences.getString(key.name(),defaultValue);
     }
 
     public void putSetting(SettingKey key, String value) {
-        sharedPreferences.edit().putString(key.name(),value).apply();
+        mSharedPreferences.edit().putString(key.name(),value).apply();
     }
 
     public PasswordDBRealm getRealm() {
-        return passwordDBRealm;
+        return mPasswordDBRealm;
     }
 
     @Override
@@ -97,6 +97,6 @@ public class App extends Application implements OnSharedPreferenceChangeListener
     @Override
     public void onTerminate() {
         super.onTerminate();
-        passwordDBRealm.close();
+        mPasswordDBRealm.close();
     }
 }

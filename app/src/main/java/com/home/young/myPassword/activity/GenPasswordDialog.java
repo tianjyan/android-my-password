@@ -18,6 +18,8 @@ import butterknife.OnClick;
 public class GenPasswordDialog extends Dialog {
 
     //region field
+    private static final int LENGTH_8 = 8;
+    private static final int LENGTH_16 = 16;
     @BindView(R.id.gen_password_lows) CheckBox lows;
     @BindView(R.id.gen_password_caps) CheckBox caps;
     @BindView(R.id.gen_password_numbers) CheckBox numbers;
@@ -44,7 +46,7 @@ public class GenPasswordDialog extends Dialog {
         if(lows.isChecked() || caps.isChecked() || numbers.isChecked() || special.isChecked()) {
 
             String password = PwdGen.generatePassword(
-                    eight.isChecked() ? 8 : 16,
+                    eight.isChecked() ? LENGTH_8 : LENGTH_16,
                     lows.isChecked() ? PwdGen.Optionality.MANDATORY : PwdGen.Optionality.PROHIBITED,
                     caps.isChecked() ? PwdGen.Optionality.MANDATORY : PwdGen.Optionality.PROHIBITED,
                     numbers.isChecked() ? PwdGen.Optionality.MANDATORY : PwdGen.Optionality.PROHIBITED,

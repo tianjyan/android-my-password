@@ -22,6 +22,7 @@ import butterknife.OnClick;
 public class SetPasswordActivity extends BaseActivity implements TextWatcher {
 
     //region field
+    private static final int LENGTH = 8;
     @BindView(R.id.set_password_first) EditText pwdEt;
     @BindView(R.id.set_password_second) EditText rePwdEt;
     @BindView(R.id.set_password_next) Button nextBtn;
@@ -70,7 +71,7 @@ public class SetPasswordActivity extends BaseActivity implements TextWatcher {
             String pwd = pwdEt.getText().toString();
             super.putSetting(SettingKey.LOCK_PWD, MD5.getMD5(pwd));
             super.putSetting(SettingKey.NO_LOCK_PWD, "false");
-            GenKey();
+            genKey();
 
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
@@ -84,7 +85,7 @@ public class SetPasswordActivity extends BaseActivity implements TextWatcher {
     @OnClick(R.id.set_password_skip)
     public void skipClick(View v) {
         super.putSetting(SettingKey.NO_LOCK_PWD, "true");
-        GenKey();
+        genKey();
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -93,10 +94,10 @@ public class SetPasswordActivity extends BaseActivity implements TextWatcher {
     //endregion
 
     //region private
-    private void GenKey(){
+    private void genKey(){
         String key = super.getSetting(SettingKey.KEY, "");
         if(key.equals("")){
-            key = PwdGen.generatePassword(8,
+            key = PwdGen.generatePassword(LENGTH,
                     PwdGen.Optionality.MANDATORY,
                     PwdGen.Optionality.MANDATORY,
                     PwdGen.Optionality.MANDATORY,

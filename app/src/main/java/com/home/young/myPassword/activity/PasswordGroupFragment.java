@@ -24,19 +24,20 @@ import com.home.young.myPassword.service.OnGetAllPasswordGroupCallback;
 import com.home.young.myPassword.service.OnPasswordGroupChangeListener;
 import com.home.young.myPassword.service.OnPasswordGroupSelected;
 
-public class PasswordGroupFragment  extends Fragment implements AdapterView.OnItemClickListener, OnGetAllPasswordGroupCallback {
+public class PasswordGroupFragment  extends Fragment
+        implements AdapterView.OnItemClickListener, OnGetAllPasswordGroupCallback {
 
     //region field
-    private PasswordDBRealm mainBinder;
-    private PasswordGroupAdapter passwordGroupAdapter;
-    private OnPasswordGroupSelected onPasswordGroupSelected;
+    private PasswordDBRealm mMainBinder;
+    private PasswordGroupAdapter mPasswordGroupAdapter;
+    private OnPasswordGroupSelected mOnPasswordGroupSelected;
     //endregion
 
     //region anonymous class
     private View.OnClickListener onAddClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            AddPasswordGroupDialog dialog = new AddPasswordGroupDialog(getActivity(), mainBinder);
+            AddPasswordGroupDialog dialog = new AddPasswordGroupDialog(getActivity(), mMainBinder);
             dialog.show();
         }
     };
@@ -44,19 +45,19 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
     private OnPasswordGroupChangeListener onPasswordGroupListener = new OnPasswordGroupChangeListener() {
         @Override
         public void onNewPasswordGroup(PasswordGroup passwordGroup) {
-            passwordGroupAdapter.addPasswordGroup(passwordGroup);
-            if (passwordGroupAdapter.getCount() == 1) {
+            mPasswordGroupAdapter.addPasswordGroup(passwordGroup);
+            if (mPasswordGroupAdapter.getCount() == 1) {
                 selectItem(passwordGroup.getGroupName());
             }
         }
 
         @Override
         public void onDeletePasswordGroup(String passwordGroupName) {
-            boolean result = passwordGroupAdapter.removePasswordGroup(passwordGroupName);
-            if (result && passwordGroupName.equals(passwordGroupAdapter.getCurrentGroupName())) {
+            boolean result = mPasswordGroupAdapter.removePasswordGroup(passwordGroupName);
+            if (result && passwordGroupName.equals(mPasswordGroupAdapter.getCurrentGroupName())) {
                 String selectedname = "";
-                if (passwordGroupAdapter.getCount() > 0)
-                    selectedname = passwordGroupAdapter.getItem(0).getGroupName();
+                if (mPasswordGroupAdapter.getCount() > 0)
+                    selectedname = mPasswordGroupAdapter.getItem(0).getGroupName();
 
                 selectItem(selectedname);
             }
@@ -64,10 +65,10 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
 
         @Override
         public void onUpdateGroupName(String oldGroupName, String newGroupName) {
-            int count = passwordGroupAdapter.getCount();
+            int count = mPasswordGroupAdapter.getCount();
             boolean hasMerge = false;
             for (int i = 0; i < count; i++) {
-                PasswordGroup item = passwordGroupAdapter.getItem(i);
+                PasswordGroup item = mPasswordGroupAdapter.getItem(i);
                 if (item.getGroupName().equals(newGroupName)) {
                     hasMerge = true;
                     break;
@@ -77,9 +78,9 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
             if (hasMerge) {
                 // 有合并的， 移除老的分组
                 for (int i = 0; i < count; i++) {
-                    PasswordGroup item = passwordGroupAdapter.getItem(i);
+                    PasswordGroup item = mPasswordGroupAdapter.getItem(i);
                     if (item.getGroupName().equals(oldGroupName)) {
-                        passwordGroupAdapter.removePasswordGroup(oldGroupName);
+                        mPasswordGroupAdapter.removePasswordGroup(oldGroupName);
                         break;
                     }
                 }
@@ -87,18 +88,18 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
             } else {
                 /** 分组变化了，改变现在的分组名称 */
                 for (int i = 0; i < count; i++) {
-                    PasswordGroup item = passwordGroupAdapter.getItem(i);
+                    PasswordGroup item = mPasswordGroupAdapter.getItem(i);
                     if (item.getGroupName().equals(oldGroupName)) {
                         item.setGroupName(newGroupName);
-                        passwordGroupAdapter.notifyDataSetChanged();
+                        mPasswordGroupAdapter.notifyDataSetChanged();
                         break;
                     }
                 }
             }
 
             // 当前选中的名称变了 重新加载
-            if (passwordGroupAdapter.getCurrentGroupName().equals(oldGroupName)
-                    || passwordGroupAdapter.getCurrentGroupName().equals(newGroupName)) {
+            if (mPasswordGroupAdapter.getCurrentGroupName().equals(oldGroupName)
+                    || mPasswordGroupAdapter.getCurrentGroupName().equals(newGroupName)) {
                 selectItem(newGroupName);
             }
         }
@@ -121,7 +122,7 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
                         case 0:
                             // 修改分组名
                             UpdatePasswordGroupNameDialog updatePasswdGroupName = new UpdatePasswordGroupNameDialog(
-                                    getActivity(), passwordGroupName, mainBinder);
+                                    getActivity(), passwordGroupName, mMainBinder);
                             updatePasswdGroupName.show();
                             break;
 
@@ -132,6 +133,8 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
                         case 2:
                             // 删除分组
                             showDeleteDialog(passwordGroupName);
+                            break;
+                        default:
                             break;
                     }
                 }
@@ -151,22 +154,22 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        passwordGroupAdapter = new PasswordGroupAdapter(getActivity());
-        mainBinder.registOnPasswordGroupListener(onPasswordGroupListener);
-        mainBinder.getAllPasswordGroup(this);
+        mPasswordGroupAdapter = new PasswordGroupAdapter(getActivity());
+        mMainBinder.registOnPasswordGroupListener(onPasswordGroupListener);
+        mMainBinder.getAllPasswordGroup(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mainBinder.unregistOnPasswordGroupListener(onPasswordGroupListener);
+        mMainBinder.unregistOnPasswordGroupListener(onPasswordGroupListener);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_password_group, container, false);
         ListView listView = (ListView) rootView.findViewById(R.id.fragment_password_group_listView);
-        listView.setAdapter(passwordGroupAdapter);
+        listView.setAdapter(mPasswordGroupAdapter);
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(onDeleteClickListener);
         View addView = rootView.findViewById(R.id.fragment_password_group_add);
@@ -176,7 +179,7 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        PasswordGroup passwordGroup = passwordGroupAdapter.getItem(position);
+        PasswordGroup passwordGroup = mPasswordGroupAdapter.getItem(position);
         selectItem(passwordGroup.getGroupName());
     }
 
@@ -187,9 +190,9 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
             String lastGroupName = baseActivity.getSetting(SettingKey.LAST_SHOW_PASSWORD_GROUP_NAME,
                     getString(R.string.default_password_group_name));
 
-            passwordGroupAdapter.setCurrentGroupName(lastGroupName);
+            mPasswordGroupAdapter.setCurrentGroupName(lastGroupName);
 
-            passwordGroupAdapter.setData(passwordGroups);
+            mPasswordGroupAdapter.setData(passwordGroups);
         }
     }
     //endregion
@@ -227,7 +230,7 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String newGroupName = items.get(which);
-                                mainBinder.updatePasswordGroup(passwordGroupName, newGroupName);
+                                mMainBinder.updatePasswordGroup(passwordGroupName, newGroupName);
                             }
                         });
                 builder.show();
@@ -235,7 +238,7 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
         };
 
         // 获取所有的分组
-        mainBinder.getAllPasswordGroup(onGetAllPasswordGroupCallback);
+        mMainBinder.getAllPasswordGroup(onGetAllPasswordGroupCallback);
     }
 
     private void showDeleteDialog(final String passwordGroupName) {
@@ -245,7 +248,7 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
         builder.setNeutralButton(R.string.sure, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mainBinder.deletePasswordGroup(passwordGroupName);
+                mMainBinder.deletePasswordGroup(passwordGroupName);
             }
         });
         builder.setNegativeButton(R.string.cancel, null);
@@ -253,8 +256,8 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
     }
 
     public void setDataSource(PasswordDBRealm mainBinder, OnPasswordGroupSelected onPasswordGroupSelected) {
-        this.mainBinder = mainBinder;
-        this.onPasswordGroupSelected = onPasswordGroupSelected;
+        this.mMainBinder = mainBinder;
+        this.mOnPasswordGroupSelected = onPasswordGroupSelected;
     }
 
     private BaseActivity getBaseActivity() {
@@ -265,8 +268,8 @@ public class PasswordGroupFragment  extends Fragment implements AdapterView.OnIt
         BaseActivity baseActivity = getBaseActivity();
         baseActivity.putSetting(SettingKey.LAST_SHOW_PASSWORD_GROUP_NAME, selectedname);
 
-        passwordGroupAdapter.setCurrentGroupName(selectedname);
-        onPasswordGroupSelected.onPasswordGroupSelected(selectedname);
+        mPasswordGroupAdapter.setCurrentGroupName(selectedname);
+        mOnPasswordGroupSelected.onPasswordGroupSelected(selectedname);
     }
     //endregion
 

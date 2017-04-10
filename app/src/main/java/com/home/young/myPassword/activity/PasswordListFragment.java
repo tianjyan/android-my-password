@@ -22,32 +22,32 @@ public class PasswordListFragment extends BaseFragment implements OnGetAllPasswo
         android.view.View.OnClickListener {
 
     //region field
-    private PasswordListAdapter mainAdapter;
-    private PasswordDBRealm mainBinder;
-    private ListView listView;
-    private View noDataView;
-    private String passwordGroupName;
+    private PasswordListAdapter mMainAdapter;
+    private PasswordDBRealm mMainBinder;
+    private ListView mListView;
+    private View mNoDataView;
+    private String mPasswordGroupName;
     //endregion
 
     //region anonymous class
     private OnPasswordChangeListener onPasswordListener = new OnPasswordChangeListener() {
         @Override
         public void onNewPassword(Password password) {
-            if (password.getGroupName().equals(passwordGroupName)) {
-                mainAdapter.onNewPassword(password);
+            if (password.getGroupName().equals(mPasswordGroupName)) {
+                mMainAdapter.onNewPassword(password);
                 initView();
             }
         }
 
         @Override
         public void onDeletePassword(String id) {
-            mainAdapter.onDeletePassword(id);
+            mMainAdapter.onDeletePassword(id);
             initView();
         }
 
         @Override
         public void onUpdatePassword(Password newPassword) {
-            mainAdapter.onUpdatePassword(newPassword);
+            mMainAdapter.onUpdatePassword(newPassword);
             initView();
         }
     };
@@ -59,8 +59,8 @@ public class PasswordListFragment extends BaseFragment implements OnGetAllPasswo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainAdapter = new PasswordListAdapter(getActivity());
-        mainBinder.registOnPasswordListener(onPasswordListener);
+        mMainAdapter = new PasswordListAdapter(getActivity());
+        mMainBinder.registOnPasswordListener(onPasswordListener);
         showPasswordGroup(getBaseActivity().getSetting(SettingKey.LAST_SHOW_PASSWORD_GROUP_NAME,
                 getString(R.string.default_password_group_name)));
     }
@@ -74,14 +74,14 @@ public class PasswordListFragment extends BaseFragment implements OnGetAllPasswo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_password_list, container, false);
-        listView = (ListView) rootView.findViewById(R.id.fragment_password_listView);
-        listView.setAdapter(mainAdapter);
+        mListView = (ListView) rootView.findViewById(R.id.fragment_password_listView);
+        mListView.setAdapter(mMainAdapter);
 
-        noDataView = rootView.findViewById(R.id.fragment_password_noData);
-        noDataView.setOnClickListener(this);
-        if (mainBinder == null) {
-            noDataView.setVisibility(View.GONE);
-            listView.setVisibility(View.VISIBLE);
+        mNoDataView = rootView.findViewById(R.id.fragment_password_noData);
+        mNoDataView.setOnClickListener(this);
+        if (mMainBinder == null) {
+            mNoDataView.setVisibility(View.GONE);
+            mListView.setVisibility(View.VISIBLE);
         } else {
             initView();
         }
@@ -92,18 +92,18 @@ public class PasswordListFragment extends BaseFragment implements OnGetAllPasswo
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        listView = null;
-        noDataView = null;
+        mListView = null;
+        mNoDataView = null;
     }
 
     @Override
     public void onGetAllPassword(String groupName, List<Password> passwords) {
-        if (passwordGroupName.equals(groupName)) {
-            mainAdapter.setPasswordGroup(passwordGroupName);
-            mainAdapter.setData(passwords, mainBinder);
+        if (mPasswordGroupName.equals(groupName)) {
+            mMainAdapter.setPasswordGroup(mPasswordGroupName);
+            mMainAdapter.setData(passwords, mMainBinder);
             initView();
-            if (listView != null)
-                listView.setSelection(0);
+            if (mListView != null)
+                mListView.setSelection(0);
         }
     }
 
@@ -112,7 +112,7 @@ public class PasswordListFragment extends BaseFragment implements OnGetAllPasswo
         switch (v.getId()) {
             case R.id.fragment_password_noData:
                 Intent intent = new Intent(getActivity(), EditPasswordActivity.class);
-                intent.putExtra(EditPasswordActivity.PASSWORD_GROUP, passwordGroupName);
+                intent.putExtra(EditPasswordActivity.PASSWORD_GROUP, mPasswordGroupName);
                 getActivity().startActivity(intent);
                 break;
             default:
@@ -123,33 +123,33 @@ public class PasswordListFragment extends BaseFragment implements OnGetAllPasswo
 
     //region private
     public void setDataSource(PasswordDBRealm mainBinder) {
-        this.mainBinder = mainBinder;
+        this.mMainBinder = mainBinder;
     }
 
     public void showPasswordGroup(String passwordGroupName) {
-        this.passwordGroupName = passwordGroupName;
-        mainBinder.getAllPasswordByGroupName(passwordGroupName, this);
+        this.mPasswordGroupName = passwordGroupName;
+        mMainBinder.getAllPasswordByGroupName(passwordGroupName, this);
     }
 
     public String getPasswordGroupName() {
-        return passwordGroupName;
+        return mPasswordGroupName;
     }
 
     private void unregistOnPasswordListener() {
-        if (mainBinder != null) {
-            mainBinder.unregistOnPasswordListener(onPasswordListener);
-            mainBinder = null;
+        if (mMainBinder != null) {
+            mMainBinder.unregistOnPasswordListener(onPasswordListener);
+            mMainBinder = null;
         }
     }
 
     private void initView() {
-        if (noDataView != null) {
-            if (mainAdapter.getCount() == 0) {
-                noDataView.setVisibility(View.VISIBLE);
-                listView.setVisibility(View.GONE);
+        if (mNoDataView != null) {
+            if (mMainAdapter.getCount() == 0) {
+                mNoDataView.setVisibility(View.VISIBLE);
+                mListView.setVisibility(View.GONE);
             } else {
-                noDataView.setVisibility(View.GONE);
-                listView.setVisibility(View.VISIBLE);
+                mNoDataView.setVisibility(View.GONE);
+                mListView.setVisibility(View.VISIBLE);
             }
         }
     }

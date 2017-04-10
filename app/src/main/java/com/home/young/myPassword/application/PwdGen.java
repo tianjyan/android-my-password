@@ -7,8 +7,10 @@ import org.apache.commons.lang3.StringUtils;
 
 public class PwdGen {
 
-    private static final char[] LOWERS = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
-    private static final char[] UPPERS = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+    private static final char[] LOWERS = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
+            'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+    private static final char[] UPPERS = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+            'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
     private static final char[] NUMBERS = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
     private static final char[] SPECIALS = { '!', '@', '#', '$', '%', '^', '&', '*', '_', '~' };
     private static final char[] DISCOURAGED = { 'i', 'l', 'o', 'I', 'O', '0', '1' };
@@ -33,7 +35,11 @@ public class PwdGen {
                 Character character = charList.get(index);
                 sb.append(character.charValue());
             }
-        } while(containsDiscouragedCharacters(sb.toString()) || !isPasswordValid(sb.toString(), length, includeLows,includeCaps,includeNumbers,includeSpecials));
+        } while(containsDiscouragedCharacters(sb.toString()) || !isPasswordValid(sb.toString(),
+                length, includeLows,
+                includeCaps,
+                includeNumbers,
+                includeSpecials));
 
         return sb.toString();
     }
@@ -51,7 +57,7 @@ public class PwdGen {
 
         if(Optionality.MANDATORY == includeCaps) {
             for (char c : UPPERS){
-                charList.add((c));
+                charList.add(c);
             }
         }
 

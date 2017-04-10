@@ -1,8 +1,6 @@
 package com.home.young.myPassword.application;
 
 import android.app.Fragment;
-import android.os.Bundle;
-
 public class BaseFragment extends Fragment {
 
     protected BaseActivity getBaseActivity() {

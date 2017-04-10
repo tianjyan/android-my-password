@@ -15,7 +15,7 @@
     <!--        重复代码的检查,超过8行就认为重复         -->
     <!--   =====================================  -->
     <module name="StrictDuplicateCode">
-        <property name="min" value="10" />
+        <property name="min" value="30" />
     </module>
     <!--   =====================================  -->
     <!--        size度量                          -->
@@ -122,7 +122,7 @@
         </module>
         <!--  函数的分支复杂度  -->
         <module name="CyclomaticComplexity">
-            <property name="max" value="7" />
+            <property name="max" value="12" />
         </module>
         <!--  try 语句深度 -->
         <module name="NestedTryDepth">

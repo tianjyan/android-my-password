@@ -47,34 +47,34 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
     public static final String PASSWORD_GROUP = "password_group";
     private static final int MODE_ADD = 0;
     private static final int MODE_MODIFY = 1;
-    private int MODE = MODE_ADD;
-    private String id;
-    private PasswordDBRealm mainBinder;
-    @BindView(R.id.edit_password_title) EditText titleView;
-    @BindView(R.id.edit_password_name) AutoCompleteTextView nameView;
-    @BindView(R.id.edit_password_password) AutoCompleteTextView passwordView;
-    @BindView(R.id.edit_password_pay_password) AutoCompleteTextView payPasswordView;
-    @BindView(R.id.edit_password_note) EditText noteView;
-    @BindView(R.id.edit_password_group) Spinner spinner;
-    private String passwordGroup;
+    private int mMode = MODE_ADD;
+    private String mId;
+    private PasswordDBRealm mMainBinder;
+    @BindView(R.id.edit_password_title) EditText mTitleView;
+    @BindView(R.id.edit_password_name) AutoCompleteTextView mNameView;
+    @BindView(R.id.edit_password_password) AutoCompleteTextView mPasswordView;
+    @BindView(R.id.edit_password_pay_password) AutoCompleteTextView mPayPasswordView;
+    @BindView(R.id.edit_password_note) EditText mNoteView;
+    @BindView(R.id.edit_password_group) Spinner mSpinner;
+    private String mPasswordGroup;
     //endregion
 
     //region anonymous class
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            mainBinder = null;
+            mMainBinder = null;
         }
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            mainBinder = (PasswordDBRealm) service;
-            if (MODE == MODE_MODIFY) {
-                mainBinder.getPassword(id, EditPasswordActivity.this);
+            mMainBinder = (PasswordDBRealm) service;
+            if (mMode == MODE_MODIFY) {
+                mMainBinder.getPassword(mId, EditPasswordActivity.this);
             }
             // 获得所有密码、用户名，用于自动完成
-            mainBinder.getAllPasswordByGroupName(null, EditPasswordActivity.this);
-            mainBinder.getAllPasswordGroup(EditPasswordActivity.this);
+            mMainBinder.getAllPasswordByGroupName(null, EditPasswordActivity.this);
+            mMainBinder.getAllPasswordGroup(EditPasswordActivity.this);
         }
     };
     //endregion
@@ -88,17 +88,17 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
         setContentView(R.layout.activity_edit_password);
         ButterKnife.bind(this);
 
-        id = getIntent().getStringExtra(ID);
-        if (TextUtils.isEmpty(id)) {
-            MODE = MODE_ADD;
+        mId = getIntent().getStringExtra(ID);
+        if (TextUtils.isEmpty(mId)) {
+            mMode = MODE_ADD;
         } else {
-            MODE = MODE_MODIFY;
+            mMode = MODE_MODIFY;
         }
 
-        passwordGroup = getIntent().getStringExtra(PASSWORD_GROUP);
+        mPasswordGroup = getIntent().getStringExtra(PASSWORD_GROUP);
 
-        if (passwordGroup == null || passwordGroup.equals("")) {
-            passwordGroup = getString(R.string.default_password_group_name);
+        if (mPasswordGroup == null || mPasswordGroup.equals("")) {
+            mPasswordGroup = getString(R.string.default_password_group_name);
         }
 
         initActionBar();
@@ -116,7 +116,7 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.edit_password, menu);
-        if (MODE == MODE_ADD) {
+        if (mMode == MODE_ADD) {
             menu.findItem(R.id.action_save).setIcon(R.drawable.ic_action_ok);
         } else {
             menu.findItem(R.id.action_save).setIcon(R.drawable.ic_action_save);
@@ -129,12 +129,12 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_save) {
-            if (mainBinder != null) {
+            if (mMainBinder != null) {
                 onSaveBtnClick();
             }
             return true;
         } else if (id == R.id.action_delete) {
-            if (mainBinder != null) {
+            if (mMainBinder != null) {
                 deletePassword();
             }
             return true;
@@ -149,10 +149,10 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
                 public void onDismiss(DialogInterface dialog) {
                     String result = ((GenPasswordDialog)dialog).getPassword();
                     if(result != null && !result.equals("")){
-                        if(passwordView.isFocused()) {
-                            passwordView.setText(result);
-                        }else if(payPasswordView.isFocused()){
-                            payPasswordView.setText(result);
+                        if(mPasswordView.isFocused()) {
+                            mPasswordView.setText(result);
+                        }else if(mPayPasswordView.isFocused()){
+                            mPayPasswordView.setText(result);
                         }
                     }
                 }
@@ -170,12 +170,12 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
             finish();
         }
 
-        titleView.setText(password.getTitle());
-        nameView.setText(password.getUserName());
-        passwordView.setText(password.getPassword());
-        payPasswordView.setText(password.getPayPassword());
-        noteView.setText(password.getNote());
-        titleView.setSelection(titleView.getText().length());
+        mTitleView.setText(password.getTitle());
+        mNameView.setText(password.getUserName());
+        mPasswordView.setText(password.getPassword());
+        mPayPasswordView.setText(password.getPayPassword());
+        mNoteView.setText(password.getNote());
+        mTitleView.setSelection(mTitleView.getText().length());
     }
 
     @Override
@@ -192,9 +192,9 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
         // 自动完成
         int id = R.layout.simple_dropdown_item;
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, id, new ArrayList<>(arrays));
-        nameView.setAdapter(arrayAdapter);
-        passwordView.setAdapter(arrayAdapter);
-        payPasswordView.setAdapter(arrayAdapter);
+        mNameView.setAdapter(arrayAdapter);
+        mPasswordView.setAdapter(arrayAdapter);
+        mPayPasswordView.setAdapter(arrayAdapter);
     }
 
     @Override
@@ -206,12 +206,12 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
             arrays.add(passwordGroup.getGroupName());
         }
 
-        if (!arrays.contains(passwordGroup))
-            arrays.add(passwordGroup);
+        if (!arrays.contains(mPasswordGroup))
+            arrays.add(mPasswordGroup);
 
         int position = 0;
         for (String passwordGroupName : arrays) {
-            if (passwordGroupName.equals(passwordGroup))
+            if (passwordGroupName.equals(mPasswordGroup))
                 break;
             position++;
         }
@@ -219,13 +219,13 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
         int id = R.layout.simple_dropdown_item;
         SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(this, id, new ArrayList<>(arrays));
 
-        spinner.setAdapter(spinnerAdapter);
+        mSpinner.setAdapter(spinnerAdapter);
 
-        spinner.setSelection(position);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mSpinner.setSelection(position);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                passwordGroup = (String) parent.getItemAtPosition(position);
+                mPasswordGroup = (String) parent.getItemAtPosition(position);
             }
 
             @Override
@@ -241,7 +241,7 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        if (MODE == MODE_ADD) {
+        if (mMode == MODE_ADD) {
             actionBar.setTitle(R.string.add);
         } else {
             actionBar.setTitle(R.string.edit);
@@ -254,7 +254,7 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
         builder.setNeutralButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mainBinder.deletePassword(id);
+                mMainBinder.deletePassword(mId);
                 finish();
             }
         });
@@ -263,24 +263,24 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
     }
 
     private void onSaveBtnClick() {
-        if (titleView.getText().toString().trim().equals("")) {
+        if (mTitleView.getText().toString().trim().equals("")) {
             Toast.makeText(this, R.string.empty_title, Toast.LENGTH_SHORT).show();
         } else {
             Password password = new Password();
-            password.setTitle(titleView.getText().toString().trim());
-            password.setUserName(nameView.getText().toString().trim());
-            password.setPassword(passwordView.getText().toString().trim());
-            password.setPayPassword(payPasswordView.getText().toString().trim());
-            password.setNote(noteView.getText().toString().trim());
-            password.setGroupName(passwordGroup);
+            password.setTitle(mTitleView.getText().toString().trim());
+            password.setUserName(mNameView.getText().toString().trim());
+            password.setPassword(mPasswordView.getText().toString().trim());
+            password.setPayPassword(mPayPasswordView.getText().toString().trim());
+            password.setNote(mNoteView.getText().toString().trim());
+            password.setGroupName(mPasswordGroup);
             password.setPublish(System.currentTimeMillis());
-            if (MODE == MODE_ADD) {
+            if (mMode == MODE_ADD) {
                 // 添加
-                mainBinder.addPassword(password);
+                mMainBinder.addPassword(password);
             } else {
                 // 修改密码
-                password.setId(id);
-                mainBinder.updatePassword(password);
+                password.setId(mId);
+                mMainBinder.updatePassword(password);
             }
             finish();
         }

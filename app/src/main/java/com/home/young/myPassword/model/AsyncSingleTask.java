@@ -10,32 +10,32 @@ public abstract class AsyncSingleTask<D> {
     private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private static final Handler handler = new Handler(Looper.getMainLooper());
 
-    private AsyncResult<D> asyncResult;
-    private boolean isRunned = false;
-    private int delay = 0;
+    private AsyncResult<D> mAsyncResult;
+    private boolean mIsRunned = false;
+    private int mDelay = 0;
     private Runnable mainThreadRunable = new Runnable() {
         @Override
         public void run() {
-            runOnUIThread(asyncResult);
+            runOnUIThread(mAsyncResult);
         }
     };
     private Runnable backgroundRunable = new Runnable() {
         @Override
         public void run() {
-            asyncResult = doInBackground(new AsyncResult<D>());
-            handler.postDelayed(mainThreadRunable, delay);
+            mAsyncResult = doInBackground(new AsyncResult<D>());
+            handler.postDelayed(mainThreadRunable, mDelay);
         }
     };
 
     public void setDelay(int delay) {
-        this.delay = delay;
+        this.mDelay = delay;
     }
 
     public synchronized void execute() {
-        if (isRunned)
+        if (mIsRunned)
             throw new RuntimeException("该任务已经运行过，不能再次调用");
 
-        isRunned = true;
+        mIsRunned = true;
         executorService.execute(backgroundRunable);
     }
 

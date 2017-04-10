@@ -49,22 +49,22 @@ public class MainActivity extends BaseActivity implements OnGetAllPasswordCallba
     //region field
     private static final int CODE_OUT = 0;
     private static final int CODE_IN = 1;
-    @BindView(R.id.main_layout) DrawerLayout drawerLayout;
+    @BindView(R.id.main_layout) DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-    @BindView(R.id.main_navigation_drawer) View drawerView;
-    private PasswordDBRealm mainBinder;
-    private PasswordListFragment passwordListFragment;
-    private PasswordGroupFragment passwordGroupFragment;
-    private String fullPath;
+    @BindView(R.id.main_navigation_drawer) View mDrawerView;
+    private PasswordDBRealm mMainBinder;
+    private PasswordListFragment mPasswordListFragment;
+    private PasswordGroupFragment mPasswordGroupFragment;
+    private String mFullPath;
     //endregion
 
     //region anonymous class
     private OnPasswordGroupSelected onPasswordGroupSelected = new OnPasswordGroupSelected() {
         @Override
         public void onPasswordGroupSelected(String passwordGroupName) {
-            drawerLayout.closeDrawer(drawerView);
-            if (passwordListFragment != null){
-                passwordListFragment.showPasswordGroup(passwordGroupName);
+            mDrawerLayout.closeDrawer(mDrawerView);
+            if (mPasswordListFragment != null){
+                mPasswordListFragment.showPasswordGroup(passwordGroupName);
             }
         }
     };
@@ -72,12 +72,12 @@ public class MainActivity extends BaseActivity implements OnGetAllPasswordCallba
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            mainBinder = null;
+            mMainBinder = null;
         }
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            mainBinder = (PasswordDBRealm) service;
+            mMainBinder = (PasswordDBRealm) service;
             initFragment();
         }
     };
@@ -106,7 +106,7 @@ public class MainActivity extends BaseActivity implements OnGetAllPasswordCallba
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!drawerLayout.isDrawerOpen(drawerView)) {
+        if (!mDrawerLayout.isDrawerOpen(mDrawerView)) {
             getMenuInflater().inflate(R.menu.main, menu);
             return true;
         } else {
@@ -123,11 +123,11 @@ public class MainActivity extends BaseActivity implements OnGetAllPasswordCallba
         int id = item.getItemId();
         switch (id){
             case R.id.action_add_password:
-                if (mainBinder == null)
+                if (mMainBinder == null)
                     break;
                 Intent intent = new Intent(this, EditPasswordActivity.class);
-                if (passwordListFragment != null)
-                    intent.putExtra(EditPasswordActivity.PASSWORD_GROUP, passwordListFragment.getPasswordGroupName());
+                if (mPasswordListFragment != null)
+                    intent.putExtra(EditPasswordActivity.PASSWORD_GROUP, mPasswordListFragment.getPasswordGroupName());
                 startActivity(intent);
                 break;
             case R.id.action_change_login_password:
@@ -150,6 +150,8 @@ public class MainActivity extends BaseActivity implements OnGetAllPasswordCallba
                 intent1.putExtra(FilePickerActivity.EXTRA_MODE, AbstractFilePickerFragment.MODE_DIR);
                 startActivityForResult(intent1, CODE_OUT);
                 break;
+            default:
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -165,8 +167,9 @@ public class MainActivity extends BaseActivity implements OnGetAllPasswordCallba
     public void onGetAllPassword(String groupName, List<Password> passwords) {
         String jsonPasswords = JsonHelper.toJSON(passwords);
         try {
-            //IOHelper.writeSDFile(Environment.getExternalStorageDirectory().getPath() + "/Download/MyPasswordBackup.json", jsonPasswords);
-            IOHelper.writeSDFile(fullPath + "/MyPasswordBackup.json", jsonPasswords);
+            //IOHelper.writeSDFile(Environment.getExternalStorageDirectory().getPath()
+            // + "/Download/MyPasswordBackup.json", jsonPasswords);
+            IOHelper.writeSDFile(mFullPath + "/MyPasswordBackup.json", jsonPasswords);
         }
         catch (IOException ex){
             showToast(R.string.output_error);
@@ -177,7 +180,7 @@ public class MainActivity extends BaseActivity implements OnGetAllPasswordCallba
     @Override
     public void onGetAllPasswordGroup(List<PasswordGroup> passwordGroups) {
         try {
-            String json = IOHelper.readSDFile(fullPath);
+            String json = IOHelper.readSDFile(mFullPath);
             Password[] passwords = JsonHelper.parseArray(json,Password.class);
             for (Password password : passwords) {
                 boolean existGroup = false;
@@ -190,10 +193,10 @@ public class MainActivity extends BaseActivity implements OnGetAllPasswordCallba
                 if (!existGroup) {
                     PasswordGroup group = new PasswordGroup();
                     group.setGroupName(password.getGroupName());
-                    mainBinder.addPasswordGroup(group);
+                    mMainBinder.addPasswordGroup(group);
                     passwordGroups.add(group);
                 }
-                mainBinder.addPassword(password);
+                mMainBinder.addPassword(password);
             }
 
         }
@@ -205,7 +208,7 @@ public class MainActivity extends BaseActivity implements OnGetAllPasswordCallba
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        fullPath = null;
+        mFullPath = null;
         if (resultCode == Activity.RESULT_OK) {
             if (data.getBooleanExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE,
                     false)) {
@@ -220,7 +223,7 @@ public class MainActivity extends BaseActivity implements OnGetAllPasswordCallba
                             sb.append("\n");
                         }
                     }
-                    fullPath = sb.toString();
+                    mFullPath = sb.toString();
                 } else {
                     ArrayList<String> paths = data.getStringArrayListExtra(
                             FilePickerActivity.EXTRA_PATHS);
@@ -232,28 +235,28 @@ public class MainActivity extends BaseActivity implements OnGetAllPasswordCallba
                             sb.append("\n");
                         }
                     }
-                    fullPath = sb.toString();
+                    mFullPath = sb.toString();
                 }
             } else {
-                fullPath = data.getData().getPath();
+                mFullPath = data.getData().getPath();
             }
         }
-        if(!TextUtils.isEmpty(fullPath)){
+        if(!TextUtils.isEmpty(mFullPath)){
             if(CODE_OUT == requestCode)
-                mainBinder.getAllPasswordByGroupName(null, this);
+                mMainBinder.getAllPasswordByGroupName(null, this);
             else if(CODE_IN == requestCode)
-                mainBinder.getAllPasswordGroup(this);
+                mMainBinder.getAllPasswordGroup(this);
         }
     }
     //endregion
 
     //region init
     private void initDrawer(){
-        drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
-        mDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout,
+        mDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout,
                 R.string.open, R.string.close) {
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -265,21 +268,22 @@ public class MainActivity extends BaseActivity implements OnGetAllPasswordCallba
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 getActivity().invalidateOptionsMenu();
-                getSupportActionBar().setTitle(getActivity().getSetting(SettingKey.LAST_SHOW_PASSWORD_GROUP_NAME, getString(R.string.app_name)));
+                getSupportActionBar().setTitle(getActivity().
+                        getSetting(SettingKey.LAST_SHOW_PASSWORD_GROUP_NAME, getString(R.string.app_name)));
             }
         };
 
-        drawerLayout.post(new Runnable() {
+        mDrawerLayout.post(new Runnable() {
             @Override
             public void run() {
                 mDrawerToggle.syncState();
             }
         });
-        drawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (getSetting(SettingKey.IS_SHOWED_DRAWER, "false").equals("false")) {
             putSetting(SettingKey.IS_SHOWED_DRAWER, "true");
-            drawerLayout.openDrawer(drawerView);
+            mDrawerLayout.openDrawer(mDrawerView);
         } else {
             String lastGroupName = getSetting(SettingKey.LAST_SHOW_PASSWORD_GROUP_NAME, "");
             if (lastGroupName.equals(""))
@@ -291,20 +295,20 @@ public class MainActivity extends BaseActivity implements OnGetAllPasswordCallba
     private void initFragment(){
         FragmentManager fragmentManager = getFragmentManager();
 
-        passwordListFragment = (PasswordListFragment) fragmentManager.findFragmentByTag("PasswordListFragment");
-        if (passwordListFragment == null)
-            passwordListFragment = new PasswordListFragment();
-        passwordListFragment.setDataSource(mainBinder);
+        mPasswordListFragment = (PasswordListFragment) fragmentManager.findFragmentByTag("PasswordListFragment");
+        if (mPasswordListFragment == null)
+            mPasswordListFragment = new PasswordListFragment();
+        mPasswordListFragment.setDataSource(mMainBinder);
 
-        passwordGroupFragment = (PasswordGroupFragment) fragmentManager.findFragmentByTag("PasswordGroupFragment");
-        if (passwordGroupFragment == null)
-            passwordGroupFragment = new PasswordGroupFragment();
-        passwordGroupFragment.setDataSource(mainBinder, onPasswordGroupSelected);
+        mPasswordGroupFragment = (PasswordGroupFragment) fragmentManager.findFragmentByTag("PasswordGroupFragment");
+        if (mPasswordGroupFragment == null)
+            mPasswordGroupFragment = new PasswordGroupFragment();
+        mPasswordGroupFragment.setDataSource(mMainBinder, onPasswordGroupSelected);
 
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.main_navigation_drawer, passwordGroupFragment, "PasswordGroupFragment");
-        fragmentTransaction.replace(R.id.main_container, passwordListFragment, "PasswordListFragment");
+        fragmentTransaction.replace(R.id.main_navigation_drawer, mPasswordGroupFragment, "PasswordGroupFragment");
+        fragmentTransaction.replace(R.id.main_container, mPasswordListFragment, "PasswordListFragment");
         fragmentTransaction.commitAllowingStateLoss();
     }
 
