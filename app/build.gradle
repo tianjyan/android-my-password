@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'checkstyle'
 apply plugin: 'realm-android'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 25
@@ -16,9 +17,7 @@ android {
         versionCode 1
         versionName "1.2.0"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-        jackOptions {
-            enabled true
-        }
+
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8
             targetCompatibility JavaVersion.VERSION_1_8
@@ -45,3 +44,13 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
 }
+
+task styleCheck(type: Checkstyle) {
+    configFile new File(rootDir, "config/checkstyle.xml")
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    classpath = files()
+}
+
