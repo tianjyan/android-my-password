@@ -31,6 +31,11 @@ public class PasswordListAdapter  extends BaseAdapter {
 
     //region field
     private static final long DAY = 1000 * 60 * 60 * 24;
+    private static final int MINUTE = 1000 * 60;
+    private static final int HOUR = 1000 * 60 * 60;
+    private static final int YEAR = 365;
+    private static final int NUMBER_6 = 6;
+    private static final float NUMBER_DOT5 = 0.5f;
     private List<PasswordItem> mPasswords = new ArrayList<>();
     private Context mContext;
     private SimpleDateFormat mSimpleDateFormatYear = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -41,25 +46,22 @@ public class PasswordListAdapter  extends BaseAdapter {
     //endregion
 
     //region anonymous class
-    private Comparator<PasswordItem> comparator = new Comparator<PasswordItem>() {
-        @Override
-        public int compare(PasswordItem lhs, PasswordItem rhs) {
+    private Comparator<PasswordItem> comparator = (lhs, rhs) -> {
 
-            long value = rhs.password.getPublish() - lhs.password.getPublish();
-            if (value > 0)
-                return 1;
-            else if (value == 0)
-                return 0;
-            else
-                return -1;
-        }
+        long value = rhs.password.getPublish() - lhs.password.getPublish();
+        if (value > 0)
+            return 1;
+        else if (value == 0)
+            return 0;
+        else
+            return -1;
     };
     //endregion
 
     //region constructor
     public PasswordListAdapter(Context context) {
         this.mContext = context;
-        mPadding = dip2px(6);
+        mPadding = dip2px(NUMBER_6);
     }
     //endregion
 
@@ -97,23 +99,23 @@ public class PasswordListAdapter  extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.password_item, parent, false);
             convertView.setTag(viewHolder);
 
-            viewHolder.titleView = (TextView)convertView.findViewById(R.id.password_item_title);
-            viewHolder.dateView = (TextView)convertView.findViewById(R.id.password_item_date);
-            viewHolder.nameView = (TextView)convertView.findViewById(R.id.password_item_name);
-            viewHolder.passwordView = (TextView)convertView.findViewById(R.id.password_item_password);
-            viewHolder.payPasswordView = (TextView)convertView.findViewById(R.id.password_item_pay_password);
-            viewHolder.payConainer = convertView.findViewById(R.id.password_item_pay_container);
-            viewHolder.noteView = (TextView)convertView.findViewById(R.id.password_item_note);
-            viewHolder.noteConainer = convertView.findViewById(R.id.password_item_note_container);
-            viewHolder.copyView = convertView.findViewById(R.id.password_item_copy);
-            viewHolder.deleteView = convertView.findViewById(R.id.password_item_delete);
-            viewHolder.editView = convertView.findViewById(R.id.password_item_edit);
-            viewHolder.showOrHideView = convertView.findViewById(R.id.password_item_showOrHide);
-            viewHolder.showOrHideTextView = (TextView) convertView.findViewById(R.id.password_item_showOrHide_text);
-            viewHolder.copyView.setOnClickListener(viewHolder);
-            viewHolder.deleteView.setOnClickListener(viewHolder);
-            viewHolder.editView.setOnClickListener(viewHolder);
-            viewHolder.showOrHideView.setOnClickListener(viewHolder);
+            viewHolder.mTitleView = (TextView)convertView.findViewById(R.id.password_item_title);
+            viewHolder.mDateView = (TextView)convertView.findViewById(R.id.password_item_date);
+            viewHolder.mNameView = (TextView)convertView.findViewById(R.id.password_item_name);
+            viewHolder.mPasswordView = (TextView)convertView.findViewById(R.id.password_item_password);
+            viewHolder.mPayPasswordView = (TextView)convertView.findViewById(R.id.password_item_pay_password);
+            viewHolder.mPayConainer = convertView.findViewById(R.id.password_item_pay_container);
+            viewHolder.mNoteView = (TextView)convertView.findViewById(R.id.password_item_note);
+            viewHolder.mNoteConainer = convertView.findViewById(R.id.password_item_note_container);
+            viewHolder.mCopyView = convertView.findViewById(R.id.password_item_copy);
+            viewHolder.mDeleteView = convertView.findViewById(R.id.password_item_delete);
+            viewHolder.mEditView = convertView.findViewById(R.id.password_item_edit);
+            viewHolder.mShowOrHideView = convertView.findViewById(R.id.password_item_showOrHide);
+            viewHolder.mShowOrHideTextView = (TextView) convertView.findViewById(R.id.password_item_showOrHide_text);
+            viewHolder.mCopyView.setOnClickListener(viewHolder);
+            viewHolder.mDeleteView.setOnClickListener(viewHolder);
+            viewHolder.mEditView.setOnClickListener(viewHolder);
+            viewHolder.mShowOrHideView.setOnClickListener(viewHolder);
 
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -136,7 +138,7 @@ public class PasswordListAdapter  extends BaseAdapter {
     //region public
     public int dip2px(float dipValue) {
         final float scale = mContext.getResources().getDisplayMetrics().density;
-        return (int) (dipValue * scale + 0.5f);
+        return (int) (dipValue * scale + NUMBER_DOT5);
     }
 
     public void setData(List<Password> passwords, PasswordDBRealm mainBinder) {
@@ -227,15 +229,15 @@ public class PasswordListAdapter  extends BaseAdapter {
             long distance = currentTime - createDate;
             if (createDate > currentTime) {
                 result = mSimpleDateFormatYear.format(createDate);
-            } else if (distance < 1000 * 60 ) {
+            } else if (distance < MINUTE ) {
                 result = mContext.getString(R.string.just);
-            } else if (distance < 1000 * 60 * 60) {
+            } else if (distance < HOUR) {
                 String dateString = mContext.getString(R.string.minute_ago);
-                result = String.format(Locale.getDefault(), dateString, distance / (1000 * 60));
+                result = String.format(Locale.getDefault(), dateString, distance / MINUTE);
             } else if (distance < DAY) {
                 String dateString = mContext.getString(R.string.hour_ago);
-                result = String.format(Locale.getDefault(), dateString, distance / (1000 * 60 * 60));
-            } else if (distance < DAY * 365) {
+                result = String.format(Locale.getDefault(), dateString, distance / HOUR);
+            } else if (distance < DAY * YEAR) {
                 result = mSimpleDateFormatMonth.format(createDate);
             } else {
                 result = mSimpleDateFormatYear.format(createDate);
@@ -251,20 +253,20 @@ public class PasswordListAdapter  extends BaseAdapter {
     //region nested class
     private class ViewHolder implements android.view.View.OnClickListener {
 
-        public TextView titleView;
-        public TextView dateView;
-        public TextView nameView;
-        public TextView passwordView;
-        public TextView payPasswordView;
-        public TextView noteView;
-        public View noteConainer;
-        public View payConainer;
-        public View copyView;
-        public View deleteView;
-        public View editView;
-        public View showOrHideView;
-        private PasswordItem passwordItem;
-        private TextView showOrHideTextView;
+        public TextView mTitleView;
+        public TextView mDateView;
+        public TextView mNameView;
+        public TextView mPasswordView;
+        public TextView mPayPasswordView;
+        public TextView mNoteView;
+        public View mNoteConainer;
+        public View mPayConainer;
+        public View mCopyView;
+        public View mDeleteView;
+        public View mEditView;
+        public View mShowOrHideView;
+        private PasswordItem mPasswordItem;
+        private TextView mShowOrHideTextView;
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
@@ -289,11 +291,11 @@ public class PasswordListAdapter  extends BaseAdapter {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
             String[] item;
-            String payPassword = passwordItem.password.getPayPassword();
+            String payPassword = mPasswordItem.password.getPayPassword();
             if(!TextUtils.isEmpty(payPassword)) {
-               item =  new String[]{mContext.getResources().getString(R.string.copy_user_name),
-                       mContext.getResources().getString(R.string.copy_password),
-                       mContext.getResources().getString(R.string.copy_pay_password)};
+                item =  new String[]{mContext.getResources().getString(R.string.copy_user_name),
+                        mContext.getResources().getString(R.string.copy_password),
+                        mContext.getResources().getString(R.string.copy_pay_password)};
             }
             else {
                 item =  new String[]{mContext.getResources().getString(R.string.copy_user_name),
@@ -308,7 +310,7 @@ public class PasswordListAdapter  extends BaseAdapter {
                             // 复制名字
                             ClipboardManager cmbName = (ClipboardManager) mContext
                                     .getSystemService(Context.CLIPBOARD_SERVICE);
-                            ClipData clipDataName = ClipData.newPlainText(null, passwordItem.password.getUserName());
+                            ClipData clipDataName = ClipData.newPlainText(null, mPasswordItem.password.getUserName());
                             cmbName.setPrimaryClip(clipDataName);
                             Toast.makeText(mContext, R.string.copy_use_name_msg, Toast.LENGTH_SHORT).show();
                             break;
@@ -316,7 +318,7 @@ public class PasswordListAdapter  extends BaseAdapter {
                             // 复制密码
                             ClipboardManager cmbPassword = (ClipboardManager) mContext
                                     .getSystemService(Context.CLIPBOARD_SERVICE);
-                            ClipData clipData = ClipData.newPlainText(null, passwordItem.password.getPassword());
+                            ClipData clipData = ClipData.newPlainText(null, mPasswordItem.password.getPassword());
                             cmbPassword.setPrimaryClip(clipData);
                             Toast.makeText(mContext, R.string.copy_password_msg, Toast.LENGTH_SHORT).show();
                             break;
@@ -324,7 +326,7 @@ public class PasswordListAdapter  extends BaseAdapter {
                             //复制支付密码
                             ClipboardManager cmbPayPassword = (ClipboardManager) mContext
                                     .getSystemService(Context.CLIPBOARD_SERVICE);
-                            ClipData clip = ClipData.newPlainText(null, passwordItem.password.getPayPassword());
+                            ClipData clip = ClipData.newPlainText(null, mPasswordItem.password.getPayPassword());
                             cmbPayPassword.setPrimaryClip(clip);
                             Toast.makeText(mContext, R.string.copy_pay_password_msg, Toast.LENGTH_SHORT).show();
                             break;
@@ -338,7 +340,7 @@ public class PasswordListAdapter  extends BaseAdapter {
 
         private void onEditClick() {
             Intent intent = new Intent(mContext, EditPasswordActivity.class);
-            intent.putExtra(EditPasswordActivity.ID, passwordItem.password.getId());
+            intent.putExtra(EditPasswordActivity.ID, mPasswordItem.password.getId());
             intent.putExtra(EditPasswordActivity.PASSWORD_GROUP, mPasswordGroup);
             mContext.startActivity(intent);
         }
@@ -346,11 +348,11 @@ public class PasswordListAdapter  extends BaseAdapter {
         private void onDeleteClick() {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setMessage(R.string.delete_password_message);
-            builder.setTitle(passwordItem.password.getTitle());
+            builder.setTitle(mPasswordItem.password.getTitle());
             builder.setNeutralButton(R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    mMainBinder.deletePassword(passwordItem.password.getId());
+                    mMainBinder.deletePassword(mPasswordItem.password.getId());
                 }
             });
             builder.setNegativeButton(R.string.no, null);
@@ -358,48 +360,48 @@ public class PasswordListAdapter  extends BaseAdapter {
         }
 
         private void onShowOrHideClick(){
-               if(passwordView.getInputType() == (EditorInfo.TYPE_TEXT_VARIATION_PASSWORD
-                       | EditorInfo.TYPE_CLASS_TEXT)){
-                    passwordView.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+            if(mPasswordView.getInputType() == (EditorInfo.TYPE_TEXT_VARIATION_PASSWORD
+                    | EditorInfo.TYPE_CLASS_TEXT)){
+                mPasswordView.setInputType(EditorInfo.TYPE_CLASS_TEXT);
 
-                    if(payConainer.getVisibility() == View.VISIBLE){
-                        payPasswordView.setInputType(EditorInfo.TYPE_CLASS_TEXT);
-                    }
+                if(mPayConainer.getVisibility() == View.VISIBLE){
+                    mPayPasswordView.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+                }
 
-                    showOrHideTextView.setText(R.string.hide);
-               } else {
-                   passwordView.setInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD | EditorInfo.TYPE_CLASS_TEXT);
+                mShowOrHideTextView.setText(R.string.hide);
+            } else {
+                mPasswordView.setInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD | EditorInfo.TYPE_CLASS_TEXT);
 
-                   if(payConainer.getVisibility() == View.VISIBLE){
-                       payPasswordView.setInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD
-                               | EditorInfo.TYPE_CLASS_TEXT);
-                   }
+                if(mPayConainer.getVisibility() == View.VISIBLE){
+                    mPayPasswordView.setInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD
+                            | EditorInfo.TYPE_CLASS_TEXT);
+                }
 
-                   showOrHideTextView.setText(R.string.show);
-               }
+                mShowOrHideTextView.setText(R.string.show);
+            }
         }
 
         void bindView(PasswordItem passwordItem) {
-            this.passwordItem = passwordItem;
-            titleView.setText(passwordItem.password.getTitle());
-            dateView.setText(passwordItem.dataString);
-            nameView.setText(passwordItem.password.getUserName());
-            passwordView.setText(passwordItem.password.getPassword());
+            this.mPasswordItem = passwordItem;
+            mTitleView.setText(passwordItem.password.getTitle());
+            mDateView.setText(passwordItem.dataString);
+            mNameView.setText(passwordItem.password.getUserName());
+            mPasswordView.setText(passwordItem.password.getPassword());
 
             String note = passwordItem.password.getNote();
             if (TextUtils.isEmpty(note)) {
-                noteConainer.setVisibility(View.GONE);
+                mNoteConainer.setVisibility(View.GONE);
             } else {
-                noteConainer.setVisibility(View.VISIBLE);
-                noteView.setText(note);
+                mNoteConainer.setVisibility(View.VISIBLE);
+                mNoteView.setText(note);
             }
 
             String payPassword = passwordItem.password.getPayPassword();
             if(TextUtils.isEmpty(payPassword)) {
-                payConainer.setVisibility(View.GONE);
+                mPayConainer.setVisibility(View.GONE);
             } else {
-                payConainer.setVisibility(View.VISIBLE);
-                payPasswordView.setText(payPassword);
+                mPayConainer.setVisibility(View.VISIBLE);
+                mPayPasswordView.setText(payPassword);
             }
         }
     }
