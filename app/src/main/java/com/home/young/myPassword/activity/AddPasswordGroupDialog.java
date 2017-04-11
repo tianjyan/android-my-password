@@ -17,8 +17,8 @@ import butterknife.OnClick;
 public class AddPasswordGroupDialog extends Dialog {
 
     //region field
-    @BindView(R.id.create_passwordGroup_name) EditText editText;
-    private PasswordDBRealm mainBinder;
+    @BindView(R.id.create_passwordGroup_name) EditText mEditText;
+    private PasswordDBRealm mMainBinder;
     //endregion
 
     //region onclick
@@ -29,11 +29,11 @@ public class AddPasswordGroupDialog extends Dialog {
 
     @OnClick(R.id.create_passwordGroup_sure)
     public void sureClick() {
-        String name = editText.getText().toString().trim();
+        String name = mEditText.getText().toString().trim();
         if(name.length() > 0){
             PasswordGroup passwordGroup = new PasswordGroup();
             passwordGroup.setGroupName(name);
-            mainBinder.addPasswordGroup(passwordGroup);
+            mMainBinder.addPasswordGroup(passwordGroup);
             dismiss();
         }
     }
@@ -44,7 +44,7 @@ public class AddPasswordGroupDialog extends Dialog {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
                 | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        this.mainBinder = mainBinder;
+        this.mMainBinder = mainBinder;
     }
     //endregion
 
@@ -55,7 +55,7 @@ public class AddPasswordGroupDialog extends Dialog {
         setContentView(R.layout.dialog_create_password_group);
         ButterKnife.bind(this);
 
-        editText.requestFocus();
+        mEditText.requestFocus();
     }
     //endregion
 }

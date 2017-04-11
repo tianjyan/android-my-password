@@ -3,7 +3,6 @@ package com.home.young.myPassword.activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -115,30 +114,26 @@ public class PasswordGroupFragment  extends Fragment
             CharSequence[] items = new String[]{getString(R.string.edit_password_group_name),
                     getString(R.string.merge_password_group), getString(R.string.delete_password_group)};
 
-            builder.setItems(items, new android.content.DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    switch (which) {
-                        case 0:
-                            // 修改分组名
-                            UpdatePasswordGroupNameDialog updatePasswdGroupName = new UpdatePasswordGroupNameDialog(
-                                    getActivity(), passwordGroupName, mMainBinder);
-                            updatePasswdGroupName.show();
-                            break;
+            builder.setItems(items, (dialog, which) -> {
+                switch (which) {
+                    case 0:
+                        // 修改分组名
+                        UpdatePasswordGroupNameDialog updatePasswdGroupName = new UpdatePasswordGroupNameDialog(
+                                getActivity(), passwordGroupName, mMainBinder);
+                        updatePasswdGroupName.show();
+                        break;
 
-                        case 1:
-                            mergeGroup(passwordGroupName);
-                            break;
+                    case 1:
+                        mergeGroup(passwordGroupName);
+                        break;
 
-                        case 2:
-                            // 删除分组
-                            showDeleteDialog(passwordGroupName);
-                            break;
-                        default:
-                            break;
-                    }
+                    case 2:
+                        // 删除分组
+                        showDeleteDialog(passwordGroupName);
+                        break;
+                    default:
+                        break;
                 }
-
             });
             builder.show();
             return true;
@@ -206,35 +201,29 @@ public class PasswordGroupFragment  extends Fragment
         progressDialog.show();
 
         // 获取分组回调
-        OnGetAllPasswordGroupCallback onGetAllPasswordGroupCallback = new OnGetAllPasswordGroupCallback() {
-            @Override
-            public void onGetAllPasswordGroup(List<PasswordGroup> passwordGroups) {
-                progressDialog.dismiss();
-                // 分组获取成功
+        OnGetAllPasswordGroupCallback onGetAllPasswordGroupCallback = passwordGroups -> {
+            progressDialog.dismiss();
+            // 分组获取成功
 
-                if (passwordGroups.size() <= 1) {
-                    getBaseActivity().showToast(R.string.merge_password_group_error);
-                    return;
-                }
-
-                // 用户选择需要合并到的分组
-                final List<String> items = new ArrayList<>();
-                for (PasswordGroup passwordGroup : passwordGroups) {
-                    if (!passwordGroup.getGroupName().equals(passwordGroupName)) {
-                        items.add(passwordGroup.getGroupName());
-                    }
-                }
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setItems(items.toArray(new String[items.size()]),
-                        new android.content.DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String newGroupName = items.get(which);
-                                mMainBinder.updatePasswordGroup(passwordGroupName, newGroupName);
-                            }
-                        });
-                builder.show();
+            if (passwordGroups.size() <= 1) {
+                getBaseActivity().showToast(R.string.merge_password_group_error);
+                return;
             }
+
+            // 用户选择需要合并到的分组
+            final List<String> items = new ArrayList<>();
+            for (PasswordGroup passwordGroup : passwordGroups) {
+                if (!passwordGroup.getGroupName().equals(passwordGroupName)) {
+                    items.add(passwordGroup.getGroupName());
+                }
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setItems(items.toArray(new String[items.size()]),
+                    (dialog, which) -> {
+                        String newGroupName = items.get(which);
+                        mMainBinder.updatePasswordGroup(passwordGroupName, newGroupName);
+                    });
+            builder.show();
         };
 
         // 获取所有的分组
@@ -245,12 +234,7 @@ public class PasswordGroupFragment  extends Fragment
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(getString(R.string.delete_password_group_msg, passwordGroupName));
         builder.setTitle(R.string.delete_password_group);
-        builder.setNeutralButton(R.string.sure, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mMainBinder.deletePasswordGroup(passwordGroupName);
-            }
-        });
+        builder.setNeutralButton(R.string.sure, (dialog, which) -> mMainBinder.deletePasswordGroup(passwordGroupName));
         builder.setNegativeButton(R.string.cancel, null);
         builder.show();
     }

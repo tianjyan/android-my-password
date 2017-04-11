@@ -47,6 +47,7 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
     public static final String PASSWORD_GROUP = "password_group";
     private static final int MODE_ADD = 0;
     private static final int MODE_MODIFY = 1;
+
     private int mMode = MODE_ADD;
     private String mId;
     private PasswordDBRealm mMainBinder;
@@ -251,12 +252,9 @@ public class EditPasswordActivity extends BaseActivity implements OnGetPasswordC
     private void deletePassword() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.delete_password_message);
-        builder.setNeutralButton(R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mMainBinder.deletePassword(mId);
-                finish();
-            }
+        builder.setNeutralButton(R.string.yes, (dialog, which) -> {
+            mMainBinder.deletePassword(mId);
+            finish();
         });
         builder.setNegativeButton(R.string.no, null);
         builder.show();
