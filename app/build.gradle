@@ -3,6 +3,10 @@ apply plugin: 'checkstyle'
 apply plugin: 'realm-android'
 apply plugin: 'me.tatarka.retrolambda'
 
+checkstyle {
+    toolVersion '6.1.1'
+    showViolations true
+}
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -45,11 +49,12 @@ dependencies {
     }
 }
 
-task styleCheck(type: Checkstyle) {
-    configFile new File(rootDir, "config/checkstyle.xml")
+task checkstyle(type: Checkstyle) {
     source 'src'
+    configFile new File(rootDir, "config/checkstyle.xml")
     include '**/*.java'
     exclude '**/gen/**'
+    ignoreFailures true
 
     classpath = files()
 }

@@ -10,4 +10,5 @@
     <suppress checks="AvoidInlineConditionals" files="GenPasswordDialog"/>
     <suppress checks="ReturnCount" files="EditPasswordActivity"/>
     <suppress checks="." files="PasswordDBRealm"/>
+    <suppress checks="." files="PasswordListAdapter"/>
 </suppressions>
