@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'checkstyle'
 apply plugin: 'realm-android'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 checkstyle {
     toolVersion '6.1.1'
@@ -33,6 +35,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
 }
 
 dependencies {
@@ -47,6 +52,7 @@ dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 
 task checkstyle(type: Checkstyle) {
