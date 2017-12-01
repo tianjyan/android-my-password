@@ -1,6 +1,6 @@
 package org.tianjyan.pwd.service
 
-import com.home.young.myPassword.model.Password
+import org.tianjyan.pwd.model.Password
 
 interface OnPasswordChangeListener {
     fun onNewPassword(password: Password)

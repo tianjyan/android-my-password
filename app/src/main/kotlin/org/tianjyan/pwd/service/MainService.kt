@@ -3,9 +3,9 @@ package org.tianjyan.pwd.service
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import com.home.young.myPassword.application.App
-import com.home.young.myPassword.database.PasswordDBRealm
-import com.home.young.myPassword.model.SettingKey
+import org.tianjyan.pwd.application.App
+import org.tianjyan.pwd.database.PasswordDBRealm
+import org.tianjyan.pwd.model.SettingKey
 
 class MainService : Service() {
 

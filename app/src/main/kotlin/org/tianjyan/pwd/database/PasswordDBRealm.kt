@@ -4,15 +4,15 @@ import android.content.Context
 import android.os.Binder
 import android.text.TextUtils
 import android.util.Log
-import com.home.young.myPassword.application.AES
-import com.home.young.myPassword.model.AsyncResult
-import com.home.young.myPassword.model.AsyncSingleTask
-import com.home.young.myPassword.model.Password
-import com.home.young.myPassword.model.PasswordGroup
-import com.home.young.myPassword.service.*
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.RealmResults
+import org.tianjyan.pwd.application.AES
+import org.tianjyan.pwd.model.AsyncResult
+import org.tianjyan.pwd.model.AsyncSingleTask
+import org.tianjyan.pwd.model.Password
+import org.tianjyan.pwd.model.PasswordGroup
+import org.tianjyan.pwd.service.*
 import java.util.*
 
 //TODO: 添加版本的代码（RealmMigration must be provided）
@@ -47,7 +47,7 @@ class PasswordDBRealm(context: Context, private val encryptKey: String) : Binder
                 return asyncResult
             }
 
-            override fun runOnUIThread(asyncResult: AsyncResult<Void>) {
+            override fun runOnUIThread(asyncResult: AsyncResult<Void>?) {
                 onPasswordGroupListeners.add(onPasswordGroupListener)
             }
         }.execute()
@@ -59,7 +59,7 @@ class PasswordDBRealm(context: Context, private val encryptKey: String) : Binder
                 return asyncResult
             }
 
-            override fun runOnUIThread(asyncResult: AsyncResult<Void>) {
+            override fun runOnUIThread(asyncResult: AsyncResult<Void>?) {
                 onPasswordGroupListeners.remove(onPasswordGroupListener)
             }
         }.execute()
@@ -71,7 +71,7 @@ class PasswordDBRealm(context: Context, private val encryptKey: String) : Binder
                 return asyncResult
             }
 
-            override fun runOnUIThread(asyncResult: AsyncResult<Void>) {
+            override fun runOnUIThread(asyncResult: AsyncResult<Void>?) {
                 onPasswordListeners.add(onPasswordListener)
             }
         }.execute()
@@ -83,7 +83,7 @@ class PasswordDBRealm(context: Context, private val encryptKey: String) : Binder
                 return asyncResult
             }
 
-            override fun runOnUIThread(asyncResult: AsyncResult<Void>) {
+            override fun runOnUIThread(asyncResult: AsyncResult<Void>?) {
                 onPasswordListeners.remove(onPasswordListener)
             }
         }.execute()
@@ -92,8 +92,8 @@ class PasswordDBRealm(context: Context, private val encryptKey: String) : Binder
     fun addPassword(password: Password) {
         mRealm.executeTransactionAsync({ realm ->
             password.id = UUID.randomUUID().toString()
-            password.password = encrypt(password.password)
-            password.payPassword = encrypt(password.payPassword)
+            password.password = encrypt(password.password!!)
+            password.payPassword = encrypt(password!!.payPassword!!)
             //当导入密码时，需要插入分组
             val group = PasswordGroup()
             group.groupName = password.groupName
@@ -101,20 +101,20 @@ class PasswordDBRealm(context: Context, private val encryptKey: String) : Binder
 
             realm.insertOrUpdate(password)
         }) { ->
-            password.password = decrypt(password.password)
-            password.payPassword = decrypt(password.payPassword)
+            password.password = decrypt(password.password!!)
+            password.payPassword = decrypt(password.payPassword!!)
             callNewPassword(password)
         }
     }
 
     fun updatePassword(password: Password) {
         mRealm.executeTransactionAsync({ realm ->
-            password.password = encrypt(password.password)
-            password.payPassword = encrypt(password.payPassword)
+            password.password = encrypt(password.password!!)
+            password.payPassword = encrypt(password.payPassword!!)
             realm.insertOrUpdate(password)
         }) { ->
-            password.password = decrypt(password.password)
-            password.payPassword = decrypt(password.payPassword)
+            password.password = decrypt(password.password!!)
+            password.payPassword = decrypt(password.payPassword!!)
             callUpdatePassword(password)
         }
     }
@@ -133,14 +133,14 @@ class PasswordDBRealm(context: Context, private val encryptKey: String) : Binder
         mRealm.executeTransactionAsync({ realm ->
             val result = realm.where(Password::class.java).equalTo("id", id).findFirst()
             if (result != null) {
-                password.id = result!!.getId()
-                password.groupName = result!!.getGroupName()
-                password.userName = result!!.getUserName()
-                password.title = result!!.getTitle()
-                password.note = result!!.getNote()
-                password.password = decrypt(result!!.getPassword())
-                password.payPassword = decrypt(result!!.getPayPassword())
-                password.publish = result!!.getPublish()
+                password.id = result!!.id
+                password.groupName = result!!.groupName
+                password.userName = result!!.userName
+                password.title = result!!.title
+                password.note = result!!.note
+                password.password = decrypt(result!!.password!!)
+                password.payPassword = decrypt(result!!.payPassword!!)
+                password.publish = result!!.publish
             }
         }) { -> onGetPasswordCallback.onGetPassword(password) }
     }
@@ -158,8 +158,8 @@ class PasswordDBRealm(context: Context, private val encryptKey: String) : Binder
 
             for (result in results) {
                 val password = realm.copyFromRealm(result)
-                password.setPassword(decrypt(password.getPassword()))
-                password.setPayPassword(decrypt(password.getPayPassword()))
+                password.password = decrypt(password.password!!)
+                password.payPassword = decrypt(password.payPassword!!)
                 passwords.add(password)
             }
         }) { -> onGetAllPasswordCallback.onGetAllPassword(groupName, passwords) }
@@ -184,7 +184,7 @@ class PasswordDBRealm(context: Context, private val encryptKey: String) : Binder
 
             val passwords = realm.where(Password::class.java).equalTo(GROUPNAME, oldGroupName).findAll()
             for (password in passwords) {
-                password.setGroupName(newGroupName)
+                password.groupName = newGroupName
             }
         }) { ->callUpdatePasswordGroup(oldGroupName, newGroupName) }
     }
@@ -227,8 +227,7 @@ class PasswordDBRealm(context: Context, private val encryptKey: String) : Binder
                 return asyncResult
             }
 
-            override fun runOnUIThread(asyncResult: AsyncResult<Void>) {
-                super.runOnUIThread(asyncResult)
+            override fun runOnUIThread(asyncResult: AsyncResult<Void>?) {
                 onPasswordListeners.clear()
                 onPasswordGroupListeners.clear()
             }
@@ -309,8 +308,7 @@ class PasswordDBRealm(context: Context, private val encryptKey: String) : Binder
                 return asyncResult
             }
 
-            override fun runOnUIThread(asyncResult: AsyncResult<Void>) {
-                super.runOnUIThread(asyncResult)
+            override fun runOnUIThread(asyncResult: AsyncResult<Void>?) {
                 onPasswordListeners.clear()
                 onPasswordGroupListeners.clear()
             }
