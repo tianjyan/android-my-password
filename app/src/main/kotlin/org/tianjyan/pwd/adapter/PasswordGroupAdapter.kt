@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.home.young.myPassword.R
-import com.home.young.myPassword.model.PasswordGroup
+import org.tianjyan.pwd.model.PasswordGroup
 import java.util.ArrayList
 
 class PasswordGroupAdapter(private val mContext: Context) : BaseAdapter() {

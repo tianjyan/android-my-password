@@ -145,7 +145,7 @@ class PasswordDBRealm(context: Context, private val encryptKey: String) : Binder
         }) { -> onGetPasswordCallback.onGetPassword(password) }
     }
 
-    fun getAllPasswordByGroupName(groupName: String,
+    fun getAllPasswordByGroupName(groupName: String?,
                                   onGetAllPasswordCallback: OnGetAllPasswordCallback) {
         val passwords = ArrayList<Password>()
         mRealm.executeTransactionAsync({ realm ->
@@ -162,7 +162,7 @@ class PasswordDBRealm(context: Context, private val encryptKey: String) : Binder
                 password.payPassword = decrypt(password.payPassword!!)
                 passwords.add(password)
             }
-        }) { -> onGetAllPasswordCallback.onGetAllPassword(groupName, passwords) }
+        }) { -> onGetAllPasswordCallback.onGetAllPassword(groupName!!, passwords) }
     }
 
     fun addPasswordGroup(passwordGroup: PasswordGroup) {

@@ -8,8 +8,6 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.home.young.myPassword.R
-import com.home.young.myPassword.activity.MainActivity
-import com.home.young.myPassword.activity.SetPasswordActivity
 import org.tianjyan.pwd.application.BaseActivity
 import org.tianjyan.pwd.application.MD5
 import org.tianjyan.pwd.model.SettingKey

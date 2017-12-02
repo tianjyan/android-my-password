@@ -1,7 +1,6 @@
 package org.tianjyan.pwd.application
 
 import android.app.Fragment
-import com.home.young.myPassword.application.BaseActivity
 
 open class BaseFragment : Fragment() {
 
