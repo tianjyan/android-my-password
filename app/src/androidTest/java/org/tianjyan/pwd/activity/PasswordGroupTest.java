@@ -38,6 +38,7 @@ public class PasswordGroupTest {
 
     @Test
     public void passwordGroupTest() {
+        closeSoftKeyboard();
         ViewInteraction appCompatTextView = onView(
                 allOf(withId(R.id.set_password_skip), withText("不设置密码")));
         appCompatTextView.perform(scrollTo(), click());
@@ -60,7 +61,7 @@ public class PasswordGroupTest {
                                 childAtPosition(
                                         withId(R.id.fragment_password_group_listView),
                                         1),
-                                0),
+                                1),
                         isDisplayed()));
         textView.check(matches(withText("test")));
 
