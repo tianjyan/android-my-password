@@ -15,7 +15,7 @@ android {
         abortOnError false
     }
     defaultConfig {
-        applicationId "com.home.young.myPassword"
+        applicationId "org.tianjyan.pwd"
         minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
